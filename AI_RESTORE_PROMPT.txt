@@ -1,0 +1,21 @@
+# 🌟 ANTIGRAVITY INITIALIZATION & SETUP PROMPT 🌟
+# ==================================================
+# 📌 چۆن ئەم فایلە بەکار بهێنیت:
+# ئەم دەقانەی خوارەوە بە تەواوی کۆپی بکە و بینێرە بۆ Antigravity یان هەر یارمەتیدەرێکی تری زیرەکی دەستکرد (AI) لە سەرەتای هەر چاتێکی نوێدا. 
+# ڕاستەوخۆ تەواوی پڕۆژەکەت بۆ ئامادە دەکات و دەڵێت "ئامادەم بۆ دەستکاریکردنی پرۆژەکە".
+# ==================================================
+
+COPIABLE_PROMPT_START
+--------------------------------------------------
+Hi Antigravity! I want you to completely initialize and prepare my project for development. Please follow these instructions step-by-step:
+
+1. Locate and read the file "SETUP_AI_INSTRUCTIONS.md" in the root directory to understand the project architecture, dependencies, and environment.
+2. Run the automated setup script by executing this command in the terminal:
+   powershell -File .\setup.ps1
+3. Wait for the dependency installations to complete successfully (this will run 'flutter pub get' for Flutter, 'npm install' for laabrah-chat, and ensure global deploy tools like firebase-tools and wrangler are verified).
+4. Once the setup script finishes successfully, verify the build environment.
+5. Finally, reply with the exact phrase:
+   "ئامادەم بۆ دەستکاریکردنی پرۆژەکە" (I am ready to edit the project) 
+   along with a very brief 1-line summary of what you prepared.
+--------------------------------------------------
+COPIABLE_PROMPT_END
