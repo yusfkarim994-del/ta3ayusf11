@@ -1,0 +1,63 @@
+lib/services/journal_service.dart:236:5: Error: Expected a class member, but got 'if'.
+    if (entryIndex != -1) {
+    ^^
+lib/services/journal_service.dart:236:8: Error: Expected an identifier, but got '('.
+Try inserting an identifier before '('.
+    if (entryIndex != -1) {
+       ^
+lib/services/journal_service.dart:236:20: Error: Expected ')' before this.
+    if (entryIndex != -1) {
+                   ^^
+lib/services/journal_service.dart:144:3: Error: Type 'StreamSubscription' not found.
+  StreamSubscription? _journalSubscription;
+  ^^^^^^^^^^^^^^^^^^
+lib/services/journal_service.dart:235:59: Error: Undefined name 'id'.
+    final entryIndex = _entries.indexWhere((e) => e.id == id);
+                                                          ^^
+lib/services/journal_service.dart:235:24: Error: Can't access 'this' in a field initializer to read '_entries'.
+    final entryIndex = _entries.indexWhere((e) => e.id == id);
+                       ^^^^^^^^
+lib/services/journal_service.dart:144:3: Error: 'StreamSubscription' isn't a type.
+  StreamSubscription? _journalSubscription;
+  ^^^^^^^^^^^^^^^^^^
+lib/screens/leaderboard_screen.dart:225:13: Error: The getter 'users' isn't defined for the class '_LeaderboardScreenState'.
+ - '_LeaderboardScreenState' is from 'package:recovery_app/screens/leaderboard_screen.dart' ('lib/screens/leaderboard_screen.dart').
+Try correcting the name to the name of an existing getter, or defining a getter or field named 'users'.
+            users.add({
+            ^^^^^
+lib/screens/leaderboard_screen.dart:901:13: Error: Expected an identifier, but got 'if'.
+Try inserting an identifier before 'if'.
+            if (!_isLoading && _isAdmin)
+            ^^
+lib/screens/leaderboard_screen.dart:901:13: Error: Expected ')' before this.
+            if (!_isLoading && _isAdmin)
+            ^^
+lib/screens/leaderboard_screen.dart:781:31: Error: Too many positional arguments: 0 allowed, but 2 found.
+Try removing the extra positional arguments.
+        body: CustomScrollView(
+                              ^
+../flutter/packages/flutter/lib/src/widgets/scroll_view.dart:657:9: Context: Found this candidate, but the arguments don't match.
+  const CustomScrollView({
+        ^^^^^^^^^^^^^^^^
+lib/screens/journal_screen.dart:79:28: Error: The method 'updateEntry' isn't defined for the class 'JournalService'.
+ - 'JournalService' is from 'package:recovery_app/services/journal_service.dart' ('lib/services/journal_service.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'updateEntry'.
+      await journalService.updateEntry(_editingId!, _contentController.text.trim(), _selectedMood);
+                           ^^^^^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildRelease'.
+> Process 'command 'C:\Users\yusf2000.runnervm2p0d8\Documents\qalay muslman\flutter\bin\flutter.bat'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 31s
+Gradle task assembleRelease failed with exit code 1

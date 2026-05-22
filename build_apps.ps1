@@ -1,0 +1,5 @@
+Write-Host "Starting APK Build..."
+Start-Process "..\flutter\bin\flutter.bat" -ArgumentList "build","apk","--release" -Wait -WindowStyle Hidden -RedirectStandardOutput "build_apk_out.txt" -RedirectStandardError "build_apk_err.txt"
+Write-Host "Starting AAB Build..."
+Start-Process "..\flutter\bin\flutter.bat" -ArgumentList "build","appbundle","--release" -Wait -WindowStyle Hidden -RedirectStandardOutput "build_aab_out.txt" -RedirectStandardError "build_aab_err.txt"
+Write-Host "Builds completed."

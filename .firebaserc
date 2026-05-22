@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "laabrah"
+  },
+  "targets": {
+    "laabrah": {
+      "hosting": {
+        "chat": [
+          "laabrah-chat"
+        ],
+        "laabrah": [
+          "laabrah"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

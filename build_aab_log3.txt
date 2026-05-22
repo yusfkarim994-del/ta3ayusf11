@@ -1,0 +1,11 @@
+
+Running Gradle task 'bundleRelease'...                          
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 37924 bytes (97.7% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'bundleRelease'...                            332.6s
+ΓêÜ Built build\app\outputs\bundle\release\app-release.aab (45.3MB)

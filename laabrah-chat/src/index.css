@@ -1,0 +1,105 @@
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 170 30% 97%;
+    --foreground: 200 25% 15%;
+
+    --card: 170 25% 95%;
+    --card-foreground: 200 25% 15%;
+
+    --popover: 170 30% 97%;
+    --popover-foreground: 200 25% 15%;
+
+    --primary: 170 45% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 170 20% 90%;
+    --secondary-foreground: 200 25% 15%;
+
+    --muted: 170 15% 92%;
+    --muted-foreground: 200 10% 50%;
+
+    --accent: 170 30% 88%;
+    --accent-foreground: 200 25% 15%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 170 20% 88%;
+    --input: 170 20% 88%;
+    --ring: 170 45% 40%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 170 25% 95%;
+    --sidebar-foreground: 200 25% 20%;
+    --sidebar-primary: 170 45% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 170 20% 90%;
+    --sidebar-accent-foreground: 200 25% 15%;
+    --sidebar-border: 170 20% 88%;
+    --sidebar-ring: 170 45% 40%;
+
+    --ai-bubble: 170 25% 93%;
+    --user-bubble: 170 45% 40%;
+  }
+
+  .dark {
+    --background: 200 25% 8%;
+    --foreground: 170 15% 92%;
+
+    --card: 200 25% 12%;
+    --card-foreground: 170 15% 92%;
+
+    --popover: 200 25% 10%;
+    --popover-foreground: 170 15% 92%;
+
+    --primary: 170 45% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 200 20% 18%;
+    --secondary-foreground: 170 15% 92%;
+
+    --muted: 200 15% 18%;
+    --muted-foreground: 170 10% 55%;
+
+    --accent: 200 20% 18%;
+    --accent-foreground: 170 15% 92%;
+
+    --destructive: 0 60% 40%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 15% 20%;
+    --input: 200 15% 20%;
+    --ring: 170 45% 45%;
+
+    --sidebar-background: 200 25% 10%;
+    --sidebar-foreground: 170 15% 90%;
+    --sidebar-primary: 170 45% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 20% 15%;
+    --sidebar-accent-foreground: 170 15% 90%;
+    --sidebar-border: 200 15% 18%;
+    --sidebar-ring: 170 45% 45%;
+
+    --ai-bubble: 200 20% 15%;
+    --user-bubble: 170 45% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans Arabic', sans-serif;
+    direction: rtl;
+  }
+}

@@ -1,0 +1,14 @@
+Cleaning build cache...
+Deleting build...                                               
+Failed to remove build. A program may still be using a file in the directory or the directory itself. To find and stop such a program, see: https://superuser.com/questions/1333118/cant-delete-empty-folder-because-it-is-used
+Deleting build...                                                   94ms
+Deleting .dart_tool...                                              16ms
+Deleting Generated.xcconfig...                                       0ms
+Deleting flutter_export_environment.sh...                            0ms
+Deleting ephemeral...                                                3ms
+Deleting ephemeral...                                                0ms
+Deleting ephemeral...                                                5ms
+Deleting .flutter-plugins-dependencies...                            0ms
+Deleting .flutter-plugins...                                         0ms
+Building APK...
+Resolving dependencies...

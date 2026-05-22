@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.a1de31ef608845db8d2dc6cd4fdea163",
+  "appName": "laabrah1",
+  "webDir": "dist",
+  "server": {
+    "url": "https://a1de31ef-6088-45db-8d2d-c6cd4fdea163.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}

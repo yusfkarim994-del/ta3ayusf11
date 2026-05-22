@@ -1,0 +1,18 @@
+(node:3248) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+To sign in to the Firebase CLI:
+
+1. Take note of your session ID:
+
+   [1m129E0[22m
+
+2. Visit the URL below on any device and follow the instructions to get your code:
+
+   https://auth.firebase.tools/login?code_challenge=2-tlvqCvlwkcOhGlR-jmxgkxd5k1v3l6i2Wum0KsgFI&session=129e037c-b016-4493-bf89-d8f529e0d414&attest=jwtTXfUf3bAbiGXK3w4Fbac9rwWfmiElwSX7slZd_9o
+
+3. Paste or enter the authorization code below once you have it:
+
+[34m?[39m [1mEnter authorization code:[22m[29G
+[?25h
+[1m[31mError:[39m[22m An unexpected error has occurred.

@@ -1,0 +1,693 @@
+Analyzing recovery_app...                                       
+
+warning - The include file 'package:flutter_lints/flutter.yaml' in 'C:\Users\yusf2000.runnervm2nm03\Downloads\qalay muslmanv3\qalay muslman\qalay muslman\recovery_app\analysis_options.yaml' can't be found when analyzing 'C:\Users\yusf2000.runnervm2nm03\Downloads\qalay muslmanv3\qalay muslman\qalay muslman\recovery_app' - analysis_options.yaml:10:10 - include_file_not_found
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - lib\delete_unknown_posts.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\delete_unknown_posts.dart:5:8 - uri_does_not_exist
+  error - Undefined name 'Firebase' - lib\delete_unknown_posts.dart:10:9 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\delete_unknown_posts.dart:14:21 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - lib\delete_user_posts.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\delete_user_posts.dart:5:8 - uri_does_not_exist
+  error - Undefined name 'Firebase' - lib\delete_user_posts.dart:10:9 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\delete_user_posts.dart:14:21 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - lib\firebase_options.dart:1:8 - uri_does_not_exist
+  error - Const variables must be initialized with a constant value - lib\firebase_options.dart:40:42 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - lib\firebase_options.dart:40:42 - undefined_method
+  error - Const variables must be initialized with a constant value - lib\firebase_options.dart:48:38 - const_initialized_with_non_constant_value
+  error - The method 'FirebaseOptions' isn't defined for the type 'DefaultFirebaseOptions' - lib\firebase_options.dart:48:38 - undefined_method
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - lib\list_authors.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\list_authors.dart:5:8 - uri_does_not_exist
+  error - Undefined name 'Firebase' - lib\list_authors.dart:10:9 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\list_authors.dart:14:21 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:firebase_core/firebase_core.dart' - lib\main.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:google_fonts/google_fonts.dart' - lib\main.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\main.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Firebase' - lib\main.dart:21:9 - undefined_identifier
+  error - The function 'MultiProvider' isn't defined - lib\main.dart:49:5 - undefined_function
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:51:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:52:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:53:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:54:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:55:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:56:9 - undefined_identifier
+  error - Undefined name 'ChangeNotifierProvider' - lib\main.dart:57:9 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type 'MyApp' - lib\main.dart:69:12 - undefined_method
+  error - Undefined name 'GoogleFonts' - lib\main.dart:80:24 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\accountability_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\screens\accountability_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\screens\accountability_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\accountability_screen.dart:29:7 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\accountability_screen.dart:47:27 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\accountability_screen.dart:62:26 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\accountability_screen.dart:72:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_AccountabilityScreenState' - lib\screens\accountability_screen.dart:80:15 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_AccountabilityScreenState' - lib\screens\accountability_screen.dart:347:12 - undefined_method
+   info - The declaration '_buildEndPartnershipButton' isn't referenced - lib\screens\accountability_screen.dart:771:10 - unused_element
+   info - The declaration '_buildIncomingRequests' isn't referenced - lib\screens\accountability_screen.dart:1077:10 - unused_element
+warning - The value of the local variable 'service' isn't used - lib\screens\accountability_screen.dart:1505:13 - unused_local_variable
+  error - Undefined name 'Provider' - lib\screens\accountability_screen.dart:1505:23 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\screens\accountability_screen.dart:1506:13 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\accountability_screen.dart:1507:23 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\screens\accountability_screen.dart:1510:22 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\screens\accountability_screen.dart:1573:13 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\accountability_screen.dart:1574:23 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\screens\accountability_screen.dart:1577:22 - undefined_identifier
+   info - The declaration '_getWaitingText' isn't referenced - lib\screens\accountability_screen.dart:1747:10 - unused_element
+   info - The declaration '_getCancelRequestText' isn't referenced - lib\screens\accountability_screen.dart:1755:10 - unused_element
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\app_lock_screen.dart:2:8 - uri_does_not_exist
+warning - The value of the field '_isLoading' isn't used - lib\screens\app_lock_screen.dart:25:8 - unused_field
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:38:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:67:25 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_AppLockScreenState' - lib\screens\app_lock_screen.dart:113:12 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:125:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:376:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:385:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\app_lock_screen.dart:394:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\assessment_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\assessment_screen.dart:134:18 - undefined_identifier
+warning - The value of the local variable 'levelIcon' isn't used - lib\screens\assessment_screen.dart:765:15 - unused_local_variable
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\breathing_exercise_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\breathing_exercise_screen.dart:108:18 - undefined_identifier
+  error - The non-nullable local variable 'inhaleText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:150:21 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'holdText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:155:21 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'exhaleText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:160:21 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'readyText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:165:21 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'title' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:223:31 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'subtitle' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:231:31 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'inhaleText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:382:44 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'holdText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:384:44 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'exhaleText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:386:44 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'stopText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:425:42 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'startText' must be assigned before it can be used - lib\screens\breathing_exercise_screen.dart:425:53 - not_assigned_potentially_non_nullable_local_variable
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\challenge_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:75:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:157:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:240:18 - undefined_identifier
+   info - The declaration '_getAndMore' isn't referenced - lib\screens\challenge_screen.dart:1480:10 - unused_element
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:1537:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:1615:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\challenge_screen.dart:1664:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\commitment_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\commitment_screen.dart:84:18 - undefined_identifier
+warning - The value of the local variable 'subtitleText' isn't used - lib\screens\commitment_screen.dart:94:12 - unused_local_variable
+warning - The value of the local variable 'parchmentLight' isn't used - lib\screens\commitment_screen.dart:136:11 - unused_local_variable
+warning - The value of the local variable 'parchmentDark' isn't used - lib\screens\commitment_screen.dart:137:11 - unused_local_variable
+warning - The value of the local variable 'inkBrown' isn't used - lib\screens\commitment_screen.dart:139:11 - unused_local_variable
+warning - The value of the local variable 'waxSeal' isn't used - lib\screens\commitment_screen.dart:140:11 - unused_local_variable
+  error - The non-nullable local variable 'titleText' must be assigned before it can be used - lib\screens\commitment_screen.dart:223:39 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'placeholderText' must be assigned before it can be used - lib\screens\commitment_screen.dart:235:75 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'saveText' must be assigned before it can be used - lib\screens\commitment_screen.dart:235:92 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'cancelText' must be assigned before it can be used - lib\screens\commitment_screen.dart:235:102 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'noLettersText' must be assigned before it can be used - lib\screens\commitment_screen.dart:236:80 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'signatureText' must be assigned before it can be used - lib\screens\commitment_screen.dart:236:95 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'writeNewText' must be assigned before it can be used - lib\screens\commitment_screen.dart:268:47 - not_assigned_potentially_non_nullable_local_variable
+warning - The value of the local variable 'parchmentColor' isn't used - lib\screens\commitment_screen.dart:433:11 - unused_local_variable
+   info - The declaration '_buildCornerDecoration' isn't referenced - lib\screens\commitment_screen.dart:660:10 - unused_element
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\community_posts_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\community_posts_screen.dart:71:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\community_screen.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\screens\community_screen.dart:5:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\community_screen.dart:91:22 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\community_screen.dart:104:22 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\community_screen.dart:125:22 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\community_screen.dart:148:18 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\community_screen.dart:1127:41 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\content_management_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:google_fonts/google_fonts.dart' - lib\screens\content_management_screen.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:file_picker/file_picker.dart' - lib\screens\content_management_screen.dart:5:8 - uri_does_not_exist
+  error - The method 'MultiProvider' isn't defined for the type 'ContentManagementScreen' - lib\screens\content_management_screen.dart:17:12 - undefined_method
+  error - The method 'ChangeNotifierProvider' isn't defined for the type 'ContentManagementScreen' - lib\screens\content_management_screen.dart:19:9 - undefined_method
+  error - The method 'ChangeNotifierProvider' isn't defined for the type 'ContentManagementScreen' - lib\screens\content_management_screen.dart:20:9 - undefined_method
+  error - The method 'ChangeNotifierProvider' isn't defined for the type 'ContentManagementScreen' - lib\screens\content_management_screen.dart:21:9 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:40:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:42:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:43:27 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:44:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:159:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:226:27 - undefined_identifier
+warning - The value of the local variable 'autoTranslate' isn't used - lib\screens\content_management_screen.dart:232:10 - unused_local_variable
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:311:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:375:26 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:409:13 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:419:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:421:25 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:503:32 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:515:34 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:567:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:664:17 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:678:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:680:27 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:762:32 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:774:34 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:826:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:879:15 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:892:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:894:28 - undefined_identifier
+warning - The value of the local variable 'islamicGold' isn't used - lib\screens\content_management_screen.dart:897:11 - unused_local_variable
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:969:32 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\screens\content_management_screen.dart:976:51 - undefined_identifier
+warning - The value of the field '_isUploading' isn't used - lib\screens\content_management_screen.dart:1022:8 - unused_field
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1028:7 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1034:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_LibraryManagementTabState' - lib\screens\content_management_screen.dart:1042:12 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1259:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1402:25 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_LibraryManagementTabState' - lib\screens\content_management_screen.dart:1576:19 - undefined_method
+warning - Dead code - lib\screens\content_management_screen.dart:1638:29 - dead_code
+  error - Undefined name 'FilePicker' - lib\screens\content_management_screen.dart:1642:54 - undefined_identifier
+  error - Undefined name 'FileType' - lib\screens\content_management_screen.dart:1643:41 - undefined_identifier
+warning - Dead code - lib\screens\content_management_screen.dart:1715:29 - dead_code
+  error - Undefined name 'FilePicker' - lib\screens\content_management_screen.dart:1719:54 - undefined_identifier
+  error - Undefined name 'FileType' - lib\screens\content_management_screen.dart:1720:41 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1830:48 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:1910:23 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:2008:30 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:2110:40 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:2226:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:2255:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\content_management_screen.dart:2375:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\group_chat_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\group_chat_screen.dart:130:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\group_settings_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:image_picker/image_picker.dart' - lib\screens\group_settings_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_storage/firebase_storage.dart' - lib\screens\group_settings_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\group_settings_screen.dart:26:18 - undefined_identifier
+  error - The method 'ImagePicker' isn't defined for the type '_GroupSettingsScreenState' - lib\screens\group_settings_screen.dart:736:22 - undefined_method
+  error - Undefined name 'ImageSource' - lib\screens\group_settings_screen.dart:737:53 - undefined_identifier
+  error - Undefined name 'FirebaseStorage' - lib\screens\group_settings_screen.dart:742:21 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\groups_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\groups_screen.dart:34:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\habits_screen.dart:2:8 - uri_does_not_exist
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\habits_screen.dart:3:8 - unnecessary_import
+  error - Undefined name 'Provider' - lib\screens\habits_screen.dart:33:7 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\habits_screen.dart:45:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_HabitsScreenState' - lib\screens\habits_screen.dart:169:12 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_HabitsScreenState' - lib\screens\habits_screen.dart:331:12 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_HabitsScreenState' - lib\screens\habits_screen.dart:527:18 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\habits_screen.dart:953:19 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_HabitsScreenState' - lib\screens\habits_screen.dart:1057:18 - undefined_method
+   info - The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\home_screen.dart:2:8 - unnecessary_import
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\home_screen.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:url_launcher/url_launcher.dart' - lib\screens\home_screen.dart:13:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:google_fonts/google_fonts.dart' - lib\screens\home_screen.dart:26:8 - uri_does_not_exist
+warning - The value of the field '_isTipsExpanded' isn't used - lib\screens\home_screen.dart:54:8 - unused_field
+   info - The declaration '_getLeaderboardTitle' isn't referenced - lib\screens\home_screen.dart:108:10 - unused_element
+   info - The declaration '_getCurrentQuote' isn't referenced - lib\screens\home_screen.dart:989:10 - unused_element
+  error - Undefined name 'Provider' - lib\screens\home_screen.dart:1028:18 - undefined_identifier
+   info - The declaration '_buildTimeUnit' isn't referenced - lib\screens\home_screen.dart:1302:10 - unused_element
+   info - The declaration '_launchUrl' isn't referenced - lib\screens\home_screen.dart:1439:16 - unused_element
+  error - The method 'launchUrl' isn't defined for the type '_HomeScreenState' - lib\screens\home_screen.dart:1441:16 - undefined_method
+  error - Undefined name 'LaunchMode' - lib\screens\home_screen.dart:1441:37 - undefined_identifier
+   info - The declaration '_buildRafiqCard' isn't referenced - lib\screens\home_screen.dart:2041:10 - unused_element
+   info - The declaration '_buildBreathingExerciseCard' isn't referenced - lib\screens\home_screen.dart:2143:10 - unused_element
+   info - The declaration '_buildStoriesCard' isn't referenced - lib\screens\home_screen.dart:2410:10 - unused_element
+   info - The declaration '_buildCommitmentCard' isn't referenced - lib\screens\home_screen.dart:2511:10 - unused_element
+   info - The declaration '_buildJournalCard' isn't referenced - lib\screens\home_screen.dart:2902:10 - unused_element
+   info - The declaration '_buildTimeSeparator' isn't referenced - lib\screens\home_screen.dart:3001:10 - unused_element
+warning - The value of the local variable 'islamicGreen' isn't used - lib\screens\home_screen.dart:3360:11 - unused_local_variable
+warning - The value of the local variable 'islamicTeal' isn't used - lib\screens\home_screen.dart:3361:11 - unused_local_variable
+  error - Undefined name 'GoogleFonts' - lib\screens\home_screen.dart:3430:34 - undefined_identifier
+   info - The declaration '_IslamicCornerPainter' isn't referenced - lib\screens\home_screen.dart:3469:7 - unused_element
+   info - A value for optional parameter 'isTopLeft' isn't ever given - lib\screens\home_screen.dart:3478:10 - unused_element
+   info - A value for optional parameter 'isTopRight' isn't ever given - lib\screens\home_screen.dart:3479:10 - unused_element
+   info - A value for optional parameter 'isBottomLeft' isn't ever given - lib\screens\home_screen.dart:3480:10 - unused_element
+   info - A value for optional parameter 'isBottomRight' isn't ever given - lib\screens\home_screen.dart:3481:10 - unused_element
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\journal_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\journal_screen.dart:36:7 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\journal_screen.dart:76:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\journal_screen.dart:88:28 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\journal_screen.dart:94:18 - undefined_identifier
+warning - The value of the local variable 'todayText' isn't used - lib\screens\journal_screen.dart:98:86 - unused_local_variable
+  error - The non-nullable local variable 'title' must be assigned before it can be used - lib\screens\journal_screen.dart:154:46 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'writeHint' must be assigned before it can be used - lib\screens\journal_screen.dart:157:59 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'saveText' must be assigned before it can be used - lib\screens\journal_screen.dart:157:70 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'cancelText' must be assigned before it can be used - lib\screens\journal_screen.dart:157:80 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'noEntriesText' must be assigned before it can be used - lib\screens\journal_screen.dart:158:59 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'deleteConfirmText' must be assigned before it can be used - lib\screens\journal_screen.dart:158:88 - not_assigned_potentially_non_nullable_local_variable
+  error - The method 'Consumer' isn't defined for the type '_JournalScreenState' - lib\screens\journal_screen.dart:452:12 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\journal_screen.dart:785:28 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\screens\leaderboard_screen.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\screens\leaderboard_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\leaderboard_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'FirebaseFirestore' - lib\screens\leaderboard_screen.dart:21:22 - undefined_identifier
+  error - The name 'Timestamp' isn't defined, so it can't be used in an 'is' expression - lib\screens\leaderboard_screen.dart:123:46 - type_test_with_undefined_name
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\screens\leaderboard_screen.dart:124:57 - cast_to_non_type
+  error - Undefined name 'FirebaseAuth' - lib\screens\leaderboard_screen.dart:256:18 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\leaderboard_screen.dart:263:18 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\leaderboard_screen.dart:268:18 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\screens\leaderboard_screen.dart:280:18 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\screens\leaderboard_screen.dart:381:30 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\leaderboard_screen.dart:575:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\library_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\library_screen.dart:32:7 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\library_screen.dart:44:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_LibraryScreenState' - lib\screens\library_screen.dart:143:12 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_LibraryScreenState' - lib\screens\library_screen.dart:202:12 - undefined_method
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\login_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\login_screen.dart:84:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\login_screen.dart:112:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\login_screen.dart:269:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\pdf_reader_screen.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\pdf_reader_screen.dart:66:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\private_chat_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\screens\private_chat_screen.dart:8:8 - uri_does_not_exist
+  error - Undefined name 'FirebaseFirestore' - lib\screens\private_chat_screen.dart:48:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\private_chat_screen.dart:128:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\private_messages_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\private_messages_screen.dart:19:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\register_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\register_screen.dart:110:18 - undefined_identifier
+   info - The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/services.dart' - lib\screens\settings_screen.dart:1:8 - unnecessary_import
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\settings_screen.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\screens\settings_screen.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\screens\settings_screen.dart:7:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:image_picker/image_picker.dart' - lib\screens\settings_screen.dart:8:8 - uri_does_not_exist
+  error - Undefined name 'FirebaseAuth' - lib\screens\settings_screen.dart:27:17 - undefined_identifier
+  error - Undefined name 'FirebaseFirestore' - lib\screens\settings_screen.dart:28:22 - undefined_identifier
+  error - The method 'ImagePicker' isn't defined for the type '_SettingsScreenState' - lib\screens\settings_screen.dart:31:24 - undefined_method
+  error - Undefined name 'FieldValue' - lib\screens\settings_screen.dart:78:26 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type '_SettingsScreenState' - lib\screens\settings_screen.dart:79:12 - undefined_method
+  error - The body might complete normally, causing 'null' to be returned, but the return type, 'String', is a potentially non-nullable type - lib\screens\settings_screen.dart:93:10 - body_might_complete_normally
+  error - Undefined name 'Provider' - lib\screens\settings_screen.dart:94:18 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\settings_screen.dart:103:18 - undefined_identifier
+  error - Undefined name 'ImageSource' - lib\screens\settings_screen.dart:107:17 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\screens\settings_screen.dart:132:30 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type '_SettingsScreenState' - lib\screens\settings_screen.dart:133:16 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\settings_screen.dart:191:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\settings_screen.dart:219:25 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\settings_screen.dart:385:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_SettingsScreenState' - lib\screens\settings_screen.dart:549:15 - undefined_method
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\stories_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\stories_screen.dart:60:18 - undefined_identifier
+warning - The value of the local variable 'subtitleText' isn't used - lib\screens\stories_screen.dart:82:12 - unused_local_variable
+  error - The non-nullable local variable 'titleText' must be assigned before it can be used - lib\screens\stories_screen.dart:202:39 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'nextText' must be assigned before it can be used - lib\screens\stories_screen.dart:286:45 - not_assigned_potentially_non_nullable_local_variable
+   info - The declaration '_buildOrnament' isn't referenced - lib\screens\stories_screen.dart:310:10 - unused_element
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\tips_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\tips_screen.dart:62:18 - undefined_identifier
+  error - The non-nullable local variable 'titleText' must be assigned before it can be used - lib\screens\tips_screen.dart:196:39 - not_assigned_potentially_non_nullable_local_variable
+  error - The non-nullable local variable 'nextText' must be assigned before it can be used - lib\screens\tips_screen.dart:280:45 - not_assigned_potentially_non_nullable_local_variable
+   info - The declaration '_buildOrnament' isn't referenced - lib\screens\tips_screen.dart:304:10 - unused_element
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\tracking_screen.dart:2:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\tracking_screen.dart:39:7 - undefined_identifier
+   info - The declaration '_getStatusIcon' isn't referenced - lib\screens\tracking_screen.dart:62:12 - unused_element
+  error - Undefined name 'Provider' - lib\screens\tracking_screen.dart:77:18 - undefined_identifier
+  error - The method 'Consumer' isn't defined for the type '_TrackingScreenState' - lib\screens\tracking_screen.dart:172:12 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_TrackingScreenState' - lib\screens\tracking_screen.dart:294:12 - undefined_method
+  error - The method 'Consumer' isn't defined for the type '_TrackingScreenState' - lib\screens\tracking_screen.dart:483:12 - undefined_method
+  error - Undefined name 'Provider' - lib\screens\tracking_screen.dart:633:15 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\webview_screen.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'Provider' - lib\screens\webview_screen.dart:77:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:provider/provider.dart' - lib\screens\zego_call_screen.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\screens\zego_call_screen.dart:4:8 - uri_does_not_exist
+warning - The value of the field 'appID' isn't used - lib\screens\zego_call_screen.dart:45:20 - unused_field
+warning - The value of the field 'serverSecret' isn't used - lib\screens\zego_call_screen.dart:46:23 - unused_field
+  error - Undefined name 'FirebaseAuth' - lib\screens\zego_call_screen.dart:62:20 - undefined_identifier
+  error - Undefined name 'Provider' - lib\screens\zego_call_screen.dart:176:18 - undefined_identifier
+warning - The value of the local variable 'isDark' isn't used - lib\screens\zego_call_screen.dart:177:11 - unused_local_variable
+  error - Undefined name 'Provider' - lib\screens\zego_call_screen.dart:393:18 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\accountability_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\accountability_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\accountability_service.dart:29:40 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\accountability_service.dart:41:40 - cast_to_non_type
+  error - Undefined class 'FirebaseFirestore' - lib\services\accountability_service.dart:100:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\accountability_service.dart:100:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\accountability_service.dart:101:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\accountability_service.dart:101:30 - undefined_identifier
+  error - Undefined class 'DocumentSnapshot' - lib\services\accountability_service.dart:177:69 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\accountability_service.dart:189:64 - cast_to_non_type
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\accountability_service.dart:201:56 - cast_to_non_type
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\accountability_service.dart:246:80 - cast_to_non_type
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:446:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:498:19 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:504:25 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'AccountabilityService' - lib\services\accountability_service.dart:507:9 - undefined_method
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:514:25 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'AccountabilityService' - lib\services\accountability_service.dart:517:9 - undefined_method
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:558:24 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:564:24 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:590:26 - undefined_identifier
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\accountability_service.dart:619:62 - cast_to_non_type
+  error - Undefined name 'FieldValue' - lib\services\accountability_service.dart:651:24 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\analytics_service.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\analytics_service.dart:2:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\analytics_service.dart:5:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\analytics_service.dart:5:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\analytics_service.dart:6:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\analytics_service.dart:6:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\analytics_service.dart:26:25 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\analytics_service.dart:32:27 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'AnalyticsService' - lib\services\analytics_service.dart:33:12 - undefined_method
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:45:56 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:57:56 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:69:56 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:86:60 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:87:48 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\analytics_service.dart:137:56 - undefined_identifier
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\analytics_service.dart:144:58 - cast_to_non_type
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\announcements_service.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\announcements_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\announcements_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\announcements_service.dart:32:38 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\announcements_service.dart:42:40 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\announcements_service.dart:55:18 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\announcements_service.dart:63:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\announcements_service.dart:63:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\announcements_service.dart:64:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\announcements_service.dart:64:30 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\announcements_service.dart:96:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\announcements_service.dart:105:25 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\announcements_service.dart:186:22 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\app_lock_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:local_auth/local_auth.dart' - lib\services\app_lock_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:crypto/crypto.dart' - lib\services\app_lock_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'LocalAuthentication' - lib\services\app_lock_service.dart:9:9 - undefined_class
+  error - The method 'LocalAuthentication' isn't defined for the type 'AppLockService' - lib\services\app_lock_service.dart:9:42 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\app_lock_service.dart:29:25 - undefined_identifier
+  error - Undefined name 'sha256' - lib\services\app_lock_service.dart:42:20 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\app_lock_service.dart:51:27 - undefined_identifier
+  error - The name 'BiometricType' isn't a type, so it can't be used as a type argument - lib\services\app_lock_service.dart:94:15 - non_type_as_type_argument
+  error - Undefined name 'SharedPreferences' - lib\services\app_lock_service.dart:112:27 - undefined_identifier
+  error - The name 'AuthenticationOptions' isn't a class - lib\services\app_lock_service.dart:128:24 - creation_with_non_type
+  error - Undefined name 'SharedPreferences' - lib\services\app_lock_service.dart:156:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\assessment_service.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'SharedPreferences' - lib\services\assessment_service.dart:414:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\assessment_service.dart:425:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\auth_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\auth_service.dart:3:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseAuth' - lib\services\auth_service.dart:6:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\auth_service.dart:6:30 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\auth_service.dart:7:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\auth_service.dart:7:40 - undefined_identifier
+  error - Undefined class 'User' - lib\services\auth_service.dart:10:3 - undefined_class
+  error - The name 'User' isn't a type, so it can't be used as a type argument - lib\services\auth_service.dart:13:10 - non_type_as_type_argument
+  error - The name 'UserCredential' isn't a type, so it can't be used as a type argument - lib\services\auth_service.dart:42:10 - non_type_as_type_argument
+  error - The name 'FirebaseAuthException' isn't a type and can't be used in an on-catch clause - lib\services\auth_service.dart:58:10 - non_type_in_catch_clause
+  error - Undefined class 'User' - lib\services\auth_service.dart:64:42 - undefined_class
+  error - Undefined name 'FieldValue' - lib\services\auth_service.dart:75:24 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\auth_service.dart:76:32 - undefined_identifier
+  error - The name 'UserCredential' isn't a type, so it can't be used as a type argument - lib\services\auth_service.dart:94:10 - non_type_as_type_argument
+  error - Undefined name 'FieldValue' - lib\services\auth_service.dart:118:24 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\auth_service.dart:119:32 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'AuthService' - lib\services\auth_service.dart:122:12 - undefined_method
+  error - The name 'FirebaseAuthException' isn't a type and can't be used in an on-catch clause - lib\services\auth_service.dart:126:10 - non_type_in_catch_clause
+  error - The name 'UserCredential' isn't a type, so it can't be used as a type argument - lib\services\auth_service.dart:132:10 - non_type_as_type_argument
+  error - The name 'FirebaseAuthException' isn't a type and can't be used in an on-catch clause - lib\services\auth_service.dart:136:10 - non_type_in_catch_clause
+  error - The name 'FirebaseAuthException' isn't a type and can't be used in an on-catch clause - lib\services\auth_service.dart:145:10 - non_type_in_catch_clause
+  error - Undefined class 'FirebaseAuthException' - lib\services\auth_service.dart:156:31 - undefined_class
+   info - The declaration '_getIconForDays' isn't referenced - lib\services\badges_service.dart:80:19 - unused_element
+   info - The declaration '_getColorForDays' isn't referenced - lib\services\badges_service.dart:87:16 - unused_element
+   info - The declaration '_getLevelForDays' isn't referenced - lib\services\badges_service.dart:95:17 - unused_element
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\call_room_service.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\call_room_service.dart:2:8 - uri_does_not_exist
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\call_room_service.dart:34:39 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\call_room_service.dart:49:20 - undefined_identifier
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\call_room_service.dart:79:37 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\call_room_service.dart:88:19 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\call_room_service.dart:95:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\call_room_service.dart:95:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\call_room_service.dart:96:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\call_room_service.dart:96:30 - undefined_identifier
+  error - Undefined class 'CollectionReference' - lib\services\call_room_service.dart:98:3 - undefined_class
+  error - Undefined name 'FieldValue' - lib\services\call_room_service.dart:133:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\challenge_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\challenge_service.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\challenge_service.dart:6:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\challenge_service.dart:133:44 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\challenge_service.dart:139:44 - cast_to_non_type
+  error - Undefined class 'FirebaseFirestore' - lib\services\challenge_service.dart:193:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\challenge_service.dart:193:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\challenge_service.dart:194:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\challenge_service.dart:194:30 - undefined_identifier
+warning - The value of the field '_random' isn't used - lib\services\challenge_service.dart:195:16 - unused_field
+warning - The value of the field '_lastCelebratedStage' isn't used - lib\services\challenge_service.dart:208:7 - unused_field
+  error - Undefined name 'SharedPreferences' - lib\services\challenge_service.dart:545:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\challenge_service.dart:566:25 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\challenge_service.dart:640:26 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\chat_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\chat_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\chat_service.dart:44:37 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\chat_service.dart:64:40 - cast_to_non_type
+  error - Undefined class 'DocumentSnapshot' - lib\services\chat_service.dart:113:34 - undefined_class
+  error - Undefined class 'FirebaseFirestore' - lib\services\chat_service.dart:127:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\chat_service.dart:127:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\chat_service.dart:128:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\chat_service.dart:128:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\chat_service.dart:301:23 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'ChatService' - lib\services\chat_service.dart:302:10 - undefined_method
+  error - Undefined name 'FieldValue' - lib\services\chat_service.dart:310:22 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'ChatService' - lib\services\chat_service.dart:494:10 - undefined_method
+  error - Undefined name 'FieldValue' - lib\services\chat_service.dart:511:29 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\chat_service.dart:527:29 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\commitment_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\commitment_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\commitment_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\commitment_service.dart:45:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\commitment_service.dart:45:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\commitment_service.dart:46:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\commitment_service.dart:46:30 - undefined_identifier
+  error - Undefined class 'CollectionReference' - lib\services\commitment_service.dart:56:3 - undefined_class
+  error - Undefined name 'SharedPreferences' - lib\services\commitment_service.dart:82:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\commitment_service.dart:98:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\group_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\group_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\group_service.dart:38:35 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\group_service.dart:50:40 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\group_service.dart:64:20 - undefined_identifier
+  error - Undefined class 'DocumentSnapshot' - lib\services\group_service.dart:123:38 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\group_service.dart:144:40 - cast_to_non_type
+  error - Undefined class 'FirebaseFirestore' - lib\services\group_service.dart:157:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\group_service.dart:157:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\group_service.dart:158:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\group_service.dart:158:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:192:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:288:21 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:302:21 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:318:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:319:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:333:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:334:21 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:360:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:379:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:482:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:586:29 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\group_service.dart:602:29 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\habits_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\habits_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\habits_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\habits_service.dart:196:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\habits_service.dart:196:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\habits_service.dart:197:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\habits_service.dart:197:30 - undefined_identifier
+  error - Undefined class 'CollectionReference' - lib\services\habits_service.dart:209:3 - undefined_class
+  error - Undefined class 'CollectionReference' - lib\services\habits_service.dart:216:3 - undefined_class
+  error - Undefined name 'SharedPreferences' - lib\services\habits_service.dart:254:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\habits_service.dart:274:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\habits_service.dart:280:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\journal_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\journal_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\journal_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\journal_service.dart:128:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\journal_service.dart:128:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\journal_service.dart:129:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\journal_service.dart:129:30 - undefined_identifier
+  error - Undefined class 'CollectionReference' - lib\services\journal_service.dart:143:3 - undefined_class
+  error - Undefined name 'SharedPreferences' - lib\services\journal_service.dart:166:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\journal_service.dart:194:25 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\language_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:google_fonts/google_fonts.dart' - lib\services\language_service.dart:3:8 - uri_does_not_exist
+  error - Undefined name 'GoogleFonts' - lib\services\language_service.dart:24:46 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\services\language_service.dart:25:47 - undefined_identifier
+  error - Undefined name 'GoogleFonts' - lib\services\language_service.dart:26:47 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\language_service.dart:55:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\language_service.dart:67:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\language_service.dart:74:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\language_service.dart:81:25 - undefined_identifier
+   info - The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart' - lib\services\library_service.dart:1:8 - unnecessary_import
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\library_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\library_service.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_storage/firebase_storage.dart' - lib\services\library_service.dart:6:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:translator/translator.dart' - lib\services\library_service.dart:7:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:http/http.dart' - lib\services\library_service.dart:8:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:crypto/crypto.dart' - lib\services\library_service.dart:9:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\library_service.dart:10:8 - uri_does_not_exist
+  error - Undefined name 'sha256' - lib\services\library_service.dart:39:56 - undefined_identifier
+  error - Undefined name 'sha256' - lib\services\library_service.dart:62:18 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\library_service.dart:67:34 - undefined_method
+  error - Undefined name 'sha256' - lib\services\library_service.dart:67:39 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\library_service.dart:94:19 - undefined_method
+  error - Undefined name 'sha256' - lib\services\library_service.dart:94:24 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\library_service.dart:95:21 - undefined_method
+  error - Undefined name 'sha256' - lib\services\library_service.dart:95:26 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\library_service.dart:96:22 - undefined_method
+  error - Undefined name 'sha256' - lib\services\library_service.dart:96:27 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\library_service.dart:97:12 - undefined_method
+  error - Undefined name 'sha256' - lib\services\library_service.dart:97:17 - undefined_identifier
+  error - The name 'Timestamp' isn't defined, so it can't be used in an 'is' expression - lib\services\library_service.dart:106:16 - type_test_with_undefined_name
+  error - Undefined class 'FirebaseFirestore' - lib\services\library_service.dart:202:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\library_service.dart:202:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\library_service.dart:203:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\library_service.dart:203:30 - undefined_identifier
+  error - Undefined class 'FirebaseStorage' - lib\services\library_service.dart:204:9 - undefined_class
+  error - Undefined name 'FirebaseStorage' - lib\services\library_service.dart:204:36 - undefined_identifier
+  error - The method 'GoogleTranslator' isn't defined for the type 'LibraryService' - lib\services\library_service.dart:320:30 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\library_service.dart:682:27 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\library_service.dart:702:27 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'LibraryService' - lib\services\library_service.dart:703:14 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\library_service.dart:717:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\library_service.dart:757:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:flutter_local_notifications/flutter_local_notifications.dart' - lib\services\notification_service.dart:1:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:timezone/timezone.dart' - lib\services\notification_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:timezone/data/latest.dart' - lib\services\notification_service.dart:3:8 - uri_does_not_exist
+  error - Undefined class 'FlutterLocalNotificationsPlugin' - lib\services\notification_service.dart:15:9 - undefined_class
+  error - The method 'FlutterLocalNotificationsPlugin' isn't defined for the type 'NotificationService' - lib\services\notification_service.dart:16:7 - undefined_method
+  error - Undefined class 'AndroidInitializationSettings' - lib\services\notification_service.dart:21:11 - undefined_class
+  error - Const variables must be initialized with a constant value - lib\services\notification_service.dart:22:9 - const_initialized_with_non_constant_value
+  error - The method 'AndroidInitializationSettings' isn't defined for the type 'NotificationService' - lib\services\notification_service.dart:22:9 - undefined_method
+  error - Undefined class 'InitializationSettings' - lib\services\notification_service.dart:24:11 - undefined_class
+  error - Const variables must be initialized with a constant value - lib\services\notification_service.dart:25:9 - const_initialized_with_non_constant_value
+  error - The method 'InitializationSettings' isn't defined for the type 'NotificationService' - lib\services\notification_service.dart:25:9 - undefined_method
+  error - Undefined class 'NotificationResponse' - lib\services\notification_service.dart:31:42 - undefined_class
+  error - The name 'AndroidFlutterLocalNotificationsPlugin' isn't a type, so it can't be used as a type argument - lib\services\notification_service.dart:40:13 - non_type_as_type_argument
+   info - The declaration '_nextInstanceOfTime' isn't referenced - lib\services\notification_service.dart:78:17 - unused_element
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\posts_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\posts_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\posts_service.dart:33:39 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\posts_service.dart:41:40 - cast_to_non_type
+  error - Undefined class 'DocumentSnapshot' - lib\services\posts_service.dart:62:41 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\posts_service.dart:67:40 - cast_to_non_type
+  error - Undefined class 'FirebaseFirestore' - lib\services\posts_service.dart:74:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\posts_service.dart:74:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\posts_service.dart:75:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\posts_service.dart:75:30 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\posts_service.dart:210:46 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\posts_service.dart:264:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\posts_service.dart:302:20 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\posts_service.dart:309:20 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\posts_service.dart:338:18 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\posts_service.dart:434:22 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\private_message_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\private_message_service.dart:3:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\private_message_service.dart:30:40 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\private_message_service.dart:51:40 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\private_message_service.dart:65:20 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\private_message_service.dart:92:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\private_message_service.dart:92:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\private_message_service.dart:93:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\private_message_service.dart:93:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\private_message_service.dart:122:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\private_message_service.dart:359:22 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\private_message_service.dart:446:29 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\private_message_service.dart:461:29 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\quotes_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\quotes_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\quotes_service.dart:5:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:translator/translator.dart' - lib\services\quotes_service.dart:6:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\quotes_service.dart:20:31 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\quotes_service.dart:27:40 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\quotes_service.dart:56:18 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\quotes_service.dart:61:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\quotes_service.dart:61:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\quotes_service.dart:62:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\quotes_service.dart:62:30 - undefined_identifier
+  error - Undefined class 'GoogleTranslator' - lib\services\quotes_service.dart:63:9 - undefined_class
+  error - The method 'GoogleTranslator' isn't defined for the type 'QuotesService' - lib\services\quotes_service.dart:63:40 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\quotes_service.dart:94:25 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\quotes_service.dart:151:27 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'QuotesService' - lib\services\quotes_service.dart:165:12 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\quotes_service.dart:171:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\quotes_service.dart:177:25 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\quotes_service.dart:216:22 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\stories_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\stories_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\stories_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\stories_service.dart:44:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\stories_service.dart:44:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\stories_service.dart:45:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\stories_service.dart:45:30 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\stories_service.dart:102:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\stories_service.dart:148:27 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'StoriesService' - lib\services\stories_service.dart:162:12 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\stories_service.dart:168:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\stories_service.dart:175:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\timer_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\timer_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\timer_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\timer_service.dart:11:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\timer_service.dart:11:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\timer_service.dart:12:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\timer_service.dart:12:30 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\timer_service.dart:52:25 - undefined_identifier
+  error - Undefined class 'SharedPreferences' - lib\services\timer_service.dart:78:34 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\timer_service.dart:84:58 - cast_to_non_type
+  error - Undefined name 'SharedPreferences' - lib\services\timer_service.dart:111:25 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\timer_service.dart:121:32 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\timer_service.dart:124:26 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'RecoveryTimerService' - lib\services\timer_service.dart:125:12 - undefined_method
+warning - The value of the local variable 'halfDays' isn't used - lib\services\timer_service.dart:141:11 - unused_local_variable
+  error - Undefined name 'SharedPreferences' - lib\services\timer_service.dart:148:25 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\timer_service.dart:164:30 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\timer_service.dart:167:24 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'RecoveryTimerService' - lib\services\timer_service.dart:168:10 - undefined_method
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\tips_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\tips_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\tips_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:http/http.dart' - lib\services\tips_service.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'DocumentSnapshot' - lib\services\tips_service.dart:23:29 - undefined_class
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\tips_service.dart:30:40 - cast_to_non_type
+  error - Undefined name 'Timestamp' - lib\services\tips_service.dart:38:18 - undefined_identifier
+  error - Undefined class 'FirebaseFirestore' - lib\services\tips_service.dart:43:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\tips_service.dart:43:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\tips_service.dart:44:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\tips_service.dart:44:30 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\tips_service.dart:101:27 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'TipsService' - lib\services\tips_service.dart:115:12 - undefined_method
+  error - Undefined name 'SharedPreferences' - lib\services\tips_service.dart:121:27 - undefined_identifier
+  error - Undefined name 'FieldValue' - lib\services\tips_service.dart:187:22 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:shared_preferences/shared_preferences.dart' - lib\services\tracking_service.dart:2:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\tracking_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\tracking_service.dart:4:8 - uri_does_not_exist
+  error - Undefined class 'FirebaseFirestore' - lib\services\tracking_service.dart:55:9 - undefined_class
+  error - Undefined name 'FirebaseFirestore' - lib\services\tracking_service.dart:55:40 - undefined_identifier
+  error - Undefined class 'FirebaseAuth' - lib\services\tracking_service.dart:56:9 - undefined_class
+  error - Undefined name 'FirebaseAuth' - lib\services\tracking_service.dart:56:30 - undefined_identifier
+  error - Undefined class 'CollectionReference' - lib\services\tracking_service.dart:80:3 - undefined_class
+  error - Undefined name 'SharedPreferences' - lib\services\tracking_service.dart:119:27 - undefined_identifier
+  error - Undefined name 'SharedPreferences' - lib\services\tracking_service.dart:143:27 - undefined_identifier
+   info - The import of 'dart:typed_data' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/foundation.dart' - lib\services\upload_service.dart:2:8 - unnecessary_import
+  error - Target of URI doesn't exist: 'package:http/http.dart' - lib\services\upload_service.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:crypto/crypto.dart' - lib\services\upload_service.dart:5:8 - uri_does_not_exist
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:44:56 - undefined_identifier
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:67:18 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\upload_service.dart:72:34 - undefined_method
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:72:39 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\upload_service.dart:99:19 - undefined_method
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:99:24 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\upload_service.dart:100:21 - undefined_method
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:100:26 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\upload_service.dart:101:22 - undefined_method
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:101:27 - undefined_identifier
+  error - The method 'Hmac' isn't defined for the type 'R2Signer' - lib\services\upload_service.dart:102:12 - undefined_method
+  error - Undefined name 'sha256' - lib\services\upload_service.dart:102:17 - undefined_identifier
+warning - Unused import: 'dart:math' - lib\services\xp_service.dart:1:8 - unused_import
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\services\xp_service.dart:3:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\services\xp_service.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Timestamp' - lib\services\xp_service.dart:45:13 - undefined_identifier
+  error - The name 'Timestamp' isn't defined, so it can't be used in an 'is' expression - lib\services\xp_service.dart:56:27 - type_test_with_undefined_name
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\xp_service.dart:57:28 - cast_to_non_type
+  error - Undefined name 'FirebaseFirestore' - lib\services\xp_service.dart:92:22 - undefined_identifier
+  error - Undefined name 'FirebaseAuth' - lib\services\xp_service.dart:93:17 - undefined_identifier
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\xp_service.dart:190:54 - cast_to_non_type
+  error - Undefined name 'FieldValue' - lib\services\xp_service.dart:240:21 - undefined_identifier
+  error - Undefined name 'Timestamp' - lib\services\xp_service.dart:244:40 - undefined_identifier
+  error - The method 'SetOptions' isn't defined for the type 'XPService' - lib\services\xp_service.dart:250:9 - undefined_method
+  error - Undefined class 'Query' - lib\services\xp_service.dart:309:7 - undefined_class
+  error - The name 'Timestamp' isn't defined, so it can't be used in an 'is' expression - lib\services\xp_service.dart:337:44 - type_test_with_undefined_name
+  error - The name 'Timestamp' isn't a type, so it can't be used in an 'as' expression - lib\services\xp_service.dart:338:55 - cast_to_non_type
+  error - Target of URI doesn't exist: 'package:firebase_auth/firebase_auth.dart' - lib\widgets\reactions_widget.dart:2:8 - uri_does_not_exist
+warning - Unused import: 'dart:io' - lib\widgets\reactions_widget.dart:3:8 - unused_import
+  error - Undefined name 'FirebaseAuth' - lib\widgets\reactions_widget.dart:42:27 - undefined_identifier
+  error - Target of URI doesn't exist: 'package:cloud_firestore/cloud_firestore.dart' - lib\widgets\user_avatar.dart:2:8 - uri_does_not_exist
+  error - The name 'DocumentSnapshot' isn't a type, so it can't be used as a type argument - lib\widgets\user_avatar.dart:34:26 - non_type_as_type_argument
+  error - Undefined name 'FirebaseFirestore' - lib\widgets\user_avatar.dart:35:15 - undefined_identifier
+
+689 issues found. (ran in 16.4s)

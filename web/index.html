@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="لابرەت - کۆمەڵگەی ڕیکەڤەری">
+
+  <!-- Performance optimizations -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-DNS-Prefetch-Control" content="on">
+  <link rel="preconnect" href="https://firebaseapp.com">
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="dns-prefetch" href="https://firebaseapp.com">
+  <link rel="dns-prefetch" href="https://googleapis.com">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="لابرەت">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Theme color for mobile -->
+  <meta name="theme-color" content="#1a1a2e">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>لابرەت</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Loading Spinner Styles - Professional Design -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a1a;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0a1a 100%);
+    }
+
+    .logo-container {
+      position: relative;
+      margin-bottom: 50px;
+    }
+
+    .logo-text {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 56px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 60px rgba(102, 126, 234, 0.5);
+      letter-spacing: 2px;
+    }
+
+    .logo-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+      animation: glow-pulse 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .spinner-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 3px solid transparent;
+      border-radius: 50%;
+    }
+
+    .spinner-ring:nth-child(1) {
+      border-top-color: #667eea;
+      animation: spin 1s linear infinite;
+    }
+
+    .spinner-ring:nth-child(2) {
+      border-right-color: #764ba2;
+      animation: spin 1.5s linear infinite reverse;
+    }
+
+    .spinner-ring:nth-child(3) {
+      border-bottom-color: #f093fb;
+      animation: spin 2s linear infinite;
+    }
+
+    .loading-text {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      margin-top: 30px;
+      letter-spacing: 3px;
+      animation: fade-in-out 1.5s ease-in-out infinite;
+    }
+
+    .dots {
+      display: inline-block;
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes glow-pulse {
+
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+    }
+
+    @keyframes fade-in-out {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes dots {
+      0% {
+        content: '';
+      }
+
+      25% {
+        content: '.';
+      }
+
+      50% {
+        content: '..';
+      }
+
+      75% {
+        content: '...';
+      }
+
+      100% {
+        content: '';
+      }
+    }
+  </style>
+
+  <!-- Auto Cache Clear Script -->
+  <script>
+    // Version is auto-generated from build timestamp - DO NOT EDIT MANUALLY
+    const APP_VERSION = 'v20260522224717';
+
+    async function clearAllCaches() {
+      try {
+        // Clear all Cache Storage
+        if ('caches' in window) {
+          const cacheNames = await caches.keys();
+          await Promise.all(
+            cacheNames.map(cacheName => caches.delete(cacheName))
+          );
+          console.log('All caches cleared');
+        }
+
+        // Unregister all service workers
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(
+            registrations.map(registration => registration.unregister())
+          );
+          console.log('Service workers unregistered');
+        }
+
+        return true;
+      } catch (error) {
+        console.error('Error clearing caches:', error);
+        return false;
+      }
+    }
+
+    async function checkAndUpdateVersion() {
+      const storedVersion = localStorage.getItem('app_version');
+
+      if (storedVersion !== APP_VERSION) {
+        console.log('New version detected:', APP_VERSION, '(was:', storedVersion, ')');
+
+        // Clear all caches
+        const cleared = await clearAllCaches();
+
+        // Save new version
+        localStorage.setItem('app_version', APP_VERSION);
+
+        // If caches were cleared and this isn't the first load, reload the page
+        if (cleared && storedVersion !== null) {
+          console.log('Reloading to apply new version...');
+          window.location.reload(true);
+        }
+      }
+    }
+
+    // Run version check on page load
+    checkAndUpdateVersion();
+  </script>
+</head>
+
+<body>
+  <!-- Loading screen shown while Flutter initializes -->
+  <div id="loading" class="loading-container">
+    <div class="spinner-container">
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+      <div class="spinner-ring"></div>
+    </div>
+    <div class="loading-text">انتظر شوية</div>
+  </div>
+
+  <script>
+    // Remove loading screen when Flutter is ready
+    window.addEventListener('flutter-first-frame', function () {
+      const loader = document.getElementById('loading');
+      if (loader) {
+        loader.style.transition = 'opacity 0.3s';
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 300);
+      }
+    });
+  </script>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+
+</html>

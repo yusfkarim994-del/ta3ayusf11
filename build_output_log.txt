@@ -1,0 +1,17 @@
+﻿
+Running Gradle task 'assembleRelease'...                        
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 38760 bytes (97.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+flutter.bat : Note: Some input files use or override a deprecated API.
+At line:1 char:1
++ & "C:\Users\yusf2000.runnervm2p0d8\Downloads\qalay muslman\flutter\bi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Note: Some inpu...deprecated API.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Running Gradle task 'assembleRelease'...                          417.1s
+ΓêÜ Built build\app\outputs\flutter-apk\app-release.apk (104.5MB)

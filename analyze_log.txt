@@ -1,0 +1,15 @@
+Analyzing zego_call_screen.dart...
+
+warning - zego_call_screen.dart:48:20 - The value of the field 'appID' isn't used. Try removing the field, or using it. - unused_field
+warning - zego_call_screen.dart:49:23 - The value of the field 'serverSecret' isn't used. Try removing the field, or using it. - unused_field
+warning - zego_call_screen.dart:202:11 - The value of the local variable 'isDark' isn't used. Try removing the variable or using it. - unused_local_variable
+   info - zego_call_screen.dart:280:22 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+   info - zego_call_screen.dart:282:27 - Use 'const' literals as arguments to constructors of '@immutable' classes. Try adding 'const' before the literal. - prefer_const_literals_to_create_immutables
+   info - zego_call_screen.dart:285:19 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+   info - zego_call_screen.dart:287:28 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+   info - zego_call_screen.dart:391:32 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+   info - zego_call_screen.dart:393:37 - Use 'const' literals as arguments to constructors of '@immutable' classes. Try adding 'const' before the literal. - prefer_const_literals_to_create_immutables
+   info - zego_call_screen.dart:396:29 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+   info - zego_call_screen.dart:398:38 - Use 'const' with the constructor to improve performance. Try adding the 'const' keyword to the constructor invocation. - prefer_const_constructors
+
+11 issues found.

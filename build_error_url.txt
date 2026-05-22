@@ -1,0 +1,18 @@
+
+Running Gradle task 'assembleRelease'...                        
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:minifyReleaseWithR8'.
+> java.nio.file.FileSystemException: C:\Users\yusf2000.runnervm3zftq\Downloads\qalay muslmanv3\qalay muslman\qalay muslman\recovery_app\build\app\intermediates\dex\release\minifyReleaseWithR8\classes.dex: The process cannot access the file because it is being used by another process
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 5s
+Running Gradle task 'assembleRelease'...                            5.6s
+Gradle task assembleRelease failed with exit code 1

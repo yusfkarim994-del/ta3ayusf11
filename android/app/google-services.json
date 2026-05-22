@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "789086064752",
+    "project_id": "my-chat-app-daaf8",
+    "storage_bucket": "my-chat-app-daaf8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789086064752:android:aaec59f3d07ec6411d64b5",
+        "android_client_info": {
+          "package_name": "co.median.android.welxron"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789086064752-bu2ejmilc4vp609algg2v05k20kj4sbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8i_T9KnupgCD_POqvl2jc6BvQEhIHnZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "789086064752-bu2ejmilc4vp609algg2v05k20kj4sbr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
