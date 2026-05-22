@@ -1,4 +1,4 @@
-# 🌟 ANTIGRAVITY INITIALIZATION & SETUP PROMPT 🌟
+# 🌟 ANTIGRAVITY INITIALIZATION & SETUP PROMPT (KURDISH) 🌟
 # ==================================================
 # 📌 چۆن ئەم فایلە بەکار بهێنیت:
 # ئەم دەقانەی خوارەوە بە تەواوی کۆپی بکە و بینێرە بۆ Antigravity یان هەر یارمەتیدەرێکی تری زیرەکی دەستکرد (AI) لە سەرەتای هەر چاتێکی نوێدا. 
@@ -7,15 +7,15 @@
 
 COPIABLE_PROMPT_START
 --------------------------------------------------
-Hi Antigravity! I want you to completely initialize and prepare my project for development. Please follow these instructions step-by-step:
+سڵاو ئەنتیگراڤیتی! دەمهوێت تەواوی پڕۆژەکەم بۆ کارپێکردن و پەرەپێدان ئامادە بکەیت. تکایە ئەم هەنگاوانە یەک بە یەک جێبەجێ بکە:
 
-1. Locate and read the file "SETUP_AI_INSTRUCTIONS.md" in the root directory to understand the project architecture, dependencies, and environment.
-2. Run the automated setup script by executing this command in the terminal:
+1. فایلی ڕێنمایی "SETUP_AI_INSTRUCTIONS.md" لە فۆڵدەری سەرەکی بخوێنەرەوە بۆ ئەوەی لە پێکهاتەی پڕۆژەکە، بەستەرەکان و فۆڵدەرەکان تێبگەیت.
+2. بە جێبەجێکردنی ئەم فەرمانە لە تێرمیناڵەکەتدا، سکریپتی خۆکاری جێگیرکردنی پێداویستییەکان بەگەڕبخە:
    powershell -File .\setup.ps1
-3. Wait for the dependency installations to complete successfully (this will run 'flutter pub get' for Flutter, 'npm install' for laabrah-chat, and ensure global deploy tools like firebase-tools and wrangler are verified).
-4. Once the setup script finishes successfully, verify the build environment.
-5. Finally, reply with the exact phrase:
-   "ئامادەم بۆ دەستکاریکردنی پرۆژەکە" (I am ready to edit the project) 
-   along with a very brief 1-line summary of what you prepared.
+3. چاوەڕوان بە تا دابەزاندنی هەموو پێداویستییەکان بە سەرکەوتوویی کۆتایی دێت (ئەم سکریپتە خۆکار فلاتەر و ڕیاکت ئامادە دەکات و ئامرازەکانی وەک firebase-tools و wrangler چالاک دەکات).
+4. کاتێک کارەکە بە سەرکەوتوویی کۆتایی هات، ژینگەی پڕۆژەکە بپشکنە تا دڵنیا بیت لەوەی هیچ کێشەیەکی نییە.
+5. لە کۆتاییدا، ئەم ڕستەیە بنووسە و پێم بڵێ:
+   "ئامادەم بۆ دەستکاریکردنی پرۆژەکە"
+   لەگەڵ کورتەیەکی یەک دێڕی لەو کارانەی کە ئەنجامت داون.
 --------------------------------------------------
 COPIABLE_PROMPT_END
