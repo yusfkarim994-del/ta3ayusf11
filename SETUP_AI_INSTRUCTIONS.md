@@ -23,6 +23,23 @@ To instantly download all packages, restore dependencies, and configure CLI tool
 ./setup.ps1
 ```
 
+### Prerequisites Installation (For Clean Systems)
+If you are running on a completely clean/fresh computer where Git, Node.js, or Flutter are not yet installed, the AI assistant must automatically install them using Windows Package Manager (`winget`) before running the setup script:
+```powershell
+# 1. Install Git
+winget install -e --id Git.Git --silent
+
+# 2. Install Node.js (LTS)
+winget install -e --id OpenJS.NodeJS --silent
+
+# 3. Install Flutter SDK
+winget install -e --id Flutter.SDK --silent
+
+# 4. Refresh environment variables
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+```
+Once these are installed, proceed to run `./setup.ps1`.
+
 ### What the Setup Script Accomplishes:
 1.  **Flutter Restoration:** Automatically runs `flutter pub get` in the root folder.
 2.  **React Chat Restoration:** Navigates to `/laabrah-chat` and runs `npm install`.
