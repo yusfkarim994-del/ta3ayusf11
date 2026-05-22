@@ -2322,11 +2322,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       LayoutBuilder(
                         builder: (context, constraints) {
                           final screenWidth = constraints.maxWidth;
-                          final isVerySmall = screenWidth < 320;
+                          final isVerySmall = screenWidth < 340;
                           final isSmallScreen = screenWidth < 380;
-                          final iconPadding = isVerySmall ? 4.0 : (isSmallScreen ? 5.0 : 6.0);
-                          final iconSize = isVerySmall ? 16.0 : (isSmallScreen ? 18.0 : 20.0);
-                          final spacing = isVerySmall ? 2.0 : (isSmallScreen ? 4.0 : 6.0);
+                          final iconPadding = isVerySmall ? 5.0 : (isSmallScreen ? 7.0 : 8.0);
+                          final iconSize = isVerySmall ? 18.0 : (isSmallScreen ? 21.0 : 24.0);
+                          final spacing = isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
                           
                           final btnBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFFCFAFF);
                           final btnShadow = isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 2))];
@@ -2363,8 +2363,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LeaderboardScreen())),
                                     child: Image.asset(
                                       'assets/images/icon_top_leaderboard.png',
-                                      width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
-                                      height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                      width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
+                                      height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -2380,8 +2380,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
                                     child: Image.asset(
                                       'assets/images/icon_top_badges.png',
-                                      width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
-                                      height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                      width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
+                                      height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
                                       fit: BoxFit.contain,
                                     ),
                                     itemBuilder: (context) => [
@@ -2439,8 +2439,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           children: [
                                             Image.asset(
                                               'assets/images/icon_top_notifications.png',
-                                              width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
-                                              height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                              width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
+                                              height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
                                               fit: BoxFit.contain,
                                             ),
                                             if (_announcementsService.unreadCount > 0)
