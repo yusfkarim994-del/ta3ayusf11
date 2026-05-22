@@ -2295,6 +2295,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Scaffold(
         key: _scaffoldKey,
         drawer: _buildDrawer(lang),
+        drawerEnableOpenDragGesture: false,
         body: Stack(
           children: [
             // Background
@@ -2339,15 +2340,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // Menu Button - Always visible, enlarged for premium touch target
+                                  // Menu Button - Balanced premium touch target with container matching settings
                                   GestureDetector(
                                     onTap: () => _scaffoldKey.currentState?.openDrawer(),
                                     child: Container(
+                                      margin: EdgeInsets.only(right: spacing, left: spacing),
                                       padding: EdgeInsets.all(iconPadding + 2),
+                                      decoration: BoxDecoration(
+                                        color: btnBg,
+                                        borderRadius: btnRadius,
+                                        boxShadow: btnShadow,
+                                      ),
                                       child: Icon(
                                         Icons.menu_rounded, 
-                                        color: isDark ? Colors.white : Colors.black87, 
-                                        size: isVerySmall ? 28.0 : (isSmallScreen ? 32.0 : 34.0),
+                                        color: isDark ? Colors.white70 : Colors.black54, 
+                                        size: iconSize,
                                       ),
                                     ),
                                   ),
