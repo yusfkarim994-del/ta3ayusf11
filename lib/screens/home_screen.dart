@@ -2324,9 +2324,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           final screenWidth = constraints.maxWidth;
                           final isVerySmall = screenWidth < 320;
                           final isSmallScreen = screenWidth < 380;
-                          final iconPadding = isVerySmall ? 6.0 : (isSmallScreen ? 8.0 : 10.0);
-                          final iconSize = isVerySmall ? 18.0 : (isSmallScreen ? 20.0 : 22.0);
-                          final spacing = isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
+                          final iconPadding = isVerySmall ? 4.0 : (isSmallScreen ? 5.0 : 6.0);
+                          final iconSize = isVerySmall ? 16.0 : (isSmallScreen ? 18.0 : 20.0);
+                          final spacing = isVerySmall ? 2.0 : (isSmallScreen ? 4.0 : 6.0);
                           
                           final btnBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFFCFAFF);
                           final btnShadow = isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 2))];
@@ -2336,16 +2336,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               // Left side - Menu + Leaderboard + Awards (combined)
-                              Flexible(
-                                child: Row(
+                              Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   // Menu Button - Balanced premium touch target with container matching settings
                                   GestureDetector(
                                     onTap: () => _scaffoldKey.currentState?.openDrawer(),
                                     child: Container(
-                                      margin: EdgeInsets.only(right: spacing, left: spacing),
-                                      padding: EdgeInsets.all(iconPadding + 2),
+                                      margin: EdgeInsets.symmetric(horizontal: spacing / 2),
+                                      padding: EdgeInsets.all(iconPadding),
                                       decoration: BoxDecoration(
                                         color: btnBg,
                                         borderRadius: btnRadius,
@@ -2358,18 +2357,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: spacing),
+                                  SizedBox(width: spacing / 2),
                                   // Leaderboard
                                   GestureDetector(
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LeaderboardScreen())),
                                     child: Image.asset(
                                       'assets/images/icon_top_leaderboard.png',
-                                      width: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
-                                      height: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
+                                      width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                      height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
-                                  SizedBox(width: spacing),
+                                  SizedBox(width: spacing / 2),
                                   // Awards (Badges + Certificates) - Combined popup
                                   PopupMenuButton<String>(
                                     onSelected: (value) {
@@ -2381,8 +2380,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
                                     child: Image.asset(
                                       'assets/images/icon_top_badges.png',
-                                      width: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
-                                      height: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
+                                      width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                      height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
                                       fit: BoxFit.contain,
                                     ),
                                     itemBuilder: (context) => [
@@ -2428,7 +2427,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: spacing),
+                                  SizedBox(width: spacing / 2),
                                   // Notifications
                                   GestureDetector(
                                     onTap: () => _showAnnouncementsDialog(lang),
@@ -2440,8 +2439,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           children: [
                                             Image.asset(
                                               'assets/images/icon_top_notifications.png',
-                                              width: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
-                                              height: isVerySmall ? 32.0 : (isSmallScreen ? 36.0 : 40.0),
+                                              width: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
+                                              height: isVerySmall ? 24.0 : (isSmallScreen ? 28.0 : 32.0),
                                               fit: BoxFit.contain,
                                             ),
                                             if (_announcementsService.unreadCount > 0)
@@ -2470,11 +2469,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
-                              ),
-                              // Right side - User info
-                              Flexible(
+                              // Middle - User info (Expanded to prevent overflow)
+                              Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: spacing),
+                                  padding: EdgeInsets.symmetric(horizontal: spacing),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.min,
@@ -2485,16 +2483,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
-                                      Text(_formatDate(lang), style: lang.getTextStyle(fontSize: isSmallScreen ? 9 : 10, color: isDark ? Colors.white54 : Colors.black45)),
+                                      Text(
+                                        _formatDate(lang), 
+                                        style: lang.getTextStyle(fontSize: isSmallScreen ? 9 : 10, color: isDark ? Colors.white54 : Colors.black45),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
-                              // Settings
+                              // Right - Settings
                               GestureDetector(
                                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
                                 child: Container(
-                                  margin: EdgeInsets.only(left: spacing),
+                                  margin: EdgeInsets.symmetric(horizontal: spacing / 2),
                                   padding: EdgeInsets.all(iconPadding),
                                   decoration: BoxDecoration(
                                     color: btnBg,
