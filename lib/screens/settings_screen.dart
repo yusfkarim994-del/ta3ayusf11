@@ -162,13 +162,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const LoginScreen()), (route) => false);
   }
 
-  Future<void> _deleteAccount() async {
+  Future<void> _deleteAccount(String? password) async {
     setState(() => _isLoading = true);
     final lang = Provider.of<LanguageService>(context, listen: false);
+    final user = _auth.currentUser;
     
     try {
-      final user = _auth.currentUser;
       if (user != null) {
+        // If the user is not anonymous and password is provided, re-authenticate first
+        if (!user.isAnonymous && password != null && password.isNotEmpty) {
+          final credential = EmailAuthProvider.credential(
+            email: user.email!,
+            password: password,
+          );
+          await user.reauthenticateWithCredential(credential);
+        }
+
         // 1. Delete user data from Firestore first
         try {
           await _firestore.collection('users').doc(user.uid).delete();
@@ -187,6 +196,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     } on FirebaseAuthException catch (e) {
       debugPrint('Delete account Firebase error: ${e.code}');
+      if (e.code == 'requires-recent-login' && user != null && user.isAnonymous) {
+        // If guest user cannot delete due to requires-recent-login, sign out instead to clear session
+        try {
+          await _auth.signOut();
+        } catch (_) {}
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => const LoginScreen()), (route) => false);
+        }
+        return;
+      }
       if (mounted) {
         String errorMsg;
         if (e.code == 'requires-recent-login') {
@@ -195,6 +214,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               : lang.currentLanguage == AppLanguage.arabic
                   ? 'لحذف الحساب، يجب تسجيل الخروج والدخول مرة أخرى ثم المحاولة'
                   : 'For security, please log out and log in again before deleting your account.';
+        } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+          errorMsg = lang.currentLanguage == AppLanguage.kurdish
+              ? 'تێپەڕەوشە (Password) هەڵەیە، تکایە دووبارە هەوڵبدەرەوە'
+              : lang.currentLanguage == AppLanguage.arabic
+                  ? 'كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى'
+                  : 'Incorrect password, please try again.';
         } else {
           errorMsg = 'Error: ${e.message}';
         }
@@ -212,6 +237,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showDeleteAccountDialog(LanguageService lang) {
     final isDark = lang.isDarkMode;
+    final user = _auth.currentUser;
+    final isAnonymous = user?.isAnonymous ?? false;
     final deleteController = TextEditingController();
     bool canDelete = false;
 
@@ -220,40 +247,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String hintText;
     String deleteBtn;
     String cancelBtn;
-    String confirmationWord;
+    String confirmationWord = 'حذف';
 
     switch (lang.currentLanguage) {
       case AppLanguage.kurdish:
         title = 'سڕینەوەی ئەکاونت';
-        confirmationWord = 'سڕینەوە';
-        warningText = 'ئایا دڵنیایت دەتەوێت ئەکاونتەکەت بسڕیتەوە؟ ئەم کارە ناگەڕێتەوە.\n\nبۆ دڵنیابوون، بنوسە «$confirmationWord» لە خوارەوە:';
-        hintText = confirmationWord;
+        warningText = 'ئایا دڵنیایت دەتەوێت ئەکاونتەکەت بسڕیتەوە؟ ئەم کارە ناگەڕێتەوە.\n\nبۆ دڵنیابوون، بنووسە «حذف» لە خوارەوە:';
+        hintText = 'حذف';
         deleteBtn = 'سڕینەوە';
         cancelBtn = 'پاشگەزبوونەوە';
         break;
       case AppLanguage.arabic:
         title = 'حذف الحساب';
-        confirmationWord = 'حذف';
-        warningText = 'هل أنت متأكد من حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.\n\nللتأكيد، اكتب «$confirmationWord» أدناه:';
-        hintText = confirmationWord;
+        warningText = 'هل أنت متأكد من حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.\n\nللتأكيد، اكتب «حذف» أدناه:';
+        hintText = 'حذف';
         deleteBtn = 'حذف';
         cancelBtn = 'إلغاء';
         break;
       case AppLanguage.english:
+      default:
         title = 'Delete Account';
-        confirmationWord = 'delete';
-        warningText = 'Are you sure you want to delete your account? This action cannot be undone.\n\nTo confirm, type «$confirmationWord» below:';
-        hintText = confirmationWord;
+        warningText = 'Are you sure you want to delete your account? This action cannot be undone.\n\nTo confirm, type «حذف» below:';
+        hintText = 'حذف';
         deleteBtn = 'Delete';
         cancelBtn = 'Cancel';
         break;
-      default:
-        confirmationWord = 'delete';
-        title = 'Delete Account';
-        warningText = 'Are you sure?';
-        hintText = 'delete';
-        deleteBtn = 'Delete';
-        cancelBtn = 'Cancel';
     }
 
     showDialog(
@@ -282,6 +300,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   TextField(
                     controller: deleteController,
                     textAlign: TextAlign.center,
+                    obscureText: false, // Never obscure confirmation word entry
                     style: lang.getTextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
                     decoration: InputDecoration(
                       hintText: hintText,
@@ -293,7 +312,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     onChanged: (value) {
                       setDialogState(() {
-                        canDelete = value.trim().toLowerCase() == confirmationWord.toLowerCase();
+                        canDelete = value.trim() == 'حذف';
                       });
                     },
                   ),
@@ -307,7 +326,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ElevatedButton(
                   onPressed: canDelete ? () {
                     Navigator.pop(context);
-                    _deleteAccount();
+                    _deleteAccount(null); // No password is required
                   } : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
@@ -942,22 +961,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   isDestructive: true,
                 ),
               ),
-              const SizedBox(height: 12),
-
-              // Delete Account Button
-              if (!isGuest)
-                Container(
-                  decoration: _getCardDecoration(isDark),
-                  child: _buildSettingsItem(
-                    icon: _buildGradientIcon(Icons.no_accounts_rounded, [const Color(0xFFf857a6), const Color(0xFFff5858)]),
-                    title: lang.currentLanguage == AppLanguage.kurdish ? 'سڕینەوەی ئەکاونت' : lang.currentLanguage == AppLanguage.arabic ? 'حذف الحساب' : 'Delete Account',
-                    subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'ئەکاونتەکەت بسڕەوە بە هەمیشەیی' : lang.currentLanguage == AppLanguage.arabic ? 'حذف حسابك نهائياً' : 'Permanently delete your account',
-                    onTap: () => _showDeleteAccountDialog(lang),
-                    lang: lang,
-                    isDestructive: true,
-                  ),
-                ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 24),
             ],
           ),
         ),

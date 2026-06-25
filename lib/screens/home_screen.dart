@@ -3517,20 +3517,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       }
                     },
                   ),
-                  _buildDrawerItem(
-                    'assets/images/icon_accountability.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'شريك المحاسبة' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'هاوڕێی بەرپرسیاریەتی' 
-                            : 'Accountability Partner', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const AccountabilityScreen())); 
-                    }
-                  ),
+
                   _buildDrawerItem(
                     'assets/images/icon_commitment.png', 
                     lang.currentLanguage == AppLanguage.arabic 

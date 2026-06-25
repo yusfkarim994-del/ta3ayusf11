@@ -19,7 +19,7 @@ dependencies:
   firebase_messaging: ^15.0.3
   
   # For Google Fonts
-  google_fonts: ^6.1.0
+  google_fonts: ^8.1.0
   
   # For state management
   provider: ^6.1.1
