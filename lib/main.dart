@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -168,6 +169,17 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   Future<void> _checkAuthState() async {
     try {
+      // Check if guest session exists on web
+      if (kIsWeb && html.localStorage['is_guest'] == 'true') {
+        debugPrint('[v0] Guest session detected on web');
+        if (mounted) {
+          setState(() {
+            _currentUser = User.anonymous(); // Dummy user object to show as logged in
+          });
+        }
+        return;
+      }
+
       // Listen to auth changes but with timeout
       _authService.authStateChanges
           .timeout(const Duration(seconds: 5))
