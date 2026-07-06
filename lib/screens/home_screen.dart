@@ -164,9 +164,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context) => Directionality(
           textDirection: lang.textDirection,
           child: Scaffold(
-            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF5F0FA),
+            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
             appBar: AppBar(
-              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFFCFAFF),
+              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF),
               elevation: 0,
               centerTitle: false,
               leading: IconButton(
@@ -190,12 +190,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF8B5CF6), Color(0xFF3B82F6)],
+                      colors: [Color(0xFF14B8A6), Color(0xFF0D9488)],
                     ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF8B5CF6).withOpacity(0.3),
+                        color: const Color(0xFF14B8A6).withOpacity(0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   end: Alignment.bottomCenter,
                   colors: isDark
                       ? [const Color(0xFF0F172A), const Color(0xFF020617)]
-                      : [const Color(0xFFF5F0FA), const Color(0xFFEDE4F5)],
+                      : [const Color(0xFFF8FAFA), const Color(0xFFF0FBF9)],
                 ),
               ),
               child: CustomScrollView(
@@ -236,15 +236,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           gradient: LinearGradient(
                             colors: isDark
                                 ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
-                                : [Colors.white, const Color(0xFFFCFAFF)],
+                                : [Colors.white, const Color(0xFFFFFFFF)],
                           ),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: isDark ? Colors.white.withOpacity(0.08) : Colors.purple.withOpacity(0.1),
+                            color: isDark ? Colors.white.withOpacity(0.08) : Colors.teal.withOpacity(0.1),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.purple.withOpacity(isDark ? 0.05 : 0.08),
+                              color: Colors.teal.withOpacity(isDark ? 0.05 : 0.08),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -295,10 +295,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                                   decoration: BoxDecoration(
-                                    color: (currentBadge?.color ?? Colors.purple).withOpacity(0.12),
+                                    color: (currentBadge?.color ?? Colors.teal).withOpacity(0.12),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: (currentBadge?.color ?? Colors.purple).withOpacity(0.25),
+                                      color: (currentBadge?.color ?? Colors.teal).withOpacity(0.25),
                                     ),
                                   ),
                                   child: Row(
@@ -366,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       child: LinearProgressIndicator(
                                         value: progressPercent,
                                         minHeight: 10,
-                                        backgroundColor: isDark ? Colors.white.withOpacity(0.08) : Colors.purple.withOpacity(0.05),
+                                        backgroundColor: isDark ? Colors.white.withOpacity(0.08) : Colors.teal.withOpacity(0.05),
                                         valueColor: AlwaysStoppedAnimation<Color>(nextBadge.color),
                                       ),
                                     ),
@@ -600,7 +600,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     color: Colors.grey.shade700,
                                                     shape: BoxShape.circle,
                                                     border: Border.all(
-                                                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF5F0FA),
+                                                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
                                                       width: 1.5,
                                                     ),
                                                   ),
@@ -738,7 +738,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFFE91E63), Color(0xFFFF5722)]),
+                    gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.notifications_rounded, color: Colors.white, size: 20),
@@ -789,7 +789,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: isDark ? Colors.white : const Color(0xFFE91E63)),
+                      CircularProgressIndicator(color: isDark ? Colors.white : const Color(0xFF0D9488)),
                       const SizedBox(height: 16),
                       Text(
                         lang.currentLanguage == AppLanguage.kurdish ? 'چاوەڕوان بە...' 
@@ -880,7 +880,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               decoration: BoxDecoration(
                                 gradient: item.isImportant
                                   ? const LinearGradient(colors: [Color(0xFFFF5252), Color(0xFFFF7043)])
-                                  : LinearGradient(colors: [const Color(0xFFE91E63).withOpacity(0.8), const Color(0xFFFF5722).withOpacity(0.8)]),
+                                  : LinearGradient(colors: [const Color(0xFF0D9488).withOpacity(0.8), const Color(0xFF0F766E).withOpacity(0.8)]),
                               ),
                               child: Row(
                                 children: [
@@ -1026,7 +1026,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       if (mounted) Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE91E63),
+                      backgroundColor: const Color(0xFF0D9488),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
@@ -1053,7 +1053,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           labelStyle: lang.getTextStyle(color: lang.isDarkMode ? Colors.white54 : Colors.black45),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: lang.isDarkMode ? Colors.white24 : Colors.grey[300]!)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFE91E63))),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF0D9488))),
         ),
       ),
     );
@@ -1170,9 +1170,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context) => Directionality(
           textDirection: lang.textDirection,
           child: Scaffold(
-            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF9F6F0),
+            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
             appBar: AppBar(
-              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF9F6F0),
+              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFA),
               elevation: 0,
               centerTitle: false,
               leading: IconButton(
@@ -1187,7 +1187,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: const BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xFF00BCD4), Color(0xFF4CAF50)]),
+                      gradient: LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)]),
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
@@ -1249,7 +1249,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   end: Alignment.bottomCenter,
                   colors: isDark
                       ? [const Color(0xFF0F172A), const Color(0xFF020617)]
-                      : [const Color(0xFFF9F6F0), const Color(0xFFF0EAE1)],
+                      : [const Color(0xFFF8FAFA), const Color(0xFFF0EAE1)],
                 ),
               ),
               child: ListView.builder(
@@ -1890,7 +1890,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               _buildSettingsOption(
                 icon: Icons.wallpaper_rounded,
                 title: lang.currentLanguage == AppLanguage.kurdish ? 'گۆڕینی پاشبنەما' : lang.currentLanguage == AppLanguage.arabic ? 'تغيير الخلفية' : 'Change Background',
-                color: const Color(0xFF00BCD4),
+                color: const Color(0xFF14B8A6),
                 lang: lang,
                 onTap: () {
                   Navigator.pop(context);
@@ -2304,7 +2304,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: isDark ? [const Color(0xFF0a1628), const Color(0xFF1a2a4a), const Color(0xFF0a1628)] : [const Color(0xFFF5F0FA), const Color(0xFFEDE4F5), const Color(0xFFF8F4FC)],
+                  colors: isDark ? [const Color(0xFF0a1628), const Color(0xFF1a2a4a), const Color(0xFF0a1628)] : [const Color(0xFFF8FAFA), const Color(0xFFF0FBF9), const Color(0xFFF8F4FC)],
                 ),
               ),
             ),
@@ -2328,7 +2328,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           final iconSize = isVerySmall ? 18.0 : (isSmallScreen ? 21.0 : 24.0);
                           final spacing = isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
                           
-                          final btnBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFFCFAFF);
+                          final btnBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF);
                           final btnShadow = isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 2))];
                           final btnRadius = BorderRadius.circular(14);
                           
@@ -2595,7 +2595,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         lang.currentLanguage == AppLanguage.kurdish ? 'ئامرازەکانی چاکبوونەوەی ڕۆژانە'
                           : lang.currentLanguage == AppLanguage.arabic ? 'أدوات التعافي اليومية'
                           : 'Daily Recovery Tools',
-                        lang, isDark, const Color(0xFF6366F1)
+                        lang, isDark, const Color(0xFF0D9488)
                       ),
                       
                       _buildPremiumSequentialCard(
@@ -2687,7 +2687,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           : lang.currentLanguage == AppLanguage.arabic ? 'قصص وعبر ملهمة من حياة السلف الصالح'
                           : 'Inspiring stories and lessons from the righteous predecessors',
                         iconAsset: 'assets/images/icon_stories.png',
-                        glowColors: [const Color(0xFFEC4899), const Color(0xFFDB2777)],
+                        glowColors: [const Color(0xFF0D9488), const Color(0xFFDB2777)],
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StoriesScreen())),
                         lang: lang,
                         isDark: isDark,
@@ -2743,7 +2743,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           : lang.currentLanguage == AppLanguage.arabic ? 'مقاطع فيديو ومحاضرات توعوية مفيدة للتعافي'
                           : 'Informative videos and useful recovery lectures',
                         iconAsset: 'assets/images/icon_media.png',
-                        glowColors: [const Color(0xFF8B5CF6), const Color(0xFF6D28D9)],
+                        glowColors: [const Color(0xFF14B8A6), const Color(0xFF6D28D9)],
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'فيديوهات وصوتيات التعافي', url: 'https://yusf4.lovable.app/'))),
                         lang: lang,
                         isDark: isDark,
@@ -2923,12 +2923,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFF667eea).withOpacity(0.3),
+          color: const Color(0xFF0D9488).withOpacity(0.3),
           width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF667eea).withOpacity(0.2),
+            color: const Color(0xFF0D9488).withOpacity(0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -2943,7 +2943,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF667eea), Color(0xFFf093fb)]),
+                  gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)]),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Icon(Icons.analytics_rounded, color: Colors.white, size: 24),
@@ -2972,7 +2972,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             : 'Developer only • Live',
                     style: lang.getTextStyle(
                       fontSize: 11,
-                      color: const Color(0xFF667eea),
+                      color: const Color(0xFF0D9488),
                     ),
                   ),
                 ],
@@ -3116,7 +3116,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF667eea),
+                                  color: Color(0xFF0D9488),
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -3127,7 +3127,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   gradient: const LinearGradient(
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
-                                    colors: [Color(0xFF667eea), Color(0xFFf093fb)],
+                                    colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
@@ -3199,7 +3199,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           style: lang.getTextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xFF667eea),
+                            color: const Color(0xFF0D9488),
                           ),
                         ),
                       ],
@@ -3220,7 +3220,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               width: 24,
                               height: 24,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF667eea).withOpacity(0.2),
+                                color: const Color(0xFF0D9488).withOpacity(0.2),
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -3229,7 +3229,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   style: const TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF667eea),
+                                    color: Color(0xFF0D9488),
                                   ),
                                 ),
                               ),
@@ -3599,7 +3599,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildDrawerItem(dynamic iconOrAsset, String title, bool isActive, LanguageService lang, VoidCallback onTap, {bool isDisabled = false}) {
     final isDark = lang.isDarkMode;
-    final primaryColor = const Color(0xFF6366F1);
+    final primaryColor = const Color(0xFF0D9488);
     final isRTL = lang.currentLanguage == AppLanguage.arabic || lang.currentLanguage == AppLanguage.kurdish;
 
     Widget iconWidget;
@@ -3772,7 +3772,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     required LanguageService lang,
     required bool isDark,
   }) {
-    final accentColor = glowColors.isNotEmpty ? glowColors.first : const Color(0xFF6366F1);
+    final accentColor = glowColors.isNotEmpty ? glowColors.first : const Color(0xFF0D9488);
     final isRTL = lang.currentLanguage == AppLanguage.arabic || lang.currentLanguage == AppLanguage.kurdish;
     
     final cardContent = [

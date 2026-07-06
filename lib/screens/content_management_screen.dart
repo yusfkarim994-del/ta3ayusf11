@@ -1056,7 +1056,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                     : lang.currentLanguage == AppLanguage.kurdish ? 'پۆلەکان' 
                     : 'Categories',
                 Icons.folder_open_rounded,
-                const Color(0xFF667EEA),
+                const Color(0xFF0D9488),
                 () => _showAddCategoryDialog(lang, isDark),
                 isDark,
                 lang,
@@ -1193,7 +1193,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF667EEA).withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFF0D9488).withOpacity(0.3)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -1208,7 +1208,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -1240,7 +1240,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
           // Edit button
           IconButton(
             onPressed: () => _showEditCategoryDialog(category, lang, isDark),
-            icon: const Icon(Icons.edit_outlined, color: Color(0xFF667EEA)),
+            icon: const Icon(Icons.edit_outlined, color: Color(0xFF0D9488)),
             tooltip: lang.currentLanguage == AppLanguage.arabic ? 'تعديل' : lang.currentLanguage == AppLanguage.kurdish ? 'دەستکاری' : 'Edit',
           ),
           // Delete button
@@ -1312,12 +1312,12 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                     margin: const EdgeInsets.only(top: 6),
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF667EEA).withOpacity(0.2),
+                      color: const Color(0xFF0D9488).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       category.getName(languageCode),
-                      style: const TextStyle(fontSize: 10, color: Color(0xFF667EEA)),
+                      style: const TextStyle(fontSize: 10, color: Color(0xFF0D9488)),
                     ),
                   ),
               ],
@@ -1396,7 +1396,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 if (arController.text.isNotEmpty || kuController.text.isNotEmpty || enController.text.isNotEmpty) {
                   await Provider.of<LibraryService>(context, listen: false).addCategory(
@@ -1516,7 +1516,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
-                                color: !useFileUpload ? const Color(0xFF667EEA) : Colors.transparent,
+                                color: !useFileUpload ? const Color(0xFF0D9488) : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -1667,9 +1667,9 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        border: Border.all(color: coverBytes != null ? const Color(0xFF667EEA) : Colors.grey.withOpacity(0.3)),
+                        border: Border.all(color: coverBytes != null ? const Color(0xFF0D9488) : Colors.grey.withOpacity(0.3)),
                         borderRadius: BorderRadius.circular(12),
-                        color: coverBytes != null ? const Color(0xFF667EEA).withOpacity(0.1) : null,
+                        color: coverBytes != null ? const Color(0xFF0D9488).withOpacity(0.1) : null,
                       ),
                       child: Row(
                         children: [
@@ -1679,7 +1679,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                               child: Image.memory(coverBytes!, width: 40, height: 50, fit: BoxFit.cover),
                             )
                           else
-                            Icon(Icons.image, color: const Color(0xFF667EEA)),
+                            Icon(Icons.image, color: const Color(0xFF0D9488)),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Column(
@@ -1731,7 +1731,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                                 coverBytes != null 
                                     ? (lang.currentLanguage == AppLanguage.arabic ? 'تغيير' : lang.currentLanguage == AppLanguage.kurdish ? 'گۆڕین' : 'Change')
                                     : (lang.currentLanguage == AppLanguage.arabic ? 'اختيار' : lang.currentLanguage == AppLanguage.kurdish ? 'هەڵبژێرە' : 'Choose'),
-                                style: const TextStyle(color: Color(0xFF667EEA)),
+                                style: const TextStyle(color: Color(0xFF0D9488)),
                               ),
                             ),
                         ],
@@ -1742,12 +1742,12 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF667EEA).withOpacity(0.1),
+                        color: const Color(0xFF0D9488).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.info_outline, color: Color(0xFF667EEA), size: 20),
+                          const Icon(Icons.info_outline, color: Color(0xFF0D9488), size: 20),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -1756,7 +1756,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                                   : lang.currentLanguage == AppLanguage.kurdish 
                                       ? 'فایلەکان ئەپڵۆد بکە بۆ Google Drive و لینکەکەی بخەرەوە'
                                       : 'Upload files to Google Drive and paste the link',
-                              style: lang.getTextStyle(fontSize: 12, color: const Color(0xFF667EEA)),
+                              style: lang.getTextStyle(fontSize: 12, color: const Color(0xFF0D9488)),
                             ),
                           ),
                         ],
@@ -1789,7 +1789,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
                             : lang.currentLanguage == AppLanguage.kurdish ? 'لینکی وێنەی بەرگ' 
                             : 'Cover Image Link',
                         labelStyle: TextStyle(color: isDark ? Colors.white54 : Colors.black45),
-                        prefixIcon: Icon(Icons.image, color: const Color(0xFF667EEA)),
+                        prefixIcon: Icon(Icons.image, color: const Color(0xFF0D9488)),
                         hintText: 'https://...',
                         hintStyle: TextStyle(color: isDark ? Colors.white24 : Colors.black26),
                       ),
@@ -2163,10 +2163,10 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF667EEA).withOpacity(0.2),
+                  color: const Color(0xFF0D9488).withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.edit, color: Color(0xFF667EEA)),
+                child: const Icon(Icons.edit, color: Color(0xFF0D9488)),
               ),
               const SizedBox(width: 12),
               Text(
@@ -2219,7 +2219,7 @@ class _LibraryManagementTabState extends State<_LibraryManagementTab> {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 if (arController.text.isNotEmpty || kuController.text.isNotEmpty || enController.text.isNotEmpty) {
                   Navigator.pop(ctx);

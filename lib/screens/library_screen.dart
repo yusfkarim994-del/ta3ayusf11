@@ -214,12 +214,12 @@ class _LibraryScreenState extends State<LibraryScreen> with TickerProviderStateM
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected 
-              ? const Color(0xFF667EEA)
+              ? const Color(0xFF0D9488)
               : isDark ? Colors.white.withOpacity(0.1) : Colors.white,
           borderRadius: BorderRadius.circular(25),
           boxShadow: isSelected ? [
             BoxShadow(
-              color: const Color(0xFF667EEA).withOpacity(0.3),
+              color: const Color(0xFF0D9488).withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -243,7 +243,7 @@ class _LibraryScreenState extends State<LibraryScreen> with TickerProviderStateM
         // Only show full-screen loader if we have NO data at all
         if (libraryService.isLoading && libraryService.books.isEmpty) {
           return const Center(
-            child: CircularProgressIndicator(color: Color(0xFF667EEA)),
+            child: CircularProgressIndicator(color: Color(0xFF0D9488)),
           );
         }
 

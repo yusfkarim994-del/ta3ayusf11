@@ -38,7 +38,7 @@ class CertificatesScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [Color(0xFF00BCD4), Color(0xFF4CAF50)]),
+                gradient: LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)]),
                 shape: BoxShape.circle,
               ),
               child: Image.asset('assets/images/graduation_cap.png', width: 28, height: 28, fit: BoxFit.contain),

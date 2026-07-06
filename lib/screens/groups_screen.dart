@@ -62,7 +62,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                  gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(Icons.groups_rounded, color: Colors.white, size: 20),
@@ -93,7 +93,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
           ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: const Color(0xFF667EEA),
+            indicatorColor: const Color(0xFF0D9488),
             labelColor: isDark ? Colors.white : Colors.black87,
             unselectedLabelColor: isDark ? Colors.white54 : Colors.grey,
             labelStyle: lang.getTextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -117,7 +117,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => _showCreateGroupDialog(lang, isDark),
-          backgroundColor: const Color(0xFF667EEA),
+          backgroundColor: const Color(0xFF0D9488),
           icon: const Icon(Icons.add, color: Colors.white),
           label: Text(
             _getCreateGroupText(lang),
@@ -151,7 +151,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
                 ElevatedButton.icon(
                   onPressed: () => _showCreateGroupDialog(lang, isDark),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF667EEA),
+                    backgroundColor: const Color(0xFF0D9488),
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
@@ -349,7 +349,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
                 gradient: LinearGradient(
                   colors: group.isPrivate
                       ? [const Color(0xFFFF6B6B), const Color(0xFFFF8E8E)]
-                      : [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+                      : [const Color(0xFF0D9488), const Color(0xFF0F766E)],
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -490,7 +490,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
                         }
                       },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: hasPending ? Colors.grey : const Color(0xFF667EEA),
+                  backgroundColor: hasPending ? Colors.grey : const Color(0xFF0D9488),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -635,7 +635,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                          gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(Icons.group_add, color: Colors.white, size: 24),
@@ -773,7 +773,7 @@ class _GroupsScreenState extends State<GroupsScreen> with SingleTickerProviderSt
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF667EEA),
+                        backgroundColor: const Color(0xFF0D9488),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),

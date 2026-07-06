@@ -209,7 +209,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       style: lang.getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF667eea),
+                        color: const Color(0xFF0D9488),
                       ),
                     ),
                     Text(
@@ -217,7 +217,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       style: lang.getTextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF667eea),
+                        color: const Color(0xFF0D9488),
                       ),
                     ),
                   ],
@@ -228,7 +228,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                   child: LinearProgressIndicator(
                     value: (_currentQuestionIndex + 1) / questions.length,
                     backgroundColor: isDark ? Colors.white12 : Colors.grey.shade200,
-                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF667eea)),
+                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF0D9488)),
                     minHeight: 8,
                   ),
                 ),
@@ -245,12 +245,12 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF667eea), Color(0xFF764ba2)],
+                colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
               ),
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF667eea).withOpacity(0.4),
+                  color: const Color(0xFF0D9488).withOpacity(0.4),
                   blurRadius: 25,
                   offset: const Offset(0, 10),
                 ),
@@ -298,7 +298,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     gradient: isSelected 
-                        ? const LinearGradient(colors: [Color(0xFF667eea), Color(0xFF764ba2)])
+                        ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
                         : null,
                     color: isSelected ? null : (isDark ? const Color(0xFF1a2a4a) : Colors.white),
                     borderRadius: BorderRadius.circular(16),
@@ -308,7 +308,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     ),
                     boxShadow: isSelected ? [
                       BoxShadow(
-                        color: const Color(0xFF667eea).withOpacity(0.3),
+                        color: const Color(0xFF0D9488).withOpacity(0.3),
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),
@@ -384,7 +384,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                       : (lang.isRTL ? Icons.arrow_back : Icons.arrow_forward)),
                   label: Text(isLastQuestion ? _getSubmitText(lang) : _getNextText(lang)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isLastQuestion ? Colors.green : const Color(0xFF667eea),
+                    backgroundColor: isLastQuestion ? Colors.green : const Color(0xFF0D9488),
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: isDark ? Colors.white12 : Colors.grey.shade300,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -623,10 +623,10 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF667eea).withOpacity(0.2),
+                        color: const Color(0xFF0D9488).withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.lightbulb_outline, color: Color(0xFF667eea), size: 24),
+                      child: const Icon(Icons.lightbulb_outline, color: Color(0xFF0D9488), size: 24),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -703,7 +703,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                   icon: const Icon(Icons.refresh_rounded),
                   label: Text(_getRetakeText(lang)),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF667eea),
+                    backgroundColor: const Color(0xFF0D9488),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -744,7 +744,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             ElevatedButton(
               onPressed: _startNewAssessment,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF667eea),
+                backgroundColor: const Color(0xFF0D9488),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

@@ -363,7 +363,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+              gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
               borderRadius: BorderRadius.circular(25),
             ),
             child: _isLoading
@@ -463,7 +463,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                         gradient: LinearGradient(
                           colors: group.isPrivate
                               ? [const Color(0xFFFF6B6B), const Color(0xFFFF8E8E)]
-                              : [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+                              : [const Color(0xFF0D9488), const Color(0xFF0F766E)],
                         ),
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -535,7 +535,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                   icon: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                      gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Icon(Icons.call, color: Colors.white, size: 18),
@@ -735,7 +735,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                                             left: i * 18.0,
                                             child: CircleAvatar(
                                               radius: 15,
-                                              backgroundColor: [Colors.blue, Colors.green, Colors.purple][i % 3],
+                                              backgroundColor: [Colors.blue, Colors.green, Colors.teal][i % 3],
                                               child: Text(
                                                 room.participants[i].name.isNotEmpty 
                                                     ? room.participants[i].name[0].toUpperCase() 
@@ -1091,7 +1091,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   gradient: isOwnMessage
-                      ? const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)])
+                      ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
                       : null,
                   color: isOwnMessage ? null : (isDark ? const Color(0xFF1a2a4a) : Colors.white),
                   borderRadius: BorderRadius.only(
@@ -1205,7 +1205,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                       WebAudioPlayerWidget(
                         audioUrl: message.audioUrl!,
                         durationSeconds: message.audioDuration ?? 0,
-                        activeColor: isOwnMessage ? Colors.white : (isDark ? const Color(0xFF4facfe) : const Color(0xFF667EEA)),
+                        activeColor: isOwnMessage ? Colors.white : (isDark ? const Color(0xFF4facfe) : const Color(0xFF0D9488)),
                         inactiveColor: isOwnMessage ? Colors.white38 : Colors.grey,
                       )
                     else
@@ -1299,11 +1299,11 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: hasReacted 
-                            ? const Color(0xFF667EEA).withOpacity(0.3) 
+                            ? const Color(0xFF0D9488).withOpacity(0.3) 
                             : (isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
                         borderRadius: BorderRadius.circular(12),
                         border: hasReacted 
-                            ? Border.all(color: const Color(0xFF667EEA))
+                            ? Border.all(color: const Color(0xFF0D9488))
                             : null,
                       ),
                       child: Text(emoji, style: getEmojiStyle(24)),
@@ -1455,7 +1455,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 if (controller.text.trim().isNotEmpty) {
                   await _groupService.editMessage(widget.groupId, message.id, controller.text.trim());

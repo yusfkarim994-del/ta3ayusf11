@@ -66,7 +66,7 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
               },
               child: Text(
                 lang.currentLanguage == AppLanguage.kurdish ? 'بچۆ' : (lang.currentLanguage == AppLanguage.arabic ? 'ذهاب' : 'Go'),
-                style: lang.getTextStyle(color: const Color(0xFF667EEA)),
+                style: lang.getTextStyle(color: const Color(0xFF0D9488)),
               ),
             ),
           ],
@@ -176,7 +176,7 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
           ],
         ),
         body: _isLoadingProgress 
-          ? Center(child: CircularProgressIndicator(color: const Color(0xFF667EEA)))
+          ? Center(child: CircularProgressIndicator(color: const Color(0xFF0D9488)))
           : Stack(
           children: [
             if (_errorMessage.isEmpty)
@@ -229,7 +229,7 @@ class _PdfReaderScreenState extends State<PdfReaderScreen> {
             // Loading state
             if (!_isReady && _errorMessage.isEmpty)
               Center(
-                child: CircularProgressIndicator(color: const Color(0xFF667EEA)),
+                child: CircularProgressIndicator(color: const Color(0xFF0D9488)),
               ),
               
             // Error state

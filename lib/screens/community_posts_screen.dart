@@ -164,7 +164,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF667eea), Color(0xFFf093fb)]),
+              gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)]),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(Icons.article_rounded, color: Colors.white, size: 20),
@@ -188,11 +188,11 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF667eea), Color(0xFFf093fb)]),
+              gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)]),
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF667eea).withOpacity(0.3),
+                  color: const Color(0xFF0D9488).withOpacity(0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
@@ -474,8 +474,8 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                   gradient: canPost 
                       ? LinearGradient(
                           colors: isDark 
-                              ? [const Color(0xFF667eea).withOpacity(0.2), const Color(0xFFf093fb).withOpacity(0.2)]
-                              : [const Color(0xFF667eea).withOpacity(0.15), const Color(0xFFf093fb).withOpacity(0.15)],
+                              ? [const Color(0xFF0D9488).withOpacity(0.2), const Color(0xFF14B8A6).withOpacity(0.2)]
+                              : [const Color(0xFF0D9488).withOpacity(0.15), const Color(0xFF14B8A6).withOpacity(0.15)],
                         )
                       : LinearGradient(
                           colors: [Colors.red.withOpacity(0.2), Colors.orange.withOpacity(0.2)],
@@ -483,7 +483,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: canPost 
-                        ? const Color(0xFF667eea).withOpacity(0.4)
+                        ? const Color(0xFF0D9488).withOpacity(0.4)
                         : Colors.red.withOpacity(0.5),
                     width: 1,
                   ),
@@ -495,7 +495,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                       remaining >= 999 ? Icons.all_inclusive : Icons.edit_note,
                       size: 18,
                       color: canPost 
-                          ? const Color(0xFF667eea)
+                          ? const Color(0xFF0D9488)
                           : Colors.red,
                     ),
                     const SizedBox(width: 8),
@@ -504,7 +504,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                       style: lang.getTextStyle(
                         fontSize: 13,
                         color: canPost 
-                            ? (isDark ? Colors.white : const Color(0xFF667eea))
+                            ? (isDark ? Colors.white : const Color(0xFF0D9488))
                             : Colors.red,
                         fontWeight: FontWeight.w600,
                       ),
@@ -555,7 +555,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                       decoration: BoxDecoration(
                         gradient: canPost 
                             ? const LinearGradient(
-                                colors: [Color(0xFF667eea), Color(0xFFf093fb)],
+                                colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
                               )
                             : LinearGradient(
                                 colors: [Colors.grey.shade400, Colors.grey.shade500],
@@ -563,7 +563,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
                         shape: BoxShape.circle,
                         boxShadow: canPost ? [
                           BoxShadow(
-                            color: const Color(0xFF667eea).withOpacity(0.4),
+                            color: const Color(0xFF0D9488).withOpacity(0.4),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -758,7 +758,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF667eea),
+              backgroundColor: const Color(0xFF0D9488),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             child: Text(_getAddText(lang), style: lang.getTextStyle(color: Colors.white)),
@@ -809,7 +809,7 @@ class _CommunityPostsScreenState extends State<CommunityPostsScreen> {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF667eea),
+              backgroundColor: const Color(0xFF0D9488),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
             child: Text(_getSaveText(lang), style: lang.getTextStyle(color: Colors.white)),

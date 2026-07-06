@@ -117,7 +117,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   child: LinearProgressIndicator(
                     backgroundColor: isDark ? Colors.white10 : Colors.grey[200],
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      isDark ? const Color(0xFF4facfe) : const Color(0xFF00BCD4),
+                      isDark ? const Color(0xFF4facfe) : const Color(0xFF14B8A6),
                     ),
                   ),
                 )

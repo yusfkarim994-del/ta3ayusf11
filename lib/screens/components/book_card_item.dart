@@ -155,7 +155,7 @@ class _BookCardItemState extends State<BookCardItem> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF667EEA).withOpacity(0.15),
+                      color: const Color(0xFF0D9488).withOpacity(0.15),
                       borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     child: widget.book.coverUrl != null && widget.book.coverUrl!.isNotEmpty
@@ -165,7 +165,7 @@ class _BookCardItemState extends State<BookCardItem> {
                               imageUrl: widget.book.coverUrl!,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF667EEA)),
+                                child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFF0D9488)),
                               ),
                               errorWidget: (context, url, error) => _buildDefaultCover(),
                             ),
@@ -198,7 +198,7 @@ class _BookCardItemState extends State<BookCardItem> {
                                 LinearProgressIndicator(
                                   value: _progress,
                                   backgroundColor: Colors.white24,
-                                  color: const Color(0xFF667EEA),
+                                  color: const Color(0xFF0D9488),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ],
@@ -306,7 +306,7 @@ class _BookCardItemState extends State<BookCardItem> {
                         padding: EdgeInsets.zero,
                         backgroundColor: _isDownloaded 
                             ? const Color(0xFF4CAF50) // Green for read
-                            : const Color(0xFF667EEA), // Purple for download
+                            : const Color(0xFF0D9488), // Purple for download
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                       child: _isDownloading

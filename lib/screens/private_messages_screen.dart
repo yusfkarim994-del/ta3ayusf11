@@ -46,7 +46,7 @@ class _PrivateMessagesScreenState extends State<PrivateMessagesScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                  gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(Icons.mail_rounded, color: Colors.white, size: 20),
@@ -159,11 +159,11 @@ class _PrivateMessagesScreenState extends State<PrivateMessagesScreen> {
                     radius: 25,
                     backgroundColor: conv.isBlocked 
                         ? Colors.red.withOpacity(0.2) 
-                        : Colors.purple.withOpacity(0.2),
+                        : Colors.teal.withOpacity(0.2),
                     child: Text(
                       conv.otherUserName.isNotEmpty ? conv.otherUserName[0].toUpperCase() : '?',
                       style: TextStyle(
-                        color: conv.isBlocked ? Colors.red : Colors.purple,
+                        color: conv.isBlocked ? Colors.red : Colors.teal,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
