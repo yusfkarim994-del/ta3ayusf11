@@ -129,7 +129,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: langService.appName,
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
+          theme: AppDesign.light,
           home: const AuthWrapper(),
         );
       },

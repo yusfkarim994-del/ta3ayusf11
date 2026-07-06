@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 /// Central design system for the app.
 /// Calm, modern palette suited for a recovery / wellness app.
-class AppTheme {
-  AppTheme._();
+class AppDesign {
+  AppDesign._();
 
   // ── Core palette (3-5 colors) ──────────────────────────────
   /// Primary brand color — calm teal

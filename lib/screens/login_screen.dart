@@ -88,16 +88,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
         decoration: const BoxDecoration(
-          color: AppTheme.surface,
+          color: AppDesign.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.border, borderRadius: BorderRadius.circular(2))),
+            Container(width: 40, height: 4, decoration: BoxDecoration(color: AppDesign.border, borderRadius: BorderRadius.circular(2))),
             const SizedBox(height: 20),
-            Text(langService.language, style: langService.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textPrimary)),
+            Text(langService.language, style: langService.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppDesign.textPrimary)),
             const SizedBox(height: 16),
             _buildLanguageOption(AppLanguage.arabic, 'العربية'),
             _buildLanguageOption(AppLanguage.kurdish, 'کوردی'),
@@ -118,17 +118,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         margin: const EdgeInsets.symmetric(vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primarySoft : const Color(0xFFF8FAFA),
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          border: Border.all(color: isSelected ? AppTheme.primary : AppTheme.border),
+          color: isSelected ? AppDesign.primarySoft : const Color(0xFFF8FAFA),
+          borderRadius: BorderRadius.circular(AppDesign.radiusMd),
+          border: Border.all(color: isSelected ? AppDesign.primary : AppDesign.border),
         ),
         child: Row(
           children: [
-            Icon(Icons.translate_rounded, size: 20, color: isSelected ? AppTheme.primary : AppTheme.textSecondary),
+            Icon(Icons.translate_rounded, size: 20, color: isSelected ? AppDesign.primary : AppDesign.textSecondary),
             const SizedBox(width: 12),
-            Text(name, style: langService.getTextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isSelected ? AppTheme.primaryDark : AppTheme.textPrimary)),
+            Text(name, style: langService.getTextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isSelected ? AppDesign.primaryDark : AppDesign.textPrimary)),
             const Spacer(),
-            if (isSelected) const Icon(Icons.check_circle_rounded, color: AppTheme.primary, size: 20),
+            if (isSelected) const Icon(Icons.check_circle_rounded, color: AppDesign.primary, size: 20),
           ],
         ),
       ),
@@ -147,20 +147,20 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         builder: (context, setDialogState) => Directionality(
           textDirection: lang.textDirection,
           child: AlertDialog(
-            backgroundColor: AppTheme.surface,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppTheme.radiusLg)),
+            backgroundColor: AppDesign.surface,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDesign.radiusLg)),
             title: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppTheme.primarySoft,
-                    borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                    color: AppDesign.primarySoft,
+                    borderRadius: BorderRadius.circular(AppDesign.radiusSm),
                   ),
-                  child: const Icon(Icons.lock_reset_rounded, color: AppTheme.primary, size: 20),
+                  child: const Icon(Icons.lock_reset_rounded, color: AppDesign.primary, size: 20),
                 ),
                 const SizedBox(width: 12),
-                Expanded(child: Text('استعادة كلمة السر', style: lang.getTextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AppTheme.textPrimary))),
+                Expanded(child: Text('استعادة كلمة السر', style: lang.getTextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AppDesign.textPrimary))),
               ],
             ),
             content: Column(
@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               children: [
                 Text(
                   'أدخل بريدك الإلكتروني وسنرسل لك رابط لإعادة تعيين كلمة السر',
-                  style: lang.getTextStyle(color: AppTheme.textSecondary, fontSize: 14),
+                  style: lang.getTextStyle(color: AppDesign.textSecondary, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -178,8 +178,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   textDirection: TextDirection.ltr,
                   decoration: InputDecoration(
                     labelText: 'البريد الإلكتروني',
-                    labelStyle: lang.getTextStyle(color: AppTheme.textSecondary),
-                    prefixIcon: const Icon(Icons.email_outlined, color: AppTheme.primary, size: 20),
+                    labelStyle: lang.getTextStyle(color: AppDesign.textSecondary),
+                    prefixIcon: const Icon(Icons.email_outlined, color: AppDesign.primary, size: 20),
                   ),
                 ),
                 if (message != null) ...[
@@ -187,19 +187,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isSuccess ? AppTheme.primarySoft : Colors.red[50],
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                      border: Border.all(color: isSuccess ? AppTheme.primary : Colors.red[200]!),
+                      color: isSuccess ? AppDesign.primarySoft : Colors.red[50],
+                      borderRadius: BorderRadius.circular(AppDesign.radiusSm),
+                      border: Border.all(color: isSuccess ? AppDesign.primary : Colors.red[200]!),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           isSuccess ? Icons.check_circle_outline : Icons.error_outline,
-                          color: isSuccess ? AppTheme.primaryDark : Colors.red[700],
+                          color: isSuccess ? AppDesign.primaryDark : Colors.red[700],
                           size: 20,
                         ),
                         const SizedBox(width: 8),
-                        Expanded(child: Text(message!, style: lang.getTextStyle(color: isSuccess ? AppTheme.primaryDark : Colors.red[700], fontSize: 13))),
+                        Expanded(child: Text(message!, style: lang.getTextStyle(color: isSuccess ? AppDesign.primaryDark : Colors.red[700], fontSize: 13))),
                       ],
                     ),
                   ),
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('إلغاء', style: lang.getTextStyle(color: AppTheme.textSecondary)),
+                child: Text('إلغاء', style: lang.getTextStyle(color: AppDesign.textSecondary)),
               ),
               ElevatedButton(
                 onPressed: isLoading ? null : () async {
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return Directionality(
       textDirection: lang.textDirection,
       child: Scaffold(
-        backgroundColor: AppTheme.background,
+        backgroundColor: AppDesign.background,
         body: SafeArea(
           child: Column(
             children: [
@@ -272,16 +272,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppTheme.surface,
+                        color: AppDesign.surface,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppTheme.border),
+                        border: Border.all(color: AppDesign.border),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.language_rounded, color: AppTheme.primary, size: 18),
+                          const Icon(Icons.language_rounded, color: AppDesign.primary, size: 18),
                           const SizedBox(width: 6),
-                          Text(lang.languageName, style: lang.getTextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w600, fontSize: 13)),
+                          Text(lang.languageName, style: lang.getTextStyle(color: AppDesign.textPrimary, fontWeight: FontWeight.w600, fontSize: 13)),
                         ],
                       ),
                     ),
@@ -306,11 +306,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 width: 84,
                                 height: 84,
                                 decoration: BoxDecoration(
-                                  gradient: AppTheme.primaryGradient,
+                                  gradient: AppDesign.primaryGradient,
                                   borderRadius: BorderRadius.circular(24),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppTheme.primary.withOpacity(0.25),
+                                      color: AppDesign.primary.withOpacity(0.25),
                                       blurRadius: 24,
                                       offset: const Offset(0, 8),
                                     ),
@@ -323,13 +323,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               // App Title
                               Text(
                                 lang.appName,
-                                style: lang.getTextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
+                                style: lang.getTextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: AppDesign.textPrimary),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 lang.appSlogan,
-                                style: lang.getTextStyle(fontSize: 14, color: AppTheme.textSecondary),
+                                style: lang.getTextStyle(fontSize: 14, color: AppDesign.textSecondary),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 36),
@@ -338,10 +338,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               Container(
                                 padding: const EdgeInsets.all(24),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.surface,
-                                  borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-                                  border: Border.all(color: AppTheme.border),
-                                  boxShadow: AppTheme.cardShadow,
+                                  color: AppDesign.surface,
+                                  borderRadius: BorderRadius.circular(AppDesign.radiusLg),
+                                  border: Border.all(color: AppDesign.border),
+                                  boxShadow: AppDesign.cardShadow,
                                 ),
                                 child: Form(
                                   key: _formKey,
@@ -350,7 +350,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                     children: [
                                       Text(
                                         lang.login,
-                                        style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppTheme.textPrimary),
+                                        style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppDesign.textPrimary),
                                         textAlign: TextAlign.center,
                                       ),
                                       const SizedBox(height: 24),
@@ -363,8 +363,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                         style: const TextStyle(fontSize: 15),
                                         decoration: InputDecoration(
                                           labelText: lang.email,
-                                          labelStyle: lang.getTextStyle(color: AppTheme.textSecondary, fontSize: 14),
-                                          prefixIcon: const Icon(Icons.email_outlined, color: AppTheme.primary, size: 20),
+                                          labelStyle: lang.getTextStyle(color: AppDesign.textSecondary, fontSize: 14),
+                                          prefixIcon: const Icon(Icons.email_outlined, color: AppDesign.primary, size: 20),
                                         ),
                                         validator: (value) {
                                           if (value == null || value.isEmpty) return lang.enterEmail;
@@ -382,12 +382,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                         style: const TextStyle(fontSize: 15),
                                         decoration: InputDecoration(
                                           labelText: lang.password,
-                                          labelStyle: lang.getTextStyle(color: AppTheme.textSecondary, fontSize: 14),
-                                          prefixIcon: const Icon(Icons.lock_outline_rounded, color: AppTheme.primary, size: 20),
+                                          labelStyle: lang.getTextStyle(color: AppDesign.textSecondary, fontSize: 14),
+                                          prefixIcon: const Icon(Icons.lock_outline_rounded, color: AppDesign.primary, size: 20),
                                           suffixIcon: IconButton(
                                             icon: Icon(
                                               _obscurePassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                                              color: AppTheme.textSecondary,
+                                              color: AppDesign.textSecondary,
                                               size: 20,
                                             ),
                                             onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
@@ -409,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           child: Text(
                                             'نسيت كلمة السر؟',
                                             style: lang.getTextStyle(
-                                              color: AppTheme.primary,
+                                              color: AppDesign.primary,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 13,
                                             ),
@@ -422,7 +422,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                           padding: const EdgeInsets.all(12),
                                           decoration: BoxDecoration(
                                             color: Colors.red[50],
-                                            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                                            borderRadius: BorderRadius.circular(AppDesign.radiusSm),
                                             border: Border.all(color: Colors.red[200]!),
                                           ),
                                           child: Row(
@@ -455,8 +455,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                         child: RichText(
                                           text: TextSpan(
                                             children: [
-                                              TextSpan(text: '${lang.noAccount} ', style: lang.getTextStyle(color: AppTheme.textSecondary, fontSize: 14)),
-                                              TextSpan(text: lang.createAccount, style: lang.getTextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold, fontSize: 14)),
+                                              TextSpan(text: '${lang.noAccount} ', style: lang.getTextStyle(color: AppDesign.textSecondary, fontSize: 14)),
+                                              TextSpan(text: lang.createAccount, style: lang.getTextStyle(color: AppDesign.primary, fontWeight: FontWeight.bold, fontSize: 14)),
                                             ],
                                           ),
                                         ),
@@ -470,12 +470,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               // Or divider
                               Row(
                                 children: [
-                                  const Expanded(child: Divider(color: AppTheme.border)),
+                                  const Expanded(child: Divider(color: AppDesign.border)),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                                    child: Text(lang.or, style: lang.getTextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                                    child: Text(lang.or, style: lang.getTextStyle(color: AppDesign.textSecondary, fontSize: 13)),
                                   ),
-                                  const Expanded(child: Divider(color: AppTheme.border)),
+                                  const Expanded(child: Divider(color: AppDesign.border)),
                                 ],
                               ),
                               const SizedBox(height: 24),
@@ -486,8 +486,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 height: 52,
                                 child: OutlinedButton.icon(
                                   onPressed: _isLoading ? null : _signInAsGuest,
-                                  icon: const Icon(Icons.person_outline_rounded, color: AppTheme.primary, size: 20),
-                                  label: Text(lang.guestLogin, style: lang.getTextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppTheme.primary)),
+                                  icon: const Icon(Icons.person_outline_rounded, color: AppDesign.primary, size: 20),
+                                  label: Text(lang.guestLogin, style: lang.getTextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppDesign.primary)),
                                 ),
                               ),
                             ],
