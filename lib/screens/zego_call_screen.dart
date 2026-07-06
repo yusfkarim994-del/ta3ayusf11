@@ -254,7 +254,7 @@ class _ZegoCallScreenState extends State<ZegoCallScreen> {
                   gradient: LinearGradient(
                     colors: widget.isVideoCall 
                         ? [const Color(0xFF4facfe), const Color(0xFF00f2fe)]
-                        : [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+                        : [const Color(0xFF0D9488), const Color(0xFF0F766E)],
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -372,7 +372,7 @@ class _ZegoCallScreenState extends State<ZegoCallScreen> {
                           gradient: LinearGradient(
                             colors: widget.isVideoCall 
                                 ? [const Color(0xFF4facfe), const Color(0xFF00f2fe)]
-                                : [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+                                : [const Color(0xFF0D9488), const Color(0xFF0F766E)],
                           ),
                           shape: BoxShape.circle,
                         ),
@@ -593,7 +593,7 @@ class _ZegoCallScreenState extends State<ZegoCallScreen> {
                 gradient: LinearGradient(
                   colors: widget.isVideoCall 
                       ? [const Color(0xFF4facfe), const Color(0xFF00f2fe)]
-                      : [const Color(0xFF667EEA), const Color(0xFF764BA2)],
+                      : [const Color(0xFF0D9488), const Color(0xFF0F766E)],
                 ),
                 shape: BoxShape.circle,
               ),

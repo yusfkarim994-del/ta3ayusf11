@@ -180,7 +180,7 @@ class AssessmentService extends ChangeNotifier {
       descriptionAr: 'تشاهد 3-5 مرات أسبوعياً. الإباحية من أهم 7 أمور تفكر بها يومياً. بداية الشعور بالضياع والعجز. تفقد أي نضال أو رغبة في التوقف.',
       descriptionKu: 'هەفتانە ٣-٥ جار تەماشا دەکەیت. ئیباحیەت لە ٧ شتە گرنگەکانی بیرکردنەوەی ڕۆژانەتە. هەستی لەدەستچوون و ناتوانی دەستی پێکردووە. هەموو تێکۆشانێک بۆ وەستان لەدەست دەدەیت.',
       descriptionEn: 'Watch 3-5 times weekly. Pornography is among the top 7 things you think about daily. Beginning to feel lost and helpless. Losing any struggle or desire to stop.',
-      color: Color(0xFFFF5722),
+      color: Color(0xFF0F766E),
       icon: Icons.sentiment_very_dissatisfied,
     ),
     AddictionLevel(

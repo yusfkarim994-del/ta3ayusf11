@@ -139,8 +139,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFF667EEA).withOpacity(0.3),
-                      const Color(0xFF764BA2).withOpacity(0.3),
+                      const Color(0xFF0D9488).withOpacity(0.3),
+                      const Color(0xFF0F766E).withOpacity(0.3),
                     ],
                   ),
                   shape: BoxShape.circle,
@@ -186,10 +186,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: isFilled 
-                          ? const Color(0xFF667EEA) 
+                          ? const Color(0xFF0D9488) 
                           : Colors.transparent,
                       border: Border.all(
-                        color: const Color(0xFF667EEA),
+                        color: const Color(0xFF0D9488),
                         width: 2,
                       ),
                     ),
@@ -222,10 +222,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
               if (!widget.isSetupMode && lockService.isBiometricEnabled)
                 TextButton.icon(
                   onPressed: _tryBiometric,
-                  icon: const Icon(Icons.fingerprint, color: Color(0xFF667EEA), size: 32),
+                  icon: const Icon(Icons.fingerprint, color: Color(0xFF0D9488), size: 32),
                   label: Text(
                     _getBiometricText(lang),
-                    style: lang.getTextStyle(color: const Color(0xFF667EEA)),
+                    style: lang.getTextStyle(color: const Color(0xFF0D9488)),
                   ),
                 ),
               

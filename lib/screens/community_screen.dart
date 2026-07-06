@@ -314,7 +314,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                    gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.forum_rounded, color: Colors.white, size: 20),
@@ -340,7 +340,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                         decoration: BoxDecoration(
-                          color: isAdmin ? Colors.purple.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
+                          color: isAdmin ? Colors.teal.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -348,7 +348,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.bold,
-                            color: isAdmin ? Colors.purple : Colors.blue,
+                            color: isAdmin ? Colors.teal : Colors.blue,
                           ),
                         ),
                       ),
@@ -376,12 +376,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                              colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                             ),
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF667EEA).withOpacity(0.4),
+                                color: const Color(0xFF0D9488).withOpacity(0.4),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -442,7 +442,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
               icon: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                  gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(Icons.call, color: Colors.white, size: 16),
@@ -629,7 +629,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                         left: i * 14.0,
                                         child: CircleAvatar(
                                           radius: 12,
-                                          backgroundColor: [Colors.blue, Colors.green, Colors.purple][i % 3],
+                                          backgroundColor: [Colors.blue, Colors.green, Colors.teal][i % 3],
                                           child: Text(
                                             room.participants[i].name.isNotEmpty 
                                                 ? room.participants[i].name[0].toUpperCase() 
@@ -869,11 +869,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           width: 44,
                           height: 44,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF667EEA),
+                            color: const Color(0xFF0D9488),
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF667EEA).withOpacity(0.5),
+                                color: const Color(0xFF0D9488).withOpacity(0.5),
                                 blurRadius: 10,
                                 spreadRadius: 2,
                                 offset: const Offset(0, 3),
@@ -1021,7 +1021,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                              gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: const Icon(Icons.send, color: Colors.white),
@@ -1093,7 +1093,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             decoration: BoxDecoration(
                               gradient: isMuted 
                                   ? const LinearGradient(colors: [Colors.grey, Colors.grey])
-                                  : const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                                  : const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                               borderRadius: BorderRadius.circular(25),
                             ),
                             child: _isLoading
@@ -1204,14 +1204,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
               CircleAvatar(
                 radius: 16,
                 backgroundColor: senderIsAdmin 
-                    ? Colors.purple.withOpacity(0.2) 
+                    ? Colors.teal.withOpacity(0.2) 
                     : senderIsModerator 
                         ? Colors.blue.withOpacity(0.2) 
                         : Colors.grey.withOpacity(0.2),
                 child: Text(
                   message.senderName.isNotEmpty ? message.senderName[0].toUpperCase() : '?',
                   style: TextStyle(
-                    color: senderIsAdmin ? Colors.purple : senderIsModerator ? Colors.blue : Colors.grey,
+                    color: senderIsAdmin ? Colors.teal : senderIsModerator ? Colors.blue : Colors.grey,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                   ),
@@ -1224,7 +1224,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   gradient: isOwnMessage
-                      ? const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)])
+                      ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
                       : null,
                   color: isOwnMessage ? null : (isDark ? const Color(0xFF1a2a4a) : Colors.white),
                   borderRadius: BorderRadius.only(
@@ -1254,7 +1254,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: senderIsAdmin 
-                                  ? Colors.purple 
+                                  ? Colors.teal 
                                   : senderIsModerator 
                                       ? Colors.blue 
                                       : (isDark ? Colors.white70 : Colors.grey[600]!),
@@ -1265,12 +1265,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Colors.purple.withOpacity(0.2),
+                                color: Colors.teal.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 _getDeveloperText(lang),
-                                style: const TextStyle(color: Colors.purple, fontSize: 9, fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Colors.teal, fontSize: 9, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -1463,11 +1463,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: hasReacted 
-                            ? const Color(0xFF667EEA).withOpacity(0.3) 
+                            ? const Color(0xFF0D9488).withOpacity(0.3) 
                             : (isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
                         borderRadius: BorderRadius.circular(12),
                         border: hasReacted 
-                            ? Border.all(color: const Color(0xFF667EEA))
+                            ? Border.all(color: const Color(0xFF0D9488))
                             : null,
                       ),
                       child: Text(emoji, style: getEmojiStyle(24)),
@@ -1734,7 +1734,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 if (controller.text.trim().isNotEmpty) {
                   await _chatService.editMessage(message.id, controller.text.trim());
@@ -1917,12 +1917,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: isAdmin ? Colors.purple.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
+                        color: isAdmin ? Colors.teal.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         Icons.admin_panel_settings, 
-                        color: isAdmin ? Colors.purple : Colors.blue,
+                        color: isAdmin ? Colors.teal : Colors.blue,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1936,7 +1936,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: isAdmin ? Colors.purple.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
+                            color: isAdmin ? Colors.teal.withOpacity(0.2) : Colors.blue.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
@@ -1944,7 +1944,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
-                              color: isAdmin ? Colors.purple : Colors.blue,
+                              color: isAdmin ? Colors.teal : Colors.blue,
                             ),
                           ),
                         ),
@@ -2000,14 +2000,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
           CircleAvatar(
             radius: 20,
             backgroundColor: user.role == UserRole.admin 
-                ? Colors.purple.withOpacity(0.2) 
+                ? Colors.teal.withOpacity(0.2) 
                 : user.role == UserRole.moderator 
                     ? Colors.blue.withOpacity(0.2) 
                     : Colors.grey.withOpacity(0.2),
             child: Text(
               user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
               style: TextStyle(
-                color: user.role == UserRole.admin ? Colors.purple : user.role == UserRole.moderator ? Colors.blue : Colors.grey,
+                color: user.role == UserRole.admin ? Colors.teal : user.role == UserRole.moderator ? Colors.blue : Colors.grey,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -2033,8 +2033,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     if (user.role == UserRole.admin)
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(color: Colors.purple.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                        child: Text(_getDeveloperText(lang), style: const TextStyle(color: Colors.purple, fontSize: 9)),
+                        decoration: BoxDecoration(color: Colors.teal.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                        child: Text(_getDeveloperText(lang), style: const TextStyle(color: Colors.teal, fontSize: 9)),
                       ),
                     if (user.role == UserRole.moderator)
                       Container(
@@ -2431,10 +2431,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.purple.withOpacity(0.2),
+                  color: Colors.teal.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.developer_mode, color: Colors.purple, size: 20),
+                child: const Icon(Icons.developer_mode, color: Colors.teal, size: 20),
               ),
               const SizedBox(width: 12),
               Text(
@@ -2492,7 +2492,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.teal,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               onPressed: () async {
@@ -2511,7 +2511,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                     ? 'وەک گەشەپێدەر چالاککرایت! 🎉' 
                                     : 'You are now a developer! 🎉',
                           ),
-                          backgroundColor: Colors.purple,
+                          backgroundColor: Colors.teal,
                         ),
                       );
                       setState(() {}); // Refresh UI

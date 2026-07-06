@@ -203,7 +203,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.purple.withOpacity(0.2),
+                  Colors.teal.withOpacity(0.2),
                   Colors.blue.withOpacity(0.2),
                 ],
               ),
@@ -211,7 +211,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
             ),
             child: IconButton(
               onPressed: () => _showMoodStats(lang, isDark),
-              icon: const Icon(Icons.insights_rounded, color: Colors.purple),
+              icon: const Icon(Icons.insights_rounded, color: Colors.teal),
             ),
           ),
         ],
@@ -224,11 +224,11 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+          colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF667EEA).withOpacity(0.4),
+            color: const Color(0xFF0D9488).withOpacity(0.4),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -832,12 +832,12 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                      colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                     ),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF667EEA).withOpacity(0.3),
+                        color: const Color(0xFF0D9488).withOpacity(0.3),
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),

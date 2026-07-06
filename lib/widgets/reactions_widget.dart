@@ -66,11 +66,11 @@ class ReactionsDisplay extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
                 color: hasUserReacted 
-                    ? const Color(0xFF667EEA).withOpacity(0.3)
+                    ? const Color(0xFF0D9488).withOpacity(0.3)
                     : (isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.15)),
                 borderRadius: BorderRadius.circular(12),
                 border: hasUserReacted 
-                    ? Border.all(color: const Color(0xFF667EEA).withOpacity(0.5))
+                    ? Border.all(color: const Color(0xFF0D9488).withOpacity(0.5))
                     : null,
               ),
               child: Row(

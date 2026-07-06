@@ -362,7 +362,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
             decoration: BoxDecoration(
               gradient: _isBlocked 
                   ? const LinearGradient(colors: [Colors.grey, Colors.grey])
-                  : const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                  : const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
               borderRadius: BorderRadius.circular(25),
             ),
             child: _isLoading
@@ -413,7 +413,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
             children: [
               CircleAvatar(
                 radius: 18,
-                backgroundColor: _isBlocked ? Colors.red.withOpacity(0.2) : Colors.purple.withOpacity(0.2),
+                backgroundColor: _isBlocked ? Colors.red.withOpacity(0.2) : Colors.teal.withOpacity(0.2),
                 backgroundImage: !_isBlocked && _otherUserPhotoUrl != null && _otherUserPhotoUrl!.isNotEmpty
                     ? NetworkImage(_otherUserPhotoUrl!)
                     : null,
@@ -421,7 +421,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                     ? Text(
                         widget.otherUserName.isNotEmpty ? widget.otherUserName[0].toUpperCase() : '?',
                         style: TextStyle(
-                          color: _isBlocked ? Colors.red : Colors.purple,
+                          color: _isBlocked ? Colors.red : Colors.teal,
                           fontWeight: FontWeight.bold,
                         ),
                       )
@@ -504,7 +504,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                 decoration: BoxDecoration(
                   gradient: _isBlocked 
                       ? null 
-                      : const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
+                      : const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
                   color: _isBlocked ? Colors.grey.withOpacity(0.3) : null,
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -606,12 +606,12 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                             padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 120),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                                colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                               ),
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: Colors.purpleAccent,
+                                  color: Colors.tealAccent,
                                   blurRadius: 4,
                                   spreadRadius: 1,
                                 ),
@@ -681,7 +681,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: Colors.purple,
+                                    foregroundColor: Colors.teal,
                                     minimumSize: const Size(50, 24),
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     shape: RoundedRectangleBorder(
@@ -834,7 +834,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
             if (!isOwn) ...[
               CircleAvatar(
                 radius: 14,
-                backgroundColor: Colors.purple.withOpacity(0.2),
+                backgroundColor: Colors.teal.withOpacity(0.2),
                 backgroundImage: _otherUserPhotoUrl != null && _otherUserPhotoUrl!.isNotEmpty
                     ? NetworkImage(_otherUserPhotoUrl!)
                     : null,
@@ -842,7 +842,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                     ? Text(
                         widget.otherUserName.isNotEmpty ? widget.otherUserName[0].toUpperCase() : '?',
                         style: const TextStyle(
-                          color: Colors.purple,
+                          color: Colors.teal,
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
                         ),
@@ -856,7 +856,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
                   gradient: isOwn
-                      ? const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)])
+                      ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
                       : null,
                   color: isOwn ? null : (isDark ? const Color(0xFF1a2a4a) : Colors.white),
                   borderRadius: BorderRadius.only(
@@ -880,7 +880,7 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                       WebAudioPlayerWidget(
                         audioUrl: message.audioUrl!,
                         durationSeconds: message.audioDuration ?? 0,
-                        activeColor: isOwn ? Colors.white : (isDark ? const Color(0xFF4facfe) : const Color(0xFF667EEA)),
+                        activeColor: isOwn ? Colors.white : (isDark ? const Color(0xFF4facfe) : const Color(0xFF0D9488)),
                         inactiveColor: isOwn ? Colors.white38 : Colors.grey,
                       )
                     else
@@ -982,11 +982,11 @@ Widget _buildRecordingState(LanguageService lang, bool isDark) {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: hasReacted 
-                            ? const Color(0xFF667EEA).withOpacity(0.3) 
+                            ? const Color(0xFF0D9488).withOpacity(0.3) 
                             : (isDark ? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.1)),
                         borderRadius: BorderRadius.circular(12),
                         border: hasReacted 
-                            ? Border.all(color: const Color(0xFF667EEA))
+                            ? Border.all(color: const Color(0xFF0D9488))
                             : null,
                       ),
                       child: Text(emoji, style: getEmojiStyle(24)),

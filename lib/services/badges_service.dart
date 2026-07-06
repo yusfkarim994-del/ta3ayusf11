@@ -36,8 +36,8 @@ class BadgesService {
       const AchievementBadge(daysRequired: 7, nameEn: 'Week Warrior', nameAr: 'محارب الأسبوع', nameKu: 'پاڵەوانی هەفتە', icon: Icons.shield, color: Color(0xFF8BC34A), level: 'beginner'),
       const AchievementBadge(daysRequired: 14, nameEn: 'Rising Star', nameAr: 'النجم الصاعد', nameKu: 'ئەستێرەی بەرزبوو', icon: Icons.trending_up, color: Color(0xFFCDDC39), level: 'beginner'),
       const AchievementBadge(daysRequired: 30, nameEn: 'Month Champion', nameAr: 'بطل الشهر', nameKu: 'پاڵەوانی مانگ', icon: Icons.emoji_events, color: Color(0xFFFF9800), level: 'intermediate'),
-      const AchievementBadge(daysRequired: 40, nameEn: 'Brave Heart', nameAr: 'القلب الشجاع', nameKu: 'دڵی ئازا', icon: Icons.favorite, color: Color(0xFFFF5722), level: 'intermediate'),
-      const AchievementBadge(daysRequired: 60, nameEn: 'Strong Will', nameAr: 'الإرادة القوية', nameKu: 'ویستی بەهێز', icon: Icons.fitness_center, color: Color(0xFFE91E63), level: 'intermediate'),
+      const AchievementBadge(daysRequired: 40, nameEn: 'Brave Heart', nameAr: 'القلب الشجاع', nameKu: 'دڵی ئازا', icon: Icons.favorite, color: Color(0xFF0F766E), level: 'intermediate'),
+      const AchievementBadge(daysRequired: 60, nameEn: 'Strong Will', nameAr: 'الإرادة القوية', nameKu: 'ویستی بەهێز', icon: Icons.fitness_center, color: Color(0xFF0D9488), level: 'intermediate'),
       const AchievementBadge(daysRequired: 75, nameEn: 'Mighty Heart', nameAr: 'القلب المتين', nameKu: 'دڵی پڕهێز', icon: Icons.bolt, color: Color(0xFF9C27B0), level: 'advanced'),
       const AchievementBadge(daysRequired: 90, nameEn: 'True Hero', nameAr: 'البطل الحقيقي', nameKu: 'پاڵەوانی ڕاستەقینە', icon: Icons.military_tech, color: Color(0xFF673AB7), level: 'advanced'),
       const AchievementBadge(daysRequired: 100, nameEn: 'Century Legend', nameAr: 'أسطورة المئة', nameKu: 'ئەفسانەی سەد ڕۆژ', icon: Icons.workspace_premium, color: Color(0xFF3F51B5), level: 'advanced'),
@@ -47,7 +47,7 @@ class BadgesService {
     final additionalMilestones = [
       AchievementBadge(daysRequired: 125, nameEn: 'Noble Fighter', nameAr: 'المقاتل النبيل', nameKu: 'جەنگاوەری ئازا', icon: Icons.nights_stay, color: const Color(0xFF2196F3), level: 'advanced'),
       AchievementBadge(daysRequired: 150, nameEn: 'Iron Will', nameAr: 'إرادة حديدية', nameKu: 'ویستی ئاسنین', icon: Icons.psychology, color: const Color(0xFF03A9F4), level: 'advanced'),
-      AchievementBadge(daysRequired: 175, nameEn: 'Rising Strong', nameAr: 'النهوض القوي', nameKu: 'هەستانەوەی بەهێز', icon: Icons.whatshot, color: const Color(0xFF00BCD4), level: 'master'),
+      AchievementBadge(daysRequired: 175, nameEn: 'Rising Strong', nameAr: 'النهوض القوي', nameKu: 'هەستانەوەی بەهێز', icon: Icons.whatshot, color: const Color(0xFF14B8A6), level: 'master'),
       AchievementBadge(daysRequired: 200, nameEn: 'Double Century', nameAr: 'مئتان يوم', nameKu: 'دوو سەد ڕۆژ', icon: Icons.star_border, color: const Color(0xFF009688), level: 'master'),
       AchievementBadge(daysRequired: 225, nameEn: 'Self Guardian', nameAr: 'حارس النفس', nameKu: 'پاسەوانی خۆ', icon: Icons.security, color: const Color(0xFF4CAF50), level: 'master'),
       AchievementBadge(daysRequired: 250, nameEn: 'Unstoppable', nameAr: 'لا يُوقَف', nameKu: 'ڕاگیرنەکراو', icon: Icons.speed, color: const Color(0xFF8BC34A), level: 'master'),
@@ -55,13 +55,13 @@ class BadgesService {
       AchievementBadge(daysRequired: 300, nameEn: 'Steadfast', nameAr: 'الثابت', nameKu: 'جێگیر', icon: Icons.local_fire_department, color: const Color(0xFFFFEB3B), level: 'master'),
       AchievementBadge(daysRequired: 325, nameEn: 'Mountain Strong', nameAr: 'قوي كالجبل', nameKu: 'بەهێزی چیا', icon: Icons.warning, color: const Color(0xFFFFC107), level: 'legend'),
       AchievementBadge(daysRequired: 350, nameEn: 'Champion Elite', nameAr: 'بطل النخبة', nameKu: 'پاڵەوانی لووتکە', icon: Icons.stars, color: const Color(0xFFFF9800), level: 'legend'),
-      AchievementBadge(daysRequired: 375, nameEn: 'Warrior King', nameAr: 'ملك المحاربين', nameKu: 'پاشای جەنگاوەران', icon: Icons.home_work, color: const Color(0xFFFF5722), level: 'legend'),
-      AchievementBadge(daysRequired: 400, nameEn: 'Legendary', nameAr: 'أسطوري', nameKu: 'ئەفسانەیی', icon: Icons.auto_awesome, color: const Color(0xFFE91E63), level: 'legend'),
+      AchievementBadge(daysRequired: 375, nameEn: 'Warrior King', nameAr: 'ملك المحاربين', nameKu: 'پاشای جەنگاوەران', icon: Icons.home_work, color: const Color(0xFF0F766E), level: 'legend'),
+      AchievementBadge(daysRequired: 400, nameEn: 'Legendary', nameAr: 'أسطوري', nameKu: 'ئەفسانەیی', icon: Icons.auto_awesome, color: const Color(0xFF0D9488), level: 'legend'),
       AchievementBadge(daysRequired: 425, nameEn: 'Pure Heart', nameAr: 'القلب الطاهر', nameKu: 'دڵی پاک', icon: Icons.brightness_7, color: const Color(0xFF9C27B0), level: 'legend'),
       AchievementBadge(daysRequired: 450, nameEn: 'Invincible', nameAr: 'لا يُقهَر', nameKu: 'شکستنەهێنراو', icon: Icons.shield, color: const Color(0xFF673AB7), level: 'legend'),
       AchievementBadge(daysRequired: 475, nameEn: 'Eternal Flame', nameAr: 'الشعلة الأبدية', nameKu: 'گڕی هەتاهەتایی', icon: Icons.local_fire_department, color: const Color(0xFF3F51B5), level: 'legend'),
       AchievementBadge(daysRequired: 500, nameEn: 'Half Millennium', nameAr: 'نصف الألف', nameKu: 'نیوە هەزار', icon: Icons.star, color: const Color(0xFF2196F3), level: 'legend'),
-      AchievementBadge(daysRequired: 550, nameEn: 'Straight Path', nameAr: 'الطريق القويم', nameKu: 'ڕێگای ڕاست', icon: Icons.alt_route, color: const Color(0xFF00BCD4), level: 'legend'),
+      AchievementBadge(daysRequired: 550, nameEn: 'Straight Path', nameAr: 'الطريق القويم', nameKu: 'ڕێگای ڕاست', icon: Icons.alt_route, color: const Color(0xFF14B8A6), level: 'legend'),
       AchievementBadge(daysRequired: 600, nameEn: 'Blessed Heart', nameAr: 'القلب المبارك', nameKu: 'دڵی پیرۆز', icon: Icons.all_inclusive, color: const Color(0xFF009688), level: 'legend'),
       AchievementBadge(daysRequired: 650, nameEn: 'Galaxy Champion', nameAr: 'بطل المجرة', nameKu: 'پاڵەوانی گەڵەستێرە', icon: Icons.blur_circular, color: const Color(0xFF4CAF50), level: 'legend'),
       AchievementBadge(daysRequired: 700, nameEn: 'Cosmic Hero', nameAr: 'بطل كوني', nameKu: 'پاڵەوانی گەردوون', icon: Icons.public, color: const Color(0xFF8BC34A), level: 'legend'),
@@ -87,7 +87,7 @@ class BadgesService {
   static Color _getColorForDays(int days) {
     if (days >= 1000) return const Color(0xFFFFD700); // Gold
     if (days >= 750) return const Color(0xFFE040FB); // Purple
-    if (days >= 500) return const Color(0xFF00BCD4); // Cyan
+    if (days >= 500) return const Color(0xFF14B8A6); // Cyan
     if (days >= 300) return const Color(0xFF2196F3); // Blue
     return const Color(0xFF3F51B5); // Indigo
   }

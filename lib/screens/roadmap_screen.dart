@@ -240,7 +240,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(colors: [
-                        const Color(0xFF667EEA).withOpacity(isDark ? 0.08 : 0.12), Colors.transparent,
+                        const Color(0xFF0D9488).withOpacity(isDark ? 0.08 : 0.12), Colors.transparent,
                       ]),
                     ),
                   ),
@@ -252,7 +252,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(colors: [
-                        const Color(0xFF764BA2).withOpacity(isDark ? 0.06 : 0.1), Colors.transparent,
+                        const Color(0xFF0F766E).withOpacity(isDark ? 0.06 : 0.1), Colors.transparent,
                       ]),
                     ),
                   ),
@@ -260,7 +260,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                 // Main content
                 SafeArea(
                   child: _isLoading
-                      ? Center(child: CircularProgressIndicator(color: isDark ? const Color(0xFF667EEA) : const Color(0xFF4a6cf7)))
+                      ? Center(child: CircularProgressIndicator(color: isDark ? const Color(0xFF0D9488) : const Color(0xFF4a6cf7)))
                       : Column(
                           children: [
                             _buildHeader(lang),
@@ -323,9 +323,9 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         shape: BoxShape.circle,
         gradient: const LinearGradient(
           begin: Alignment.topLeft, end: Alignment.bottomRight,
-          colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+          colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
         ),
-        boxShadow: [BoxShadow(color: const Color(0xFF667EEA).withOpacity(0.25), blurRadius: 16, spreadRadius: 2)],
+        boxShadow: [BoxShadow(color: const Color(0xFF0D9488).withOpacity(0.25), blurRadius: 16, spreadRadius: 2)],
       ),
       child: Center(
         child: Text(
@@ -406,11 +406,11 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF667EEA).withOpacity(0.15),
+                  color: const Color(0xFF0D9488).withOpacity(0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text('${(progress * 100).toInt()}%',
-                  style: GoogleFonts.cairo(color: const Color(0xFF667EEA), fontSize: 13, fontWeight: FontWeight.bold)),
+                  style: GoogleFonts.cairo(color: const Color(0xFF0D9488), fontSize: 13, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -426,8 +426,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                     height: 6,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      gradient: const LinearGradient(colors: [Color(0xFF667EEA), Color(0xFF764BA2)]),
-                      boxShadow: [BoxShadow(color: const Color(0xFF667EEA).withOpacity(0.4), blurRadius: 6)],
+                      gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
+                      boxShadow: [BoxShadow(color: const Color(0xFF0D9488).withOpacity(0.4), blurRadius: 6)],
                     ),
                   ),
                 ),
@@ -445,7 +445,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
               ),
               Container(width: 1, height: 36, color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.08)),
               _buildStatItem(
-                Icons.check_circle_outline, const Color(0xFF667EEA),
+                Icons.check_circle_outline, const Color(0xFF0D9488),
                 '$completedTasks/$totalTasks',
                 _t(lang, 'مهمة', 'ئەرک', 'Tasks'), lang,
               ),
@@ -524,7 +524,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.bar_chart_rounded, color: const Color(0xFF667EEA), size: 18),
+              Icon(Icons.bar_chart_rounded, color: const Color(0xFF0D9488), size: 18),
               const SizedBox(width: 8),
               Text(
                 _t(lang, 'التقدم الأسبوعي', 'پێشکەوتنی هەفتانە', 'Weekly Progress'),
@@ -558,11 +558,11 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                             gradient: LinearGradient(
                               begin: Alignment.bottomCenter, end: Alignment.topCenter,
                               colors: isToday
-                                  ? [const Color(0xFF667EEA), const Color(0xFF764BA2)]
-                                  : [const Color(0xFF667EEA).withOpacity(isDark ? 0.4 : 0.25), const Color(0xFF764BA2).withOpacity(isDark ? 0.2 : 0.15)],
+                                  ? [const Color(0xFF0D9488), const Color(0xFF0F766E)]
+                                  : [const Color(0xFF0D9488).withOpacity(isDark ? 0.4 : 0.25), const Color(0xFF0F766E).withOpacity(isDark ? 0.2 : 0.15)],
                             ),
                             boxShadow: isToday
-                                ? [BoxShadow(color: const Color(0xFF667EEA).withOpacity(0.3), blurRadius: 6)]
+                                ? [BoxShadow(color: const Color(0xFF0D9488).withOpacity(0.3), blurRadius: 6)]
                                 : null,
                           ),
                         ),
@@ -678,7 +678,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
           colors: isPreviousCompleted
               ? [const Color(0xFF4CAF50).withOpacity(0.6), const Color(0xFF4CAF50).withOpacity(0.2)]
               : isUnlocked
-                  ? [const Color(0xFF667EEA).withOpacity(0.5), const Color(0xFF667EEA).withOpacity(0.15)]
+                  ? [const Color(0xFF0D9488).withOpacity(0.5), const Color(0xFF0D9488).withOpacity(0.15)]
                   : [
                       isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.1),
                       isDark ? Colors.white.withOpacity(0.03) : Colors.black.withOpacity(0.03)
@@ -998,8 +998,8 @@ class _ConfettiOverlayState extends State<_ConfettiOverlay> with SingleTickerPro
       size: 4 + _random.nextDouble() * 8,
       color: [
         const Color(0xFFFFD700), const Color(0xFFFF6B6B), const Color(0xFF4CAF50),
-        const Color(0xFF667EEA), const Color(0xFFFF9800), const Color(0xFF9C27B0),
-        const Color(0xFF00BCD4), const Color(0xFFE91E63),
+        const Color(0xFF0D9488), const Color(0xFFFF9800), const Color(0xFF9C27B0),
+        const Color(0xFF14B8A6), const Color(0xFF0D9488),
       ][_random.nextInt(8)],
     ));
   }

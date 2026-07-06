@@ -841,7 +841,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Color(0xFF667eea), Color(0xFF764ba2), Color(0xFFf093fb)],
+                      colors: [Color(0xFF0D9488), Color(0xFF0F766E), Color(0xFF14B8A6)],
                     ),
                   ),
                   child: Stack(
@@ -925,13 +925,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                const Color(0xFF667eea).withOpacity(isDark ? 0.3 : 0.15),
-                                const Color(0xFF764ba2).withOpacity(isDark ? 0.2 : 0.08),
+                                const Color(0xFF0D9488).withOpacity(isDark ? 0.3 : 0.15),
+                                const Color(0xFF0F766E).withOpacity(isDark ? 0.2 : 0.08),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: const Color(0xFF667eea).withOpacity(0.3),
+                              color: const Color(0xFF0D9488).withOpacity(0.3),
                             ),
                           ),
                           child: Row(
@@ -939,10 +939,10 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF667eea).withOpacity(0.2),
+                                  color: const Color(0xFF0D9488).withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Icon(Icons.people, color: Color(0xFF667eea), size: 22),
+                                child: const Icon(Icons.people, color: Color(0xFF0D9488), size: 22),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -1045,7 +1045,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                   controller: _tabController,
                   indicator: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF667eea), Color(0xFF764ba2)],
+                      colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -1277,13 +1277,13 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             colors: [
-                                              const Color(0xFF00BCD4).withOpacity(0.25),
+                                              const Color(0xFF14B8A6).withOpacity(0.25),
                                               const Color(0xFF26A69A).withOpacity(0.25),
                                             ],
                                           ),
                                           borderRadius: BorderRadius.circular(6),
                                           border: Border.all(
-                                            color: const Color(0xFF00BCD4).withOpacity(0.4),
+                                            color: const Color(0xFF14B8A6).withOpacity(0.4),
                                             width: 1,
                                           ),
                                         ),
@@ -1404,7 +1404,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                    colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                   ),
                   borderRadius: BorderRadius.circular(20),
                 ),

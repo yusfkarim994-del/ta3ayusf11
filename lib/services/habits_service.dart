@@ -78,7 +78,7 @@ class HabitsList {
     HabitItem(id: 'dhikr', emoji: '📿', nameArabic: 'الذكر', nameKurdish: 'زیکر', nameEnglish: 'Dhikr', color: Color(0xFF795548), category: 'spiritual'),
     HabitItem(id: 'dua', emoji: '🤲', nameArabic: 'الدعاء', nameKurdish: 'دوعا', nameEnglish: "Du'a", color: Color(0xFF607D8B), category: 'spiritual'),
     HabitItem(id: 'fasting', emoji: '🌙', nameArabic: 'الصيام', nameKurdish: 'ڕۆژوو', nameEnglish: 'Fasting', color: Color(0xFF3F51B5), category: 'spiritual'),
-    HabitItem(id: 'charity', emoji: '🤝', nameArabic: 'الصدقة', nameKurdish: 'خێرات', nameEnglish: 'Charity', color: Color(0xFFE91E63), category: 'spiritual'),
+    HabitItem(id: 'charity', emoji: '🤝', nameArabic: 'الصدقة', nameKurdish: 'خێرات', nameEnglish: 'Charity', color: Color(0xFF0D9488), category: 'spiritual'),
     HabitItem(id: 'gratitude', emoji: '✨', nameArabic: 'الامتنان', nameKurdish: 'سوپاس', nameEnglish: 'Gratitude', color: Color(0xFFFFC107), category: 'spiritual'),
     
     // Productivity
@@ -89,14 +89,14 @@ class HabitsList {
     HabitItem(id: 'studying', emoji: '✏️', nameArabic: 'الدراسة', nameKurdish: 'خوێندن', nameEnglish: 'Studying', color: Color(0xFFFF9800), category: 'productivity'),
     
     // Social
-    HabitItem(id: 'family', emoji: '👨‍👩‍👧‍👦', nameArabic: 'وقت العائلة', nameKurdish: 'کاتی خێزان', nameEnglish: 'Family Time', color: Color(0xFFE91E63), category: 'social'),
+    HabitItem(id: 'family', emoji: '👨‍👩‍👧‍👦', nameArabic: 'وقت العائلة', nameKurdish: 'کاتی خێزان', nameEnglish: 'Family Time', color: Color(0xFF0D9488), category: 'social'),
     HabitItem(id: 'friends', emoji: '👥', nameArabic: 'وقت الأصدقاء', nameKurdish: 'کاتی هاوڕێیان', nameEnglish: 'Friends Time', color: Color(0xFF2196F3), category: 'social'),
     HabitItem(id: 'call_parents', emoji: '📞', nameArabic: 'اتصل بالوالدين', nameKurdish: 'پەیوەندی بە دایک و باوک', nameEnglish: 'Call Parents', color: Color(0xFF4CAF50), category: 'social'),
     HabitItem(id: 'volunteer', emoji: '🤗', nameArabic: 'التطوع', nameKurdish: 'خۆبەخشی', nameEnglish: 'Volunteer', color: Color(0xFFFF9800), category: 'social'),
     HabitItem(id: 'smile', emoji: '😊', nameArabic: 'الابتسامة', nameKurdish: 'پێکەنین', nameEnglish: 'Smile', color: Color(0xFFFFC107), category: 'social'),
     
     // Self-care
-    HabitItem(id: 'skincare', emoji: '🧴', nameArabic: 'العناية بالبشرة', nameKurdish: 'چاودێری پێست', nameEnglish: 'Skincare', color: Color(0xFFE91E63), category: 'selfcare'),
+    HabitItem(id: 'skincare', emoji: '🧴', nameArabic: 'العناية بالبشرة', nameKurdish: 'چاودێری پێست', nameEnglish: 'Skincare', color: Color(0xFF0D9488), category: 'selfcare'),
     HabitItem(id: 'shower', emoji: '🚿', nameArabic: 'الاستحمام', nameKurdish: 'خۆشۆردن', nameEnglish: 'Shower', color: Color(0xFF2196F3), category: 'selfcare'),
     HabitItem(id: 'teeth', emoji: '🦷', nameArabic: 'تنظيف الأسنان', nameKurdish: 'ددان شۆردن', nameEnglish: 'Brush Teeth', color: Color(0xFFFFFFFF), category: 'selfcare'),
     HabitItem(id: 'lecture', emoji: '🎧', nameArabic: 'محاضرة دينية', nameKurdish: 'وتاری ئاینی', nameEnglish: 'Islamic Lecture', color: Color(0xFF673AB7), category: 'selfcare'),
@@ -106,13 +106,13 @@ class HabitsList {
     // Avoid Bad Habits
     HabitItem(id: 'no_smoking', emoji: '🚭', nameArabic: 'بدون تدخين', nameKurdish: 'جگەرە نەکێشان', nameEnglish: 'No Smoking', color: Color(0xFFF44336), category: 'avoid'),
     HabitItem(id: 'no_junkfood', emoji: '🍔', nameArabic: 'بدون وجبات سريعة', nameKurdish: 'فاست فوود نا', nameEnglish: 'No Junk Food', color: Color(0xFFFF9800), category: 'avoid'),
-    HabitItem(id: 'no_sugar', emoji: '🍬', nameArabic: 'بدون سكر', nameKurdish: 'شەکر نا', nameEnglish: 'No Sugar', color: Color(0xFFE91E63), category: 'avoid'),
+    HabitItem(id: 'no_sugar', emoji: '🍬', nameArabic: 'بدون سكر', nameKurdish: 'شەکر نا', nameEnglish: 'No Sugar', color: Color(0xFF0D9488), category: 'avoid'),
     HabitItem(id: 'no_caffeine', emoji: '☕', nameArabic: 'بدون كافيين', nameKurdish: 'کافین نا', nameEnglish: 'No Caffeine', color: Color(0xFF795548), category: 'avoid'),
     HabitItem(id: 'no_social_media', emoji: '📱', nameArabic: 'بدون سوشيال ميديا', nameKurdish: 'سۆشیال میدیا نا', nameEnglish: 'No Social Media', color: Color(0xFF2196F3), category: 'avoid'),
     HabitItem(id: 'no_tv', emoji: '📺', nameArabic: 'بدون تلفزيون', nameKurdish: 'تەلەڤزیۆن نا', nameEnglish: 'No TV', color: Color(0xFF607D8B), category: 'avoid'),
     HabitItem(id: 'no_anger', emoji: '😤', nameArabic: 'التحكم بالغضب', nameKurdish: 'تووڕەیی نا', nameEnglish: 'No Anger', color: Color(0xFFF44336), category: 'avoid'),
     HabitItem(id: 'no_gossip', emoji: '🤐', nameArabic: 'بدون غيبة', nameKurdish: 'غیبەت نا', nameEnglish: 'No Gossip', color: Color(0xFF9E9E9E), category: 'avoid'),
-    HabitItem(id: 'no_lying', emoji: '🤥', nameArabic: 'بدون كذب', nameKurdish: 'درۆ نا', nameEnglish: 'No Lying', color: Color(0xFF00BCD4), category: 'avoid'),
+    HabitItem(id: 'no_lying', emoji: '🤥', nameArabic: 'بدون كذب', nameKurdish: 'درۆ نا', nameEnglish: 'No Lying', color: Color(0xFF14B8A6), category: 'avoid'),
   ];
 
   static List<String> get categories => ['health', 'spiritual', 'productivity', 'social', 'selfcare', 'avoid'];

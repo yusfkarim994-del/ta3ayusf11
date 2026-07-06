@@ -412,7 +412,7 @@ class _TrackingScreenState extends State<TrackingScreen> with TickerProviderStat
                             : _getStatusColor(status).withOpacity(status == DayStatus.unknown ? 0.1 : 0.25),
                         borderRadius: BorderRadius.circular(8),
                         border: isToday 
-                            ? Border.all(color: const Color(0xFF667EEA), width: 2)
+                            ? Border.all(color: const Color(0xFF0D9488), width: 2)
                             : null,
                       ),
                       child: Center(
@@ -486,7 +486,7 @@ class _TrackingScreenState extends State<TrackingScreen> with TickerProviderStat
         
         return FloatingActionButton.extended(
           onPressed: () => _showStatusModal(lang, isDark),
-          backgroundColor: isRecorded ? successColor : const Color(0xFF667EEA),
+          backgroundColor: isRecorded ? successColor : const Color(0xFF0D9488),
           icon: Icon(
             isRecorded ? Icons.check : Icons.add,
             color: Colors.white,
@@ -547,7 +547,7 @@ class _TrackingScreenState extends State<TrackingScreen> with TickerProviderStat
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF667EEA).withOpacity(0.15),
+                    color: const Color(0xFF0D9488).withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -555,7 +555,7 @@ class _TrackingScreenState extends State<TrackingScreen> with TickerProviderStat
                     style: lang.getTextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF667EEA),
+                      color: const Color(0xFF0D9488),
                     ),
                   ),
                 ),

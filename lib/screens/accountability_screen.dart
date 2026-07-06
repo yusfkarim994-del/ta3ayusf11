@@ -486,7 +486,7 @@ class _AccountabilityScreenState extends State<AccountabilityScreen> {
                         : (lang.currentLanguage == AppLanguage.arabic ? 'رقم الواتساب' : 'ڕەقەمی وەتسئەپ'),
                       labelStyle: lang.getTextStyle(color: lang.isDarkMode ? Colors.white60 : Colors.black54),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: lang.isDarkMode ? Colors.white24 : Colors.black12)),
-                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF667eea))),
+                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF0D9488))),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -498,7 +498,7 @@ class _AccountabilityScreenState extends State<AccountabilityScreen> {
                       labelText: lang.currentLanguage == AppLanguage.arabic ? 'الرسالة' : 'پەیام',
                       labelStyle: lang.getTextStyle(color: lang.isDarkMode ? Colors.white60 : Colors.black54),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: lang.isDarkMode ? Colors.white24 : Colors.black12)),
-                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF667eea))),
+                      focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color(0xFF0D9488))),
                     ),
                   ),
                 ],
@@ -528,7 +528,7 @@ class _AccountabilityScreenState extends State<AccountabilityScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF667eea),
+                  backgroundColor: const Color(0xFF0D9488),
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -550,9 +550,9 @@ class _AccountabilityScreenState extends State<AccountabilityScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF667eea) : Colors.transparent,
+          color: isSelected ? const Color(0xFF0D9488) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isSelected ? const Color(0xFF667eea) : Colors.grey.withOpacity(0.3)),
+          border: Border.all(color: isSelected ? const Color(0xFF0D9488) : Colors.grey.withOpacity(0.3)),
         ),
         child: Row(
           children: [

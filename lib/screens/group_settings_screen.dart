@@ -194,12 +194,12 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
                 decoration: BoxDecoration(
                   color: group.isPrivate 
                     ? const Color(0xFFEF4444).withOpacity(isDark ? 0.2 : 0.1)
-                    : const Color(0xFF3B82F6).withOpacity(isDark ? 0.2 : 0.1),
+                    : const Color(0xFF0D9488).withOpacity(isDark ? 0.2 : 0.1),
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: group.isPrivate 
                       ? const Color(0xFFEF4444).withOpacity(0.5) 
-                      : const Color(0xFF3B82F6).withOpacity(0.5),
+                      : const Color(0xFF0D9488).withOpacity(0.5),
                     width: 2,
                   ),
                 ),
@@ -253,7 +253,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
               _buildInfoChip(
                 icon: Icons.people,
                 label: '${group.memberIds.length} ${_getMembersText(lang)}',
-                color: const Color(0xFF667EEA),
+                color: const Color(0xFF0D9488),
                 lang: lang,
               ),
             ],
@@ -314,7 +314,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
       icon: Icons.description,
       title: _getEditDescriptionText(lang),
       subtitle: group.description ?? _getNoDescriptionText(lang),
-      color: Colors.purple,
+      color: Colors.teal,
       isDark: isDark,
       lang: lang,
       onTap: () => _showEditDescriptionDialog(group, lang, isDark),
@@ -741,7 +741,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 if (controller.text.trim().isNotEmpty) {
                   await _groupService.updateGroupName(widget.groupId, controller.text.trim());
@@ -787,7 +787,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
               child: Text(lang.cancel, style: lang.getTextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF667EEA)),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D9488)),
               onPressed: () async {
                 await _groupService.updateGroupDescription(
                   widget.groupId,

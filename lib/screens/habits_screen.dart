@@ -104,7 +104,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
         floatingActionButton: _showAddHabits 
           ? FloatingActionButton(
               onPressed: () => _showAddCustomHabitDialog(lang, isDark),
-              backgroundColor: const Color(0xFF667EEA),
+              backgroundColor: const Color(0xFF0D9488),
               child: const Icon(Icons.add, color: Colors.white),
             )
           : null,
@@ -157,7 +157,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                 color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(Icons.bar_chart_rounded, color: Color(0xFF667EEA)),
+              child: const Icon(Icons.bar_chart_rounded, color: Color(0xFF0D9488)),
             ),
           ),
         ],
@@ -194,14 +194,14 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                const Color(0xFF667EEA),
-                const Color(0xFF764BA2),
+                const Color(0xFF0D9488),
+                const Color(0xFF0F766E),
               ],
             ),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF667EEA).withOpacity(0.4),
+                color: const Color(0xFF0D9488).withOpacity(0.4),
                 blurRadius: 25,
                 offset: const Offset(0, 10),
               ),
@@ -285,7 +285,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: !_showAddHabits ? const Color(0xFF667EEA) : Colors.transparent,
+                  color: !_showAddHabits ? const Color(0xFF0D9488) : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -307,7 +307,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _showAddHabits ? const Color(0xFF667EEA) : Colors.transparent,
+                  color: _showAddHabits ? const Color(0xFF0D9488) : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -370,7 +370,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF667EEA).withOpacity(0.1),
+                  color: const Color(0xFF0D9488).withOpacity(0.1),
                   blurRadius: 30,
                 ),
               ],
@@ -568,10 +568,10 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
               margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF667EEA) : (isDark ? Colors.white.withOpacity(0.1) : Colors.white),
+                color: isSelected ? const Color(0xFF0D9488) : (isDark ? Colors.white.withOpacity(0.1) : Colors.white),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: isSelected ? const Color(0xFF667EEA) : Colors.transparent,
+                  color: isSelected ? const Color(0xFF0D9488) : Colors.transparent,
                 ),
               ),
               child: Text(
@@ -816,7 +816,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFF667EEA)),
+                      borderSide: const BorderSide(color: Color(0xFF0D9488)),
                     ),
                   ),
                   style: lang.getTextStyle(
@@ -858,11 +858,11 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                             height: 36,
                             decoration: BoxDecoration(
                               color: isSelected 
-                                  ? const Color(0xFF667EEA).withOpacity(0.3)
+                                  ? const Color(0xFF0D9488).withOpacity(0.3)
                                   : Colors.transparent,
                               borderRadius: BorderRadius.circular(8),
                               border: isSelected 
-                                  ? Border.all(color: const Color(0xFF667EEA), width: 2)
+                                  ? Border.all(color: const Color(0xFF0D9488), width: 2)
                                   : null,
                             ),
                             child: Center(
@@ -936,7 +936,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF667EEA),
+                backgroundColor: const Color(0xFF0D9488),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: () {
@@ -944,7 +944,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                   Provider.of<HabitsService>(context, listen: false).createCustomHabit(
                     nameController.text, 
                     selectedEmoji, 
-                    Colors.purple,
+                    Colors.teal,
                     selectedCategory
                   );
                   Navigator.pop(context);
@@ -1054,7 +1054,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                              colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
                             ),
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -1087,7 +1087,7 @@ class _HabitsScreenState extends State<HabitsScreen> with TickerProviderStateMix
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: _buildOverallStatCard(lang, isDark, Icons.list_alt_rounded, '$totalHabits', activeHabitsText, const Color(0xFF667EEA)),
+                          child: _buildOverallStatCard(lang, isDark, Icons.list_alt_rounded, '$totalHabits', activeHabitsText, const Color(0xFF0D9488)),
                         ),
                       ],
                     ),

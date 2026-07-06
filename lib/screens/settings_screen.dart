@@ -783,7 +783,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             decoration: const BoxDecoration(
                               color: Colors.transparent,
                             ),
-                            child: _buildGradientIcon(Icons.format_size_rounded, [const Color(0xFFf093fb), const Color(0xFFf5576c)]),
+                            child: _buildGradientIcon(Icons.format_size_rounded, [const Color(0xFF14B8A6), const Color(0xFF0F766E)]),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
@@ -810,7 +810,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text('${(lang.textScale * 100).round()}%', style: lang.getTextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF00BCD4))),
+                            child: Text('${(lang.textScale * 100).round()}%', style: lang.getTextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: const Color(0xFF14B8A6))),
                           ),
                           // Increase button
                           GestureDetector(
@@ -1043,31 +1043,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF667eea).withOpacity(0.15),
+                    color: const Color(0xFF0D9488).withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFF667eea).withOpacity(0.3)),
+                    border: Border.all(color: const Color(0xFF0D9488).withOpacity(0.3)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.badge_outlined, size: 18, color: Color(0xFF667eea)),
+                      const Icon(Icons.badge_outlined, size: 18, color: Color(0xFF0D9488)),
                       const SizedBox(width: 8),
                       Text(_getUserIdLabel(lang), style: lang.getTextStyle(fontSize: 13, color: isDark ? Colors.white70 : Colors.black54)),
                       const SizedBox(width: 8),
-                      Text(_userId!, style: lang.getTextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF667eea))),
+                      Text(_userId!, style: lang.getTextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color(0xFF0D9488))),
                       const SizedBox(width: 8),
                       GestureDetector(
                         onTap: () {
                           Clipboard.setData(ClipboardData(text: _userId!));
-                          _showSnackBar(_getCopiedMessage(lang), const Color(0xFF667eea));
+                          _showSnackBar(_getCopiedMessage(lang), const Color(0xFF0D9488));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF667eea).withOpacity(0.2),
+                            color: const Color(0xFF0D9488).withOpacity(0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(Icons.copy, size: 16, color: Color(0xFF667eea)),
+                          child: const Icon(Icons.copy, size: 16, color: Color(0xFF0D9488)),
                         ),
                       ),
                     ],
@@ -1204,7 +1204,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: isDark ? const Color(0xFF667eea).withOpacity(0.3) : Colors.grey.withOpacity(0.2),
+          color: isDark ? const Color(0xFF0D9488).withOpacity(0.3) : Colors.grey.withOpacity(0.2),
           width: 1.5,
         ),
         boxShadow: isDark ? null : [
@@ -1219,7 +1219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           leading: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF667eea), Color(0xFFf093fb)]),
+              gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)]),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.info_outline_rounded, color: Colors.white, size: 22),
@@ -1240,18 +1240,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: isDark 
-                      ? [const Color(0xFF667eea).withOpacity(0.2), const Color(0xFFf093fb).withOpacity(0.2)]
-                      : [const Color(0xFF667eea).withOpacity(0.1), const Color(0xFFf093fb).withOpacity(0.1)],
+                      ? [const Color(0xFF0D9488).withOpacity(0.2), const Color(0xFF14B8A6).withOpacity(0.2)]
+                      : [const Color(0xFF0D9488).withOpacity(0.1), const Color(0xFF14B8A6).withOpacity(0.1)],
                 ),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFF667eea).withOpacity(0.3)),
+                border: Border.all(color: const Color(0xFF0D9488).withOpacity(0.3)),
               ),
               child: Text(
                 'بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ',
                 style: lang.getTextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF667eea),
+                  color: const Color(0xFF0D9488),
                 ),
                 textAlign: TextAlign.center,
               ),

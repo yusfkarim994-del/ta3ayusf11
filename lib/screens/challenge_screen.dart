@@ -434,7 +434,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                 _buildStatCard('📅', _getDayText(lang), '${stats['currentDay']}/90', Colors.blue),
                 _buildStatCard('⭐', 'XP', '${stats['totalXP']}', Colors.amber),
                 _buildStatCard('🔥', 'Streak', '${stats['currentStreak']}', Colors.orange),
-                _buildStatCard('🏆', _getBestStreakText(lang), '${stats['highestStreak']}', Colors.purple),
+                _buildStatCard('🏆', _getBestStreakText(lang), '${stats['highestStreak']}', Colors.teal),
                 _buildStatCard('✅', _getTotalTasksText(lang), '${stats['totalTasks']}', Colors.green),
                 _buildStatCard('📍', _getStagesText(lang), '${stats['currentStage']}/18', Colors.teal),
               ],

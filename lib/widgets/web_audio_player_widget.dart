@@ -102,7 +102,7 @@ class _WebAudioPlayerWidgetState extends State<WebAudioPlayerWidget> {
         : Duration(seconds: widget.durationSeconds);
         
     final isWhiteBg = widget.activeColor.value == 0xFFFFFFFF;
-    final iconColor = isWhiteBg ? const Color(0xFF667EEA) : Colors.white;
+    final iconColor = isWhiteBg ? const Color(0xFF0D9488) : Colors.white;
 
     return Container(
       width: 200,

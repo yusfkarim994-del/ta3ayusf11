@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'theme/app_theme.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/app_lock_screen.dart';
@@ -129,14 +129,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: langService.appName,
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color(0xFF667eea),
-              brightness: Brightness.light,
-            ),
-            useMaterial3: true,
-            textTheme: GoogleFonts.cairoTextTheme(),
-          ),
+          theme: AppDesign.light,
           home: const AuthWrapper(),
         );
       },

@@ -69,7 +69,7 @@ class UserAvatar extends StatelessWidget {
   }
 
   Widget _buildInitials() {
-    final bgColor = backgroundColor ?? const Color(0xFF667eea);
+    final bgColor = backgroundColor ?? const Color(0xFF0D9488);
     final txtColor = textColor ?? (useGradient ? Colors.white : bgColor);
 
     return Container(
@@ -79,7 +79,7 @@ class UserAvatar extends StatelessWidget {
         shape: BoxShape.circle,
         color: useGradient ? null : bgColor.withOpacity(0.2),
         gradient: useGradient 
-           ? const LinearGradient(colors: [Color(0xFF667eea), Color(0xFFf093fb)])
+           ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)])
            : null,
       ),
       child: Center(
