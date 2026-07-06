@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,28 +44,38 @@ void main() async {
       return true;
     };
 
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    
+    // Initialize Firebase with timeout for web
     try {
-      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ).timeout(const Duration(seconds: 10), onTimeout: () {
+        debugPrint('Firebase init timeout on web');
+        throw Exception('Firebase init timeout');
+      });
       
-      // Check for internet before invoking FCM Native SDKs
-      bool hasInternet = false;
-      try {
-        final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 2));
-        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-          hasInternet = true;
+      if (!kIsWeb) {
+        try {
+          FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+          
+          // Check for internet before invoking FCM Native SDKs
+          bool hasInternet = false;
+          try {
+            final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 2));
+            if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+              hasInternet = true;
+            }
+          } catch (_) {}
+          
+          if (hasInternet) {
+            FirebaseMessaging.instance.requestPermission().catchError((e) => debugPrint('FCM Perm Error: $e'));
+            FirebaseMessaging.instance.subscribeToTopic('all').catchError((e) => debugPrint('FCM Topic Error: $e'));
+          }
+        } catch (e) {
+          debugPrint('Firebase messaging setup error: $e');
         }
-      } catch (_) {}
-      
-      if (hasInternet) {
-        FirebaseMessaging.instance.requestPermission().catchError((e) => debugPrint('FCM Perm Error: $e'));
-        FirebaseMessaging.instance.subscribeToTopic('all').catchError((e) => debugPrint('FCM Topic Error: $e'));
       }
     } catch (e) {
-      debugPrint('Firebase messaging setup error: $e');
+      debugPrint('Firebase setup error (web may continue): $e');
     }
     
     final languageService = LanguageService();
@@ -145,7 +156,13 @@ class AuthWrapper extends StatelessWidget {
     final authService = AuthService();
     
     return StreamBuilder(
-      stream: authService.authStateChanges,
+      stream: authService.authStateChanges.timeout(
+        const Duration(seconds: 8),
+        onTimeout: (sink) {
+          debugPrint('[v0] Auth timeout, showing login');
+          sink.add(null); // Show login on timeout
+        },
+      ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
