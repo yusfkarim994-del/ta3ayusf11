@@ -1,0 +1,8 @@
+{
+  "buildCommand": "",
+  "outputDirectory": "web_release",
+  "framework": null,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
