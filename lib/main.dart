@@ -148,42 +148,72 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
   @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  late final AuthService _authService;
+  User? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _authService = AuthService();
+    _checkAuthState();
+  }
+
+  Future<void> _checkAuthState() async {
+    try {
+      // Listen to auth changes but with timeout
+      _authService.authStateChanges
+          .timeout(const Duration(seconds: 5))
+          .listen((user) {
+        if (mounted) {
+          setState(() {
+            _currentUser = user;
+          });
+        }
+      }, onError: (error) {
+        debugPrint('[v0] Auth error: $error');
+        if (mounted) {
+          setState(() {
+            _currentUser = null;
+          });
+        }
+      });
+
+      // Also check current user immediately
+      final currentUser = _authService.currentUser;
+      if (mounted) {
+        setState(() {
+          _currentUser = currentUser;
+        });
+      }
+    } catch (e) {
+      debugPrint('[v0] Auth init error: $e');
+      if (mounted) {
+        setState(() {
+          _currentUser = null;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-    
-    return StreamBuilder(
-      stream: authService.authStateChanges.timeout(
-        const Duration(seconds: 8),
-        onTimeout: (sink) {
-          debugPrint('[v0] Auth timeout, showing login');
-          sink.add(null); // Show login on timeout
-        },
-      ),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        
-        if (snapshot.hasData) {
-          // Wrap HomeScreen with AppLockScreen and WelcomeMessageWidget
-          return AppLockScreen(
-            child: const WelcomeMessageWidget(
-              child: HomeScreen(),
-            ),
-          );
-        }
-        
-        return const LoginScreen();
-      },
-    );
+    if (_currentUser != null) {
+      return AppLockScreen(
+        child: const WelcomeMessageWidget(
+          child: HomeScreen(),
+        ),
+      );
+    }
+
+    return const LoginScreen();
   }
 }
 
