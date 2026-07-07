@@ -1,8 +1,6 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:universal_html/html.dart' as html;
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -12,25 +10,7 @@ class AuthService {
   User? get currentUser => _auth.currentUser;
 
   // Auth state changes stream
-  Stream<User?> get authStateChanges {
-    if (kIsWeb && html.localStorage['is_guest'] == 'true') {
-      // Return a stream that emits a dummy guest user for web
-      return Stream.value(null).then((_) {
-        // Check if guest session exists
-        if (html.localStorage['is_guest'] == 'true') {
-          // Return a fake User-like object or null (handled in UI)
-          return Stream.value(_createGuestUser());
-        }
-        return _auth.authStateChanges();
-      }).asStream().expand((stream) => stream);
-    }
-    return _auth.authStateChanges();
-  }
-  
-  User? _createGuestUser() {
-    // Create a mock guest user for web (will be handled specially in UI)
-    return null; // Return null but with flag in localStorage
-  }
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   // Check if user is guest
   bool get isGuest => _auth.currentUser?.isAnonymous ?? false;
@@ -150,19 +130,9 @@ class AuthService {
   // Sign in as guest (anonymous)
   Future<UserCredential?> signInAsGuest() async {
     try {
-      // For web, use localStorage to simulate guest session (Firebase Anonymous Auth is problematic on web)
-      if (kIsWeb) {
-        final guestId = 'guest_${DateTime.now().millisecondsSinceEpoch}_${Random().nextInt(100000)}';
-        html.localStorage['guest_user_id'] = guestId;
-        html.localStorage['is_guest'] = 'true';
-        
-        // Simulate a guest user object
-        return null; // Web guest doesn't need credential
-      }
-      
-      // For native platforms, use Firebase Anonymous Sign-In
+      // Firebase Anonymous Sign-In with timeout to prevent hanging
       final credential = await _auth.signInAnonymously().timeout(
-        const Duration(seconds: 8),
+        const Duration(seconds: 10),
         onTimeout: () {
           throw FirebaseAuthException(
             code: 'timeout',
