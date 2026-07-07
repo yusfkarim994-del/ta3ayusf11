@@ -2304,7 +2304,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: isDark ? [const Color(0xFF0a1628), const Color(0xFF1a2a4a), const Color(0xFF0a1628)] : [const Color(0xFFF8FAFA), const Color(0xFFF0FBF9), const Color(0xFFF8F4FC)],
+                  colors: isDark ? [const Color(0xFF0F172A), const Color(0xFF16283E), const Color(0xFF0F172A)] : [const Color(0xFFF8FAFA), const Color(0xFFF1F7F6), const Color(0xFFF8FAFA)],
                 ),
               ),
             ),
@@ -2361,11 +2361,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   // Leaderboard
                                   GestureDetector(
                                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LeaderboardScreen())),
-                                    child: Image.asset(
-                                      'assets/images/icon_top_leaderboard.png',
-                                      width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                      height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                      fit: BoxFit.contain,
+                                    child: Container(
+                                      padding: EdgeInsets.all(iconPadding),
+                                      decoration: BoxDecoration(
+                                        color: btnBg,
+                                        borderRadius: btnRadius,
+                                        boxShadow: btnShadow,
+                                      ),
+                                      child: Icon(
+                                        Icons.emoji_events_rounded,
+                                        color: const Color(0xFFD97706),
+                                        size: iconSize,
+                                      ),
                                     ),
                                   ),
                                   SizedBox(width: spacing / 2),
@@ -2378,11 +2385,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     offset: const Offset(0, 45),
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                                     color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-                                    child: Image.asset(
-                                      'assets/images/icon_top_badges.png',
-                                      width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                      height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                      fit: BoxFit.contain,
+                                    child: Container(
+                                      padding: EdgeInsets.all(iconPadding),
+                                      decoration: BoxDecoration(
+                                        color: btnBg,
+                                        borderRadius: btnRadius,
+                                        boxShadow: btnShadow,
+                                      ),
+                                      child: Icon(
+                                        Icons.military_tech_rounded,
+                                        color: const Color(0xFF0D9488),
+                                        size: iconSize,
+                                      ),
                                     ),
                                     itemBuilder: (context) => [
                                       PopupMenuItem(
@@ -2437,11 +2451,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         return Stack(
                                           clipBehavior: Clip.none,
                                           children: [
-                                            Image.asset(
-                                              'assets/images/icon_top_notifications.png',
-                                              width: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                              height: isVerySmall ? 30.0 : (isSmallScreen ? 36.0 : 42.0),
-                                              fit: BoxFit.contain,
+                                            Container(
+                                              padding: EdgeInsets.all(iconPadding),
+                                              decoration: BoxDecoration(
+                                                color: btnBg,
+                                                borderRadius: btnRadius,
+                                                boxShadow: btnShadow,
+                                              ),
+                                              child: Icon(
+                                                Icons.notifications_rounded,
+                                                color: const Color(0xFFF43F5E),
+                                                size: iconSize,
+                                              ),
                                             ),
                                             if (_announcementsService.unreadCount > 0)
                                               Positioned(
@@ -2450,7 +2471,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 child: Container(
                                                   padding: const EdgeInsets.all(4),
                                                   decoration: BoxDecoration(
-                                                    gradient: const LinearGradient(colors: [Colors.red, Color(0xFFFF1744)]),
+                                                    color: const Color(0xFFF43F5E),
                                                     shape: BoxShape.circle,
                                                     border: Border.all(color: Colors.white, width: 1.5),
                                                   ),
@@ -2529,7 +2550,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         lang.currentLanguage == AppLanguage.kurdish ? 'پاڵپشتی و فریاگوزاری خێرا'
                           : lang.currentLanguage == AppLanguage.arabic ? 'الدعم والإنقاذ السريع'
                           : 'Immediate Support & Help',
-                        lang, isDark, const Color(0xFFFF4757)
+                        lang, isDark, const Color(0xFFF43F5E)
                       ),
                       
                       _buildPremiumSequentialCard(
@@ -2662,14 +2683,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         lang.currentLanguage == AppLanguage.kurdish ? 'لایه نی ڕۆحی و مەعریفی'
                           : lang.currentLanguage == AppLanguage.arabic ? 'الجانب الروحي والمعرفي'
                           : 'Spiritual & Cognitive',
-                        lang, isDark, const Color(0xFF10B981)
+                        lang, isDark, const Color(0xFFD97706)
                       ),
                       
                       _buildPremiumSequentialCard(
                         title: lang.currentLanguage == AppLanguage.kurdish ? 'گوێ لە قورئانی پیرۆز بگرە'
                           : lang.currentLanguage == AppLanguage.arabic ? 'استمع للقرآن الكريم'
                           : 'Listen to Holy Quran',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'كاته‌به‌تاڵه‌كانت پڕبكه‌وه‌ به‌قورئان بۆدووركه‌وتنه‌وه‌ لەزلە'
+                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'كاته‌به‌تاڵه‌كانت پڕبكه‌وه‌ به‌قورئان بۆدو��ركه‌وتنه‌وه‌ لەزلە'
                           : lang.currentLanguage == AppLanguage.arabic ? 'املأ أوقات فراغك بالقرآن الكريم لتجنب الزلات'
                           : 'Fill your free time with the Quran to avoid relapse',
                         iconAsset: 'assets/images/icon_quran.png',
@@ -3710,51 +3731,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildCategoryHeader(String title, LanguageService lang, bool isDark, Color color) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 12, left: 4, right: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.only(top: 20, bottom: 10, left: 2, right: 2),
+      child: Row(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 6,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(3),
-                  boxShadow: [
-                    BoxShadow(
-                      color: color.withOpacity(0.5),
-                      blurRadius: 8,
-                      spreadRadius: 1,
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  title,
-                  style: lang.getTextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: isDark ? Colors.white.withOpacity(0.95) : Colors.black87,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
           Container(
-            height: 1,
-            width: double.infinity,
+            width: 4,
+            height: 18,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  color.withOpacity(0.4),
-                  color.withOpacity(0.05),
-                  Colors.transparent,
-                ],
+              color: color,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              title,
+              style: lang.getTextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+                color: isDark ? Colors.white.withOpacity(0.95) : const Color(0xFF1E293B),
               ),
             ),
           ),
@@ -3762,6 +3757,42 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
+
+  // Unified icon + accent color map: one accent per category for a cohesive design
+  static const Map<String, IconData> _cardIcons = {
+    'assets/images/icon_breathing.png': Icons.self_improvement_rounded,
+    'assets/images/icon_tips.png': Icons.health_and_safety_rounded,
+    'assets/images/icon_dr_taafi.png': Icons.medical_services_rounded,
+    'assets/images/icon_community.png': Icons.groups_rounded,
+    'assets/images/icon_habits.png': Icons.task_alt_rounded,
+    'assets/images/icon_tracking.png': Icons.insights_rounded,
+    'assets/images/icon_journal.png': Icons.edit_note_rounded,
+    'assets/images/icon_commitment.png': Icons.handshake_rounded,
+    'assets/images/icon_quran.png': Icons.menu_book_rounded,
+    'assets/images/icon_stories.png': Icons.auto_stories_rounded,
+    'assets/images/icon_easy_way.png': Icons.headphones_rounded,
+    'assets/images/icon_freedom_model.png': Icons.psychology_rounded,
+    'assets/images/icon_sharia.png': Icons.question_answer_rounded,
+    'assets/images/icon_media.png': Icons.play_circle_rounded,
+  };
+
+  // Category accents: coral = support, teal = daily tools, amber = spiritual
+  static const Map<String, Color> _cardAccents = {
+    'assets/images/icon_breathing.png': Color(0xFFF43F5E),
+    'assets/images/icon_tips.png': Color(0xFFF43F5E),
+    'assets/images/icon_dr_taafi.png': Color(0xFFF43F5E),
+    'assets/images/icon_community.png': Color(0xFFF43F5E),
+    'assets/images/icon_habits.png': Color(0xFF0D9488),
+    'assets/images/icon_tracking.png': Color(0xFF0D9488),
+    'assets/images/icon_journal.png': Color(0xFF0D9488),
+    'assets/images/icon_commitment.png': Color(0xFF0D9488),
+    'assets/images/icon_quran.png': Color(0xFFD97706),
+    'assets/images/icon_stories.png': Color(0xFFD97706),
+    'assets/images/icon_easy_way.png': Color(0xFFD97706),
+    'assets/images/icon_freedom_model.png': Color(0xFFD97706),
+    'assets/images/icon_sharia.png': Color(0xFFD97706),
+    'assets/images/icon_media.png': Color(0xFFD97706),
+  };
 
   Widget _buildPremiumSequentialCard({
     required String title,
@@ -3772,38 +3803,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     required LanguageService lang,
     required bool isDark,
   }) {
-    final accentColor = glowColors.isNotEmpty ? glowColors.first : const Color(0xFF0D9488);
+    final accentColor = _cardAccents[iconAsset] ?? const Color(0xFF0D9488);
+    final cardIcon = _cardIcons[iconAsset] ?? Icons.grid_view_rounded;
     final isRTL = lang.currentLanguage == AppLanguage.arabic || lang.currentLanguage == AppLanguage.kurdish;
     
     final cardContent = [
       Container(
-        width: 54,
-        height: 54,
+        width: 48,
+        height: 48,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: accentColor.withOpacity(isDark ? 0.12 : 0.08),
-          boxShadow: [
-            BoxShadow(
-              color: accentColor.withOpacity(isDark ? 0.25 : 0.15),
-              blurRadius: 12,
-              spreadRadius: -2,
-            ),
-          ],
+          borderRadius: BorderRadius.circular(14),
+          color: accentColor.withOpacity(isDark ? 0.18 : 0.10),
         ),
-        padding: const EdgeInsets.all(8),
-        child: Image.asset(
-          iconAsset,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return Icon(
-              Icons.grid_view_rounded,
-              color: accentColor,
-              size: 28,
-            );
-          },
+        child: Icon(
+          cardIcon,
+          color: accentColor,
+          size: 24,
         ),
       ),
-      const SizedBox(width: 16),
+      const SizedBox(width: 14),
       Expanded(
         child: Column(
           crossAxisAlignment: isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -3811,62 +3829,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             Text(
               title,
               style: lang.getTextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white.withOpacity(0.95) : Colors.black87,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: isDark ? Colors.white.withOpacity(0.95) : const Color(0xFF1E293B),
               ),
               textAlign: isRTL ? TextAlign.right : TextAlign.left,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 3),
             Text(
               subtitle,
               style: lang.getTextStyle(
                 fontSize: 12,
-                color: isDark ? Colors.white60 : Colors.black54,
+                color: isDark ? Colors.white54 : const Color(0xFF64748B),
                 height: 1.4,
               ),
               textAlign: isRTL ? TextAlign.right : TextAlign.left,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
       ),
-      const SizedBox(width: 16),
+      const SizedBox(width: 10),
       Icon(
         isRTL ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
-        color: isDark ? Colors.white30 : Colors.black26,
-        size: 24,
+        color: isDark ? Colors.white24 : const Color(0xFFCBD5E1),
+        size: 22,
       ),
     ];
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: accentColor.withOpacity(isDark ? 0.08 : 0.03),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(18),
         child: Material(
-          color: isDark ? const Color(0xFF1E293B).withOpacity(0.45) : Colors.white.withOpacity(0.85),
+          color: isDark ? const Color(0xFF1E293B) : Colors.white,
           child: InkWell(
             onTap: onTap,
-            splashColor: accentColor.withOpacity(0.15),
-            highlightColor: accentColor.withOpacity(0.05),
+            splashColor: accentColor.withOpacity(0.10),
+            highlightColor: accentColor.withOpacity(0.04),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(18),
                 border: Border.all(
                   color: isDark 
-                      ? Colors.white.withOpacity(0.08) 
-                      : Colors.black.withOpacity(0.06),
-                  width: 1.5,
+                      ? Colors.white.withOpacity(0.06) 
+                      : const Color(0xFFE2E8F0),
+                  width: 1,
                 ),
               ),
               child: Row(
