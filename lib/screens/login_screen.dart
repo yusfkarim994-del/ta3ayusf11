@@ -72,8 +72,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   Future<void> _signInAsGuest() async {
     setState(() { _isLoading = true; _errorMessage = null; });
     try {
-      await _authService.signInAsGuest();
-      if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      // Add a timeout and continue even if Firebase fails on web
+      try {
+        await _authService.signInAsGuest().timeout(const Duration(seconds: 3));
+      } catch (e) {
+        debugPrint('[v0] Guest signin timeout or error: $e');
+        // Continue anyway - guest session set up in AuthService
+      }
+      
+      if (mounted) {
+        // Give a tiny delay for localStorage to update
+        await Future.delayed(const Duration(milliseconds: 100));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      }
     } catch (e) {
       setState(() { _errorMessage = e.toString(); });
     } finally {
