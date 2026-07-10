@@ -46,9 +46,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Could not launch')));
       }
     }
   }
@@ -71,13 +71,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
     _animationController.forward();
-    
+
     // Request notification permissions safely after UI has rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      NotificationService().requestPermissions().catchError((e) => debugPrint('Error requesting notification perms: $e'));
+      NotificationService().requestPermissions().catchError(
+            (e) => debugPrint('Error requesting notification perms: $e'),
+          );
     });
 
     _loadData();
@@ -90,19 +97,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       await _tipsService.loadTips();
       await _announcementsService.init(); // Load announcements
       _analyticsService.trackUserActivity(); // Track user visit
-      
+
       bool hasInternet = false;
       try {
-        final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 2));
+        final result = await InternetAddress.lookup(
+          'google.com',
+        ).timeout(const Duration(seconds: 2));
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           hasInternet = true;
         }
       } catch (_) {}
-      
+
       if (hasInternet) {
         // Updated: Removed Google Play update check
       }
-      
+
       _startTimer();
       if (mounted) setState(() {});
     } catch (e) {
@@ -113,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _startTimer() {
     // Main timer moved to RecoveryTimerWidget for performance
     // Only quote slideshow timer remains here
-    
+
     // Quote Slideshow (every 15 seconds for better performance)
     _quoteTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
       if (mounted) {
@@ -141,9 +150,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   String _getLeaderboardTitle(LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.arabic: return 'لوحة الصدارة';
-      case AppLanguage.kurdish: return 'پلەی پێشەوان';
-      case AppLanguage.english: return 'Leaderboard';
+      case AppLanguage.arabic:
+        return 'لوحة الصدارة';
+      case AppLanguage.kurdish:
+        return 'پلەی پێشەوان';
+      case AppLanguage.english:
+        return 'Leaderboard';
     }
   }
 
@@ -152,32 +164,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final allBadges = BadgesService.allBadges;
     final userDays = _timerService.effectiveDays;
     final earnedBadges = BadgesService.getEarnedBadges(userDays);
-    
+
     // Find highest earned and next badges
     final currentBadge = BadgesService.getHighestBadge(userDays);
     final nextBadge = BadgesService.getNextBadge(userDays);
     final daysUntilNext = BadgesService.daysUntilNextBadge(userDays);
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Directionality(
           textDirection: lang.textDirection,
           child: Scaffold(
-            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
+            backgroundColor:
+                isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
             appBar: AppBar(
-              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF),
+              backgroundColor:
+                  isDark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF),
               elevation: 0,
               centerTitle: false,
               leading: IconButton(
                 icon: Icon(
-                  lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
+                  lang.isRTL
+                      ? Icons.arrow_forward_ios
+                      : Icons.arrow_back_ios_new,
                   color: isDark ? Colors.white : Colors.black87,
                 ),
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
-                lang.currentLanguage == AppLanguage.kurdish ? 'ئۆسمەکان' : lang.currentLanguage == AppLanguage.arabic ? 'الأوسمة' : 'Badges',
+                lang.currentLanguage == AppLanguage.kurdish
+                    ? 'ئۆسمەکان'
+                    : lang.currentLanguage == AppLanguage.arabic
+                        ? 'الأوسمة'
+                        : 'Badges',
                 style: lang.getTextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -186,8 +206,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               actions: [
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFF14B8A6), Color(0xFF0D9488)],
@@ -235,16 +261,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: isDark
-                                ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+                                ? [
+                                    const Color(0xFF1E293B),
+                                    const Color(0xFF0F172A),
+                                  ]
                                 : [Colors.white, const Color(0xFFFFFFFF)],
                           ),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: isDark ? Colors.white.withOpacity(0.08) : Colors.teal.withOpacity(0.1),
+                            color: isDark
+                                ? Colors.white.withOpacity(0.08)
+                                : Colors.teal.withOpacity(0.1),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.teal.withOpacity(isDark ? 0.05 : 0.08),
+                              color: Colors.teal.withOpacity(
+                                isDark ? 0.05 : 0.08,
+                              ),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -260,52 +293,70 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      lang.currentLanguage == AppLanguage.kurdish
+                                      lang.currentLanguage ==
+                                              AppLanguage.kurdish
                                           ? 'ئاستی ئێستات'
-                                          : lang.currentLanguage == AppLanguage.arabic
+                                          : lang.currentLanguage ==
+                                                  AppLanguage.arabic
                                               ? 'مستواك الحالي'
                                               : 'Your Current Milestone',
                                       style: lang.getTextStyle(
                                         fontSize: 12,
-                                        color: isDark ? Colors.white60 : Colors.black54,
+                                        color: isDark
+                                            ? Colors.white60
+                                            : Colors.black54,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       currentBadge != null
-                                          ? (lang.currentLanguage == AppLanguage.kurdish
+                                          ? (lang.currentLanguage ==
+                                                  AppLanguage.kurdish
                                               ? currentBadge.nameKu
-                                              : lang.currentLanguage == AppLanguage.arabic
+                                              : lang.currentLanguage ==
+                                                      AppLanguage.arabic
                                                   ? currentBadge.nameAr
                                                   : currentBadge.nameEn)
-                                          : (lang.currentLanguage == AppLanguage.kurdish
+                                          : (lang.currentLanguage ==
+                                                  AppLanguage.kurdish
                                               ? 'سەرەتا'
-                                              : lang.currentLanguage == AppLanguage.arabic
+                                              : lang.currentLanguage ==
+                                                      AppLanguage.arabic
                                                   ? 'البداية'
                                                   : 'Beginner'),
                                       style: lang.getTextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
-                                        color: currentBadge?.color ?? (isDark ? Colors.white : Colors.black87),
+                                        color: currentBadge?.color ??
+                                            (isDark
+                                                ? Colors.white
+                                                : Colors.black87),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                    vertical: 8,
+                                  ),
                                   decoration: BoxDecoration(
-                                    color: (currentBadge?.color ?? Colors.teal).withOpacity(0.12),
+                                    color: (currentBadge?.color ?? Colors.teal)
+                                        .withOpacity(0.12),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: (currentBadge?.color ?? Colors.teal).withOpacity(0.25),
+                                      color:
+                                          (currentBadge?.color ?? Colors.teal)
+                                              .withOpacity(0.25),
                                     ),
                                   ),
                                   child: Row(
                                     children: [
                                       Icon(
                                         Icons.local_fire_department,
-                                        color: currentBadge?.color ?? const Color(0xFFFF9800),
+                                        color: currentBadge?.color ??
+                                            const Color(0xFFFF9800),
                                         size: 20,
                                       ),
                                       const SizedBox(width: 6),
@@ -314,7 +365,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         style: lang.getTextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
-                                          color: isDark ? Colors.white : Colors.black87,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black87,
                                         ),
                                       ),
                                     ],
@@ -325,99 +378,137 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             if (nextBadge != null) ...[
                               const SizedBox(height: 20),
                               // Progress bar
-                              Builder(builder: (context) {
-                                final currentBase = currentBadge?.daysRequired ?? 0;
-                                final nextTarget = nextBadge.daysRequired;
-                                final range = nextTarget - currentBase;
-                                final progressInRange = userDays - currentBase;
-                                final progressPercent = (progressInRange / range).clamp(0.0, 1.0);
-                                
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          lang.currentLanguage == AppLanguage.kurdish
-                                              ? 'ئۆسمەی داهاتوو: ${nextBadge.nameKu}'
-                                              : lang.currentLanguage == AppLanguage.arabic
-                                                  ? 'الوسام القادم: ${nextBadge.nameAr}'
-                                                  : 'Next Badge: ${nextBadge.nameEn}',
-                                          style: lang.getTextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            color: isDark ? Colors.white70 : Colors.black54,
+                              Builder(
+                                builder: (context) {
+                                  final currentBase =
+                                      currentBadge?.daysRequired ?? 0;
+                                  final nextTarget = nextBadge.daysRequired;
+                                  final range = nextTarget - currentBase;
+                                  final progressInRange =
+                                      userDays - currentBase;
+                                  final progressPercent =
+                                      (progressInRange / range).clamp(0.0, 1.0);
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            lang.currentLanguage ==
+                                                    AppLanguage.kurdish
+                                                ? 'ئۆسمەی داهاتوو: ${nextBadge.nameKu}'
+                                                : lang.currentLanguage ==
+                                                        AppLanguage.arabic
+                                                    ? 'الوسام القادم: ${nextBadge.nameAr}'
+                                                    : 'Next Badge: ${nextBadge.nameEn}',
+                                            style: lang.getTextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: isDark
+                                                  ? Colors.white70
+                                                  : Colors.black54,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '${(progressPercent * 100).toInt()}%',
-                                          style: lang.getTextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: nextBadge.color,
+                                          Text(
+                                            '${(progressPercent * 100).toInt()}%',
+                                            style: lang.getTextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: nextBadge.color,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: LinearProgressIndicator(
-                                        value: progressPercent,
-                                        minHeight: 10,
-                                        backgroundColor: isDark ? Colors.white.withOpacity(0.08) : Colors.teal.withOpacity(0.05),
-                                        valueColor: AlwaysStoppedAnimation<Color>(nextBadge.color),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.event,
-                                          size: 14,
-                                          color: isDark ? Colors.white38 : Colors.black38,
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          lang.currentLanguage == AppLanguage.kurdish
-                                              ? '$daysUntilNext ڕۆژ ماوە بۆ بەدەستهێنانی'
-                                              : lang.currentLanguage == AppLanguage.arabic
-                                                  ? 'متبقي $daysUntilNext يوم للحصول عليه'
-                                                  : '$daysUntilNext days remaining to achieve',
-                                          style: lang.getTextStyle(
-                                            fontSize: 11,
-                                            color: isDark ? Colors.white60 : Colors.black54,
-                                          ),
-                                        ),
-                                        if (_timerService.startDate != null) ...[
-                                          const Spacer(),
-                                          Builder(builder: (_) {
-                                            final startDate = _timerService.startDate!;
-                                            final bonusDays = _timerService.bonusDays;
-                                            final effectiveStartDate = startDate.subtract(Duration(days: bonusDays));
-                                            final unlockDate = effectiveStartDate.add(Duration(days: nextBadge.daysRequired));
-                                            String dateStr;
-                                            if (unlockDate.year >= 2024) {
-                                              dateStr = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
-                                            } else {
-                                              dateStr = '---';
-                                            }
-                                            return Text(
-                                              '📅 $dateStr',
-                                              style: lang.getTextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.bold,
-                                                color: nextBadge.color.withOpacity(0.8),
-                                              ),
-                                            );
-                                          }),
                                         ],
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              }),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: LinearProgressIndicator(
+                                          value: progressPercent,
+                                          minHeight: 10,
+                                          backgroundColor: isDark
+                                              ? Colors.white.withOpacity(0.08)
+                                              : Colors.teal.withOpacity(0.05),
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            nextBadge.color,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.event,
+                                            size: 14,
+                                            color: isDark
+                                                ? Colors.white38
+                                                : Colors.black38,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            lang.currentLanguage ==
+                                                    AppLanguage.kurdish
+                                                ? '$daysUntilNext ڕۆژ ماوە بۆ بەدەستهێنانی'
+                                                : lang.currentLanguage ==
+                                                        AppLanguage.arabic
+                                                    ? 'متبقي $daysUntilNext يوم للحصول عليه'
+                                                    : '$daysUntilNext days remaining to achieve',
+                                            style: lang.getTextStyle(
+                                              fontSize: 11,
+                                              color: isDark
+                                                  ? Colors.white60
+                                                  : Colors.black54,
+                                            ),
+                                          ),
+                                          if (_timerService.startDate !=
+                                              null) ...[
+                                            const Spacer(),
+                                            Builder(
+                                              builder: (_) {
+                                                final startDate =
+                                                    _timerService.startDate!;
+                                                final bonusDays =
+                                                    _timerService.bonusDays;
+                                                final effectiveStartDate =
+                                                    startDate.subtract(
+                                                  Duration(days: bonusDays),
+                                                );
+                                                final unlockDate =
+                                                    effectiveStartDate.add(
+                                                  Duration(
+                                                    days:
+                                                        nextBadge.daysRequired,
+                                                  ),
+                                                );
+                                                String dateStr;
+                                                if (unlockDate.year >= 2024) {
+                                                  dateStr =
+                                                      '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
+                                                } else {
+                                                  dateStr = '---';
+                                                }
+                                                return Text(
+                                                  '📅 $dateStr',
+                                                  style: lang.getTextStyle(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: nextBadge.color
+                                                        .withOpacity(0.8),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ] else ...[
                               const SizedBox(height: 16),
                               Text(
@@ -438,230 +529,341 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                  
+
                   // 2. Badges Grid
                   SliverPadding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 120),
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 120,
+                    ),
                     sliver: SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 0.72,
                         crossAxisSpacing: 14,
                         mainAxisSpacing: 14,
                       ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final badge = allBadges[index];
-                          final isUnlocked = userDays >= badge.daysRequired;
-                          final name = lang.currentLanguage == AppLanguage.kurdish
-                              ? badge.nameKu
-                              : lang.currentLanguage == AppLanguage.arabic
-                                  ? badge.nameAr
-                                  : badge.nameEn;
-                          final displayColor = isUnlocked ? badge.color : Colors.grey;
-                          
-                          // Level Translation
-                          String levelName = '';
-                          if (badge.level == 'beginner') {
-                            levelName = lang.currentLanguage == AppLanguage.kurdish ? 'سەرەتایی' : lang.currentLanguage == AppLanguage.arabic ? 'مبتدئ' : 'Beginner';
-                          } else if (badge.level == 'intermediate') {
-                            levelName = lang.currentLanguage == AppLanguage.kurdish ? 'ناوەند' : lang.currentLanguage == AppLanguage.arabic ? 'متوسط' : 'Intermediate';
-                          } else if (badge.level == 'advanced') {
-                            levelName = lang.currentLanguage == AppLanguage.kurdish ? 'پێشکەوتوو' : lang.currentLanguage == AppLanguage.arabic ? 'متقدم' : 'Advanced';
-                          } else if (badge.level == 'master') {
-                            levelName = lang.currentLanguage == AppLanguage.kurdish ? 'ماستەر' : lang.currentLanguage == AppLanguage.arabic ? 'ماستر' : 'Master';
-                          } else {
-                            levelName = lang.currentLanguage == AppLanguage.kurdish ? 'ئەفسانەیی' : lang.currentLanguage == AppLanguage.arabic ? 'أسطوري' : 'Legend';
-                          }
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final badge = allBadges[index];
+                        final isUnlocked = userDays >= badge.daysRequired;
+                        final name = lang.currentLanguage == AppLanguage.kurdish
+                            ? badge.nameKu
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? badge.nameAr
+                                : badge.nameEn;
+                        final displayColor =
+                            isUnlocked ? badge.color : Colors.grey;
 
-                          return Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: isDark
-                                    ? [
-                                        isUnlocked ? displayColor.withOpacity(0.18) : Colors.white.withOpacity(0.02),
-                                        isUnlocked ? displayColor.withOpacity(0.04) : Colors.white.withOpacity(0.01)
-                                      ]
-                                    : [
-                                        isUnlocked ? displayColor.withOpacity(0.1) : Colors.grey.withOpacity(0.05),
-                                        isUnlocked ? Colors.white : Colors.white.withOpacity(0.8)
-                                      ],
-                              ),
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(
-                                color: isUnlocked
-                                    ? displayColor.withOpacity(0.4)
-                                    : (isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.2)),
-                                width: isUnlocked ? 2 : 1,
-                              ),
-                              boxShadow: isUnlocked
+                        // Level Translation
+                        String levelName = '';
+                        if (badge.level == 'beginner') {
+                          levelName =
+                              lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'سەرەتایی'
+                                  : lang.currentLanguage == AppLanguage.arabic
+                                      ? 'مبتدئ'
+                                      : 'Beginner';
+                        } else if (badge.level == 'intermediate') {
+                          levelName =
+                              lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'ناوەند'
+                                  : lang.currentLanguage == AppLanguage.arabic
+                                      ? 'متوسط'
+                                      : 'Intermediate';
+                        } else if (badge.level == 'advanced') {
+                          levelName =
+                              lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'پێشکەوتوو'
+                                  : lang.currentLanguage == AppLanguage.arabic
+                                      ? 'متقدم'
+                                      : 'Advanced';
+                        } else if (badge.level == 'master') {
+                          levelName =
+                              lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'ماستەر'
+                                  : lang.currentLanguage == AppLanguage.arabic
+                                      ? 'ماستر'
+                                      : 'Master';
+                        } else {
+                          levelName =
+                              lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'ئەفسانەیی'
+                                  : lang.currentLanguage == AppLanguage.arabic
+                                      ? 'أسطوري'
+                                      : 'Legend';
+                        }
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: isDark
                                   ? [
-                                      BoxShadow(
-                                        color: displayColor.withOpacity(isDark ? 0.15 : 0.08),
-                                        blurRadius: 16,
-                                        offset: const Offset(0, 6),
-                                      ),
+                                      isUnlocked
+                                          ? displayColor.withOpacity(0.18)
+                                          : Colors.white.withOpacity(0.02),
+                                      isUnlocked
+                                          ? displayColor.withOpacity(0.04)
+                                          : Colors.white.withOpacity(0.01),
                                     ]
-                                  : [],
+                                  : [
+                                      isUnlocked
+                                          ? displayColor.withOpacity(0.1)
+                                          : Colors.grey.withOpacity(0.05),
+                                      isUnlocked
+                                          ? Colors.white
+                                          : Colors.white.withOpacity(0.8),
+                                    ],
                             ),
-                            child: Stack(
-                              children: [
-                                // Level tag
-                                Positioned(
-                                  top: 10,
-                                  left: lang.isRTL ? null : 10,
-                                  right: lang.isRTL ? 10 : null,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                    decoration: BoxDecoration(
-                                      color: isUnlocked
-                                          ? displayColor.withOpacity(0.15)
-                                          : Colors.grey.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      levelName,
-                                      style: lang.getTextStyle(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.bold,
-                                        color: isUnlocked ? displayColor : Colors.grey,
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                              color: isUnlocked
+                                  ? displayColor.withOpacity(0.4)
+                                  : (isDark
+                                      ? Colors.white.withOpacity(0.06)
+                                      : Colors.grey.withOpacity(0.2)),
+                              width: isUnlocked ? 2 : 1,
+                            ),
+                            boxShadow: isUnlocked
+                                ? [
+                                    BoxShadow(
+                                      color: displayColor.withOpacity(
+                                        isDark ? 0.15 : 0.08,
                                       ),
+                                      blurRadius: 16,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ]
+                                : [],
+                          ),
+                          child: Stack(
+                            children: [
+                              // Level tag
+                              Positioned(
+                                top: 10,
+                                left: lang.isRTL ? null : 10,
+                                right: lang.isRTL ? 10 : null,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isUnlocked
+                                        ? displayColor.withOpacity(0.15)
+                                        : Colors.grey.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    levelName,
+                                    style: lang.getTextStyle(
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold,
+                                      color: isUnlocked
+                                          ? displayColor
+                                          : Colors.grey,
                                     ),
                                   ),
                                 ),
-                                // Main Content
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(12, 34, 12, 12),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Animated/glowing badge icon
-                                      Center(
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            if (isUnlocked)
-                                              Container(
-                                                width: 58,
-                                                height: 58,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: displayColor.withOpacity(0.4),
-                                                      blurRadius: 16,
-                                                      spreadRadius: 2,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
+                              ),
+                              // Main Content
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                  12,
+                                  34,
+                                  12,
+                                  12,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Animated/glowing badge icon
+                                    Center(
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          if (isUnlocked)
                                             Container(
-                                              padding: const EdgeInsets.all(12),
+                                              width: 58,
+                                              height: 58,
                                               decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                  colors: isUnlocked
-                                                      ? [displayColor, displayColor.withOpacity(0.7)]
-                                                      : [Colors.grey.shade400, Colors.grey.shade500],
-                                                ),
                                                 shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: Colors.white.withOpacity(0.3),
-                                                  width: 1.5,
-                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: displayColor
+                                                        .withOpacity(0.4),
+                                                    blurRadius: 16,
+                                                    spreadRadius: 2,
+                                                  ),
+                                                ],
                                               ),
-                                              child: ColorFiltered(
-                                                colorFilter: isUnlocked
-                                                    ? const ColorFilter.mode(Colors.transparent, BlendMode.multiply)
-                                                    : const ColorFilter.matrix(<double>[
-                                                        0.2126, 0.7152, 0.0722, 0, 0,
-                                                        0.2126, 0.7152, 0.0722, 0, 0,
-                                                        0.2126, 0.7152, 0.0722, 0, 0,
-                                                        0,      0,      0,      0.6, 0,
-                                                      ]),
-                                                child: Image.asset(
-                                                  'assets/images/badge_level_${badge.level}.png',
-                                                  width: 28,
-                                                  height: 28,
-                                                  fit: BoxFit.contain,
+                                            ),
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: isUnlocked
+                                                    ? [
+                                                        displayColor,
+                                                        displayColor
+                                                            .withOpacity(0.7),
+                                                      ]
+                                                    : [
+                                                        Colors.grey.shade400,
+                                                        Colors.grey.shade500,
+                                                      ],
+                                              ),
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.white.withOpacity(
+                                                  0.3,
+                                                ),
+                                                width: 1.5,
+                                              ),
+                                            ),
+                                            child: ColorFiltered(
+                                              colorFilter: isUnlocked
+                                                  ? const ColorFilter.mode(
+                                                      Colors.transparent,
+                                                      BlendMode.multiply,
+                                                    )
+                                                  : const ColorFilter.matrix(
+                                                      <double>[
+                                                        0.2126,
+                                                        0.7152,
+                                                        0.0722,
+                                                        0,
+                                                        0,
+                                                        0.2126,
+                                                        0.7152,
+                                                        0.0722,
+                                                        0,
+                                                        0,
+                                                        0.2126,
+                                                        0.7152,
+                                                        0.0722,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0.6,
+                                                        0,
+                                                      ],
+                                                    ),
+                                              child: Image.asset(
+                                                'assets/images/badge_level_${badge.level}.png',
+                                                width: 28,
+                                                height: 28,
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                          ),
+                                          if (!isUnlocked)
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  3,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade700,
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: isDark
+                                                        ? const Color(
+                                                            0xFF0F172A,
+                                                          )
+                                                        : const Color(
+                                                            0xFFF8FAFA,
+                                                          ),
+                                                    width: 1.5,
+                                                  ),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.lock,
+                                                  color: Colors.white,
+                                                  size: 10,
                                                 ),
                                               ),
                                             ),
-                                            if (!isUnlocked)
-                                              Positioned(
-                                                bottom: 0,
-                                                right: 0,
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(3),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey.shade700,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
-                                                      width: 1.5,
-                                                    ),
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.lock,
-                                                    color: Colors.white,
-                                                    size: 10,
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        ),
+                                        ],
                                       ),
-                                      const SizedBox(height: 12),
-                                      // Badge name
-                                      Text(
-                                        name,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    // Badge name
+                                    Text(
+                                      name,
+                                      style: lang.getTextStyle(
+                                        fontSize: 12.5,
+                                        fontWeight: FontWeight.bold,
+                                        color: isUnlocked
+                                            ? (isDark
+                                                ? Colors.white
+                                                : Colors.black87)
+                                            : Colors.grey.shade600,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    // Days required pill
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 3,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isUnlocked
+                                            ? displayColor.withOpacity(0.12)
+                                            : Colors.grey.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        '${badge.daysRequired} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژ" : lang.currentLanguage == AppLanguage.arabic ? "يوم" : "days"}',
                                         style: lang.getTextStyle(
-                                          fontSize: 12.5,
+                                          fontSize: 10,
                                           fontWeight: FontWeight.bold,
                                           color: isUnlocked
-                                              ? (isDark ? Colors.white : Colors.black87)
-                                              : Colors.grey.shade600,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: 6),
-                                      // Days required pill
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                                        decoration: BoxDecoration(
-                                          color: isUnlocked
-                                              ? displayColor.withOpacity(0.12)
-                                              : Colors.grey.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: Text(
-                                          '${badge.daysRequired} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژ" : lang.currentLanguage == AppLanguage.arabic ? "يوم" : "days"}',
-                                          style: lang.getTextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            color: isUnlocked ? displayColor : Colors.grey,
-                                          ),
+                                              ? displayColor
+                                              : Colors.grey,
                                         ),
                                       ),
-                                      // Mini progress bar for locked badges
-                                      if (!isUnlocked) ...[
-                                        const SizedBox(height: 8),
-                                        Builder(builder: (context) {
-                                          final pct = (userDays / badge.daysRequired).clamp(0.0, 1.0);
+                                    ),
+                                    // Mini progress bar for locked badges
+                                    if (!isUnlocked) ...[
+                                      const SizedBox(height: 8),
+                                      Builder(
+                                        builder: (context) {
+                                          final pct =
+                                              (userDays / badge.daysRequired)
+                                                  .clamp(0.0, 1.0);
                                           return Column(
                                             children: [
                                               ClipRRect(
-                                                borderRadius: BorderRadius.circular(4),
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
                                                 child: LinearProgressIndicator(
                                                   value: pct,
                                                   minHeight: 4,
-                                                  backgroundColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1),
-                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey.shade400),
+                                                  backgroundColor: isDark
+                                                      ? Colors.white
+                                                          .withOpacity(0.05)
+                                                      : Colors.grey.withOpacity(
+                                                          0.1,
+                                                        ),
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          Colors.grey.shade400),
                                                 ),
                                               ),
                                               const SizedBox(height: 2),
@@ -675,37 +877,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ),
                                             ],
                                           );
-                                        }),
-                                      ],
-                                      if (isUnlocked && _timerService.startDate != null) ...[
-                                        Builder(builder: (_) {
-                                          final startDate = _timerService.startDate!;
-                                          final bonusDays = _timerService.bonusDays;
-                                          final effectiveStartDate = startDate.subtract(Duration(days: bonusDays));
-                                          final unlockDate = effectiveStartDate.add(Duration(days: badge.daysRequired));
-                                          if (unlockDate.year < 2024) return const SizedBox.shrink();
-                                          final dateStr = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
+                                        },
+                                      ),
+                                    ],
+                                    if (isUnlocked &&
+                                        _timerService.startDate != null) ...[
+                                      Builder(
+                                        builder: (_) {
+                                          final startDate =
+                                              _timerService.startDate!;
+                                          final bonusDays =
+                                              _timerService.bonusDays;
+                                          final effectiveStartDate =
+                                              startDate.subtract(
+                                            Duration(days: bonusDays),
+                                          );
+                                          final unlockDate =
+                                              effectiveStartDate.add(
+                                            Duration(
+                                              days: badge.daysRequired,
+                                            ),
+                                          );
+                                          if (unlockDate.year < 2024)
+                                            return const SizedBox.shrink();
+                                          final dateStr =
+                                              '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
                                           return Padding(
-                                            padding: const EdgeInsets.only(top: 6),
+                                            padding: const EdgeInsets.only(
+                                              top: 6,
+                                            ),
                                             child: Text(
                                               '📅 $dateStr',
                                               style: lang.getTextStyle(
                                                 fontSize: 9,
-                                                color: isDark ? Colors.white38 : Colors.black38,
+                                                color: isDark
+                                                    ? Colors.white38
+                                                    : Colors.black38,
                                               ),
                                             ),
                                           );
-                                        }),
-                                      ],
+                                        },
+                                      ),
                                     ],
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                        childCount: allBadges.length,
-                      ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }, childCount: allBadges.length),
                     ),
                   ),
                 ],
@@ -716,11 +936,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
+
   void _showAnnouncementsDialog(LanguageService lang) {
     final isDark = lang.isDarkMode;
     _announcementsService.markAllAsRead(); // Mark as read when opened
     setState(() {}); // Clear badge
-    
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -730,7 +951,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             backgroundColor: isDark ? const Color(0xFF1a2a4a) : Colors.white,
             elevation: 0,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white : Colors.black87),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             title: Row(
@@ -738,17 +962,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)]),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
+                    ),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.notifications_rounded, color: Colors.white, size: 20),
+                  child: const Icon(
+                    Icons.notifications_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  lang.currentLanguage == AppLanguage.kurdish ? 'ئاگاداریەکان' 
-                    : lang.currentLanguage == AppLanguage.arabic ? 'الإشعارات' 
-                    : 'Announcements',
-                  style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+                  lang.currentLanguage == AppLanguage.kurdish
+                      ? 'ئاگاداریەکان'
+                      : lang.currentLanguage == AppLanguage.arabic
+                          ? 'الإشعارات'
+                          : 'Announcements',
+                  style: lang.getTextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
                 ),
               ],
             ),
@@ -756,7 +992,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               // Admin add button
               if (_announcementsService.isAdmin)
                 IconButton(
-                  icon: Icon(Icons.add_circle, color: isDark ? Colors.white : Colors.black87),
+                  icon: Icon(
+                    Icons.add_circle,
+                    color: isDark ? Colors.white : Colors.black87,
+                  ),
                   onPressed: () => _showAddAnnouncementDialog(lang),
                 ),
             ],
@@ -773,29 +1012,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       const Text('🔔', style: TextStyle(fontSize: 64)),
                       const SizedBox(height: 16),
                       Text(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'هیچ ئاگادارییەک نییە' 
-                          : lang.currentLanguage == AppLanguage.arabic ? 'لا توجد إشعارات' 
-                          : 'No announcements yet',
-                        style: lang.getTextStyle(fontSize: 16, color: isDark ? Colors.white70 : Colors.black54),
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'هیچ ئاگادارییەک نییە'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'لا توجد إشعارات'
+                                : 'No announcements yet',
+                        style: lang.getTextStyle(
+                          fontSize: 16,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
                       ),
                     ],
                   ),
                 );
               }
-              
+
               // Show loading only on first load with no data
-              if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.waiting &&
+                  !snapshot.hasData) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: isDark ? Colors.white : const Color(0xFF0D9488)),
+                      CircularProgressIndicator(
+                        color: isDark ? Colors.white : const Color(0xFF0D9488),
+                      ),
                       const SizedBox(height: 16),
                       Text(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'چاوەڕوان بە...' 
-                          : lang.currentLanguage == AppLanguage.arabic ? 'جاري التحميل...' 
-                          : 'Loading...',
-                        style: lang.getTextStyle(color: isDark ? Colors.white54 : Colors.black45),
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'چاوەڕوان بە...'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'جاري التحميل...'
+                                : 'Loading...',
+                        style: lang.getTextStyle(
+                          color: isDark ? Colors.white54 : Colors.black45,
+                        ),
                       ),
                     ],
                   ),
@@ -810,28 +1061,45 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       const Text('🔔', style: TextStyle(fontSize: 64)),
                       const SizedBox(height: 16),
                       Text(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'هیچ ئاگادارییەک نییە' 
-                          : lang.currentLanguage == AppLanguage.arabic ? 'لا توجد إشعارات' 
-                          : 'No announcements yet',
-                        style: lang.getTextStyle(fontSize: 16, color: isDark ? Colors.white70 : Colors.black54),
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'هیچ ئاگادارییەک نییە'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'لا توجد إشعارات'
+                                : 'No announcements yet',
+                        style: lang.getTextStyle(
+                          fontSize: 16,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
                       ),
                     ],
                   ),
                 );
               }
               return ListView.builder(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 120),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                  bottom: 120,
+                ),
                 itemCount: announcements.length,
                 itemBuilder: (context, index) {
                   final item = announcements[index];
-                  final title = lang.currentLanguage == AppLanguage.kurdish ? item.titleKu 
-                    : lang.currentLanguage == AppLanguage.arabic ? item.titleAr 
-                    : item.titleEn;
-                  final rawBody = lang.currentLanguage == AppLanguage.kurdish ? item.bodyKu 
-                    : lang.currentLanguage == AppLanguage.arabic ? item.bodyAr 
-                    : item.bodyEn;
-                  final body = rawBody.replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), '');
-                  
+                  final title = lang.currentLanguage == AppLanguage.kurdish
+                      ? item.titleKu
+                      : lang.currentLanguage == AppLanguage.arabic
+                          ? item.titleAr
+                          : item.titleEn;
+                  final rawBody = lang.currentLanguage == AppLanguage.kurdish
+                      ? item.bodyKu
+                      : lang.currentLanguage == AppLanguage.arabic
+                          ? item.bodyAr
+                          : item.bodyEn;
+                  final body = rawBody.replaceAll(
+                    RegExp(r'<[^>]*>|&[^;]+;'),
+                    '',
+                  );
+
                   return TweenAnimationBuilder<double>(
                     tween: Tween(begin: 0.0, end: 1.0),
                     duration: Duration(milliseconds: 400 + (index * 100)),
@@ -843,27 +1111,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        gradient: item.isImportant 
-                          ? LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [Colors.red.withOpacity(0.25), Colors.orange.withOpacity(0.15), Colors.red.withOpacity(0.1)])
-                          : LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: isDark 
-                                ? [const Color(0xFF2a3a5a), const Color(0xFF1a2a4a)]
-                                : [Colors.white, Colors.grey[50]!]),
+                        gradient: item.isImportant
+                            ? LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.red.withOpacity(0.25),
+                                  Colors.orange.withOpacity(0.15),
+                                  Colors.red.withOpacity(0.1),
+                                ],
+                              )
+                            : LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: isDark
+                                    ? [
+                                        const Color(0xFF2a3a5a),
+                                        const Color(0xFF1a2a4a),
+                                      ]
+                                    : [Colors.white, Colors.grey[50]!],
+                              ),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: item.isImportant ? Colors.red.withOpacity(0.5) : (isDark ? Colors.white12 : Colors.grey[200]!),
+                          color: item.isImportant
+                              ? Colors.red.withOpacity(0.5)
+                              : (isDark ? Colors.white12 : Colors.grey[200]!),
                           width: item.isImportant ? 2 : 1,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: item.isImportant 
-                              ? Colors.red.withOpacity(0.2) 
-                              : (isDark ? Colors.black26 : Colors.grey.withOpacity(0.15)),
+                            color: item.isImportant
+                                ? Colors.red.withOpacity(0.2)
+                                : (isDark
+                                    ? Colors.black26
+                                    : Colors.grey.withOpacity(0.15)),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           ),
@@ -876,11 +1157,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           children: [
                             // Header with icon
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
                               decoration: BoxDecoration(
                                 gradient: item.isImportant
-                                  ? const LinearGradient(colors: [Color(0xFFFF5252), Color(0xFFFF7043)])
-                                  : LinearGradient(colors: [const Color(0xFF0D9488).withOpacity(0.8), const Color(0xFF0F766E).withOpacity(0.8)]),
+                                    ? const LinearGradient(
+                                        colors: [
+                                          Color(0xFFFF5252),
+                                          Color(0xFFFF7043),
+                                        ],
+                                      )
+                                    : LinearGradient(
+                                        colors: [
+                                          const Color(
+                                            0xFF0D9488,
+                                          ).withOpacity(0.8),
+                                          const Color(
+                                            0xFF0F766E,
+                                          ).withOpacity(0.8),
+                                        ],
+                                      ),
                               ),
                               child: Row(
                                 children: [
@@ -891,23 +1189,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Icon(
-                                      item.isImportant ? Icons.warning_rounded : Icons.campaign_rounded,
+                                      item.isImportant
+                                          ? Icons.warning_rounded
+                                          : Icons.campaign_rounded,
                                       color: Colors.white,
                                       size: 20,
                                     ),
                                   ),
                                   const SizedBox(width: 12),
                                   Expanded(
-                                    child: Text(title.isNotEmpty ? title : 'Announcement', style: lang.getTextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold, 
-                                      color: Colors.white,
-                                    ), maxLines: 2, overflow: TextOverflow.ellipsis),
+                                    child: Text(
+                                      title.isNotEmpty ? title : 'Announcement',
+                                      style: lang.getTextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                   // Admin delete button
                                   if (_announcementsService.isAdmin)
                                     IconButton(
-                                      icon: const Icon(Icons.delete_outline, color: Colors.white70, size: 22),
-                                      onPressed: () => _announcementsService.deleteAnnouncement(item.id),
+                                      icon: const Icon(
+                                        Icons.delete_outline,
+                                        color: Colors.white70,
+                                        size: 22,
+                                      ),
+                                      onPressed: () => _announcementsService
+                                          .deleteAnnouncement(item.id),
                                     ),
                                 ],
                               ),
@@ -919,18 +1230,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   if (body.isNotEmpty)
-                                    Text(body, style: lang.getTextStyle(
-                                      fontSize: 14, color: isDark ? Colors.white70 : Colors.black54,
-                                      height: 1.5,
-                                    )),
+                                    Text(
+                                      body,
+                                      style: lang.getTextStyle(
+                                        fontSize: 14,
+                                        color: isDark
+                                            ? Colors.white70
+                                            : Colors.black54,
+                                        height: 1.5,
+                                      ),
+                                    ),
                                   const SizedBox(height: 12),
                                   Row(
                                     children: [
-                                      Icon(Icons.access_time, size: 14, color: isDark ? Colors.white38 : Colors.black38),
+                                      Icon(
+                                        Icons.access_time,
+                                        size: 14,
+                                        color: isDark
+                                            ? Colors.white38
+                                            : Colors.black38,
+                                      ),
                                       const SizedBox(width: 6),
                                       Text(
-                                        _formatAnnouncementDate(item.createdAt, lang),
-                                        style: lang.getTextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38),
+                                        _formatAnnouncementDate(
+                                          item.createdAt,
+                                          lang,
+                                        ),
+                                        style: lang.getTextStyle(
+                                          fontSize: 12,
+                                          color: isDark
+                                              ? Colors.white38
+                                              : Colors.black38,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -957,9 +1288,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (diff.isNegative) {
       diff = Duration.zero;
     }
-    if (diff.inMinutes < 1) return lang.currentLanguage == AppLanguage.kurdish ? 'ئێستا' : lang.currentLanguage == AppLanguage.arabic ? 'الآن' : 'Just now';
-    if (diff.inHours < 1) return '${diff.inMinutes} ${lang.currentLanguage == AppLanguage.kurdish ? "خولەک" : lang.currentLanguage == AppLanguage.arabic ? "دقيقة" : "min"}';
-    if (diff.inDays < 1) return '${diff.inHours} ${lang.currentLanguage == AppLanguage.kurdish ? "کاتژمێر" : lang.currentLanguage == AppLanguage.arabic ? "ساعة" : "hr"}';
+    if (diff.inMinutes < 1)
+      return lang.currentLanguage == AppLanguage.kurdish
+          ? 'ئێستا'
+          : lang.currentLanguage == AppLanguage.arabic
+              ? 'الآن'
+              : 'Just now';
+    if (diff.inHours < 1)
+      return '${diff.inMinutes} ${lang.currentLanguage == AppLanguage.kurdish ? "خولەک" : lang.currentLanguage == AppLanguage.arabic ? "دقيقة" : "min"}';
+    if (diff.inDays < 1)
+      return '${diff.inHours} ${lang.currentLanguage == AppLanguage.kurdish ? "کاتژمێر" : lang.currentLanguage == AppLanguage.arabic ? "ساعة" : "hr"}';
     return '${diff.inDays} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژ" : lang.currentLanguage == AppLanguage.arabic ? "يوم" : "days"}';
   }
 
@@ -971,7 +1309,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final bodyArController = TextEditingController();
     final bodyKuController = TextEditingController();
     bool isImportant = false;
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -988,24 +1326,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(2)))),
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                Text('New Announcement', style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: lang.isDarkMode ? Colors.white : Colors.black87)),
+                Text(
+                  'New Announcement',
+                  style: lang.getTextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: lang.isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 20),
                 // English
                 _buildAnnouncementField('Title (EN)', titleEnController, lang),
-                _buildAnnouncementField('Body (EN)', bodyEnController, lang, maxLines: 3),
+                _buildAnnouncementField(
+                  'Body (EN)',
+                  bodyEnController,
+                  lang,
+                  maxLines: 3,
+                ),
                 // Arabic
-                _buildAnnouncementField('العنوان (AR)', titleArController, lang),
-                _buildAnnouncementField('المحتوى (AR)', bodyArController, lang, maxLines: 3),
+                _buildAnnouncementField(
+                  'العنوان (AR)',
+                  titleArController,
+                  lang,
+                ),
+                _buildAnnouncementField(
+                  'المحتوى (AR)',
+                  bodyArController,
+                  lang,
+                  maxLines: 3,
+                ),
                 // Kurdish
-                _buildAnnouncementField('ناونیشان (KU)', titleKuController, lang),
-                _buildAnnouncementField('ناوەڕۆک (KU)', bodyKuController, lang, maxLines: 3),
+                _buildAnnouncementField(
+                  'ناونیشان (KU)',
+                  titleKuController,
+                  lang,
+                ),
+                _buildAnnouncementField(
+                  'ناوەڕۆک (KU)',
+                  bodyKuController,
+                  lang,
+                  maxLines: 3,
+                ),
                 const SizedBox(height: 12),
                 CheckboxListTile(
                   value: isImportant,
-                  onChanged: (v) => setModalState(() => isImportant = v ?? false),
-                  title: Text('Important (Red highlight)', style: lang.getTextStyle(color: lang.isDarkMode ? Colors.white : Colors.black87)),
+                  onChanged: (v) =>
+                      setModalState(() => isImportant = v ?? false),
+                  title: Text(
+                    'Important (Red highlight)',
+                    style: lang.getTextStyle(
+                      color: lang.isDarkMode ? Colors.white : Colors.black87,
+                    ),
+                  ),
                   activeColor: Colors.red,
                 ),
                 const SizedBox(height: 16),
@@ -1013,7 +1396,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (titleEnController.text.isEmpty && titleArController.text.isEmpty && titleKuController.text.isEmpty) return;
+                      if (titleEnController.text.isEmpty &&
+                          titleArController.text.isEmpty &&
+                          titleKuController.text.isEmpty) return;
                       await _announcementsService.postAnnouncement(
                         titleEn: titleEnController.text,
                         titleAr: titleArController.text,
@@ -1028,9 +1413,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0D9488),
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                    child: Text('Post Announcement', style: lang.getTextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Post Announcement',
+                      style: lang.getTextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -1041,24 +1434,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildAnnouncementField(String label, TextEditingController controller, LanguageService lang, {int maxLines = 1}) {
+  Widget _buildAnnouncementField(
+    String label,
+    TextEditingController controller,
+    LanguageService lang, {
+    int maxLines = 1,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
-        style: lang.getTextStyle(color: lang.isDarkMode ? Colors.white : Colors.black87),
+        style: lang.getTextStyle(
+          color: lang.isDarkMode ? Colors.white : Colors.black87,
+        ),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: lang.getTextStyle(color: lang.isDarkMode ? Colors.white54 : Colors.black45),
+          labelStyle: lang.getTextStyle(
+            color: lang.isDarkMode ? Colors.white54 : Colors.black45,
+          ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: lang.isDarkMode ? Colors.white24 : Colors.grey[300]!)),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFF0D9488))),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: lang.isDarkMode ? Colors.white24 : Colors.grey[300]!,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF0D9488)),
+          ),
         ),
       ),
     );
   }
-
 
   void _showCertificatesDialog(LanguageService lang) {
     final isDark = lang.isDarkMode;
@@ -1066,7 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final userName = _getUserName(lang);
     final userDays = _timerService.effectiveDays;
     final earnedBadges = BadgesService.getEarnedBadges(userDays);
-    
+
     // Help build Ribbon and Seal Vector Widget
     Widget buildGoldSeal(Color displayColor, bool isUnlocked) {
       return SizedBox(
@@ -1088,7 +1497,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     height: 45,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Color(0xFFC62828), Color(0xFF8E0000)], // Rich ribbon red
+                        colors: [
+                          Color(0xFFC62828),
+                          Color(0xFF8E0000),
+                        ], // Rich ribbon red
                       ),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(2),
@@ -1149,7 +1561,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ]
                     : [],
                 border: Border.all(
-                  color: isUnlocked ? const Color(0xFFFFE082) : Colors.grey.shade400,
+                  color: isUnlocked
+                      ? const Color(0xFFFFE082)
+                      : Colors.grey.shade400,
                   width: 1.5,
                 ),
               ),
@@ -1170,14 +1584,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         builder: (context) => Directionality(
           textDirection: lang.textDirection,
           child: Scaffold(
-            backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
+            backgroundColor:
+                isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFA),
             appBar: AppBar(
-              backgroundColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFA),
+              backgroundColor:
+                  isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFA),
               elevation: 0,
               centerTitle: false,
               leading: IconButton(
                 icon: Icon(
-                  lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
+                  lang.isRTL
+                      ? Icons.arrow_forward_ios
+                      : Icons.arrow_back_ios_new,
                   color: isDark ? Colors.white : Colors.black87,
                 ),
                 onPressed: () => Navigator.pop(context),
@@ -1187,7 +1605,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: const BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)]),
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)],
+                      ),
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
@@ -1214,8 +1634,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               actions: [
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       colors: [Color(0xFFD4AF37), Color(0xFFAA7C11)],
@@ -1253,8 +1679,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
               child: ListView.builder(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 120),
-                itemCount: allBadges.length + 1, // +1 for the header vault summary card
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 12,
+                  bottom: 120,
+                ),
+                itemCount: allBadges.length +
+                    1, // +1 for the header vault summary card
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     // Header Vault Card
@@ -1265,16 +1697,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: isDark
-                                ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
+                                ? [
+                                    const Color(0xFF1E293B),
+                                    const Color(0xFF0F172A),
+                                  ]
                                 : [Colors.white, const Color(0xFFFCFAF5)],
                           ),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFD4AF37).withOpacity(0.15),
+                            color: isDark
+                                ? Colors.white.withOpacity(0.08)
+                                : const Color(0xFFD4AF37).withOpacity(0.15),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFD4AF37).withOpacity(isDark ? 0.03 : 0.06),
+                              color: const Color(
+                                0xFFD4AF37,
+                              ).withOpacity(isDark ? 0.03 : 0.06),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -1285,7 +1724,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFD4AF37).withOpacity(0.12),
+                                color: const Color(
+                                  0xFFD4AF37,
+                                ).withOpacity(0.12),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
@@ -1302,25 +1743,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   Text(
                                     lang.currentLanguage == AppLanguage.kurdish
                                         ? 'ئەرشیفی بڕوانامەکان'
-                                        : lang.currentLanguage == AppLanguage.arabic
+                                        : lang.currentLanguage ==
+                                                AppLanguage.arabic
                                             ? 'خزينة الشهادات'
                                             : 'Certificates Vault',
                                     style: lang.getTextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black87,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     lang.currentLanguage == AppLanguage.kurdish
                                         ? 'بەردەوام بە لەسەر چاکبوونەوە بۆ بەدەستهێنانی بڕوانامەی زیاتر'
-                                        : lang.currentLanguage == AppLanguage.arabic
+                                        : lang.currentLanguage ==
+                                                AppLanguage.arabic
                                             ? 'استمر في التعافي للحصول على المزيد من الشهادات'
                                             : 'Keep recovering to unlock more certificates',
                                     style: lang.getTextStyle(
                                       fontSize: 11,
-                                      color: isDark ? Colors.white60 : Colors.black54,
+                                      color: isDark
+                                          ? Colors.white60
+                                          : Colors.black54,
                                     ),
                                   ),
                                 ],
@@ -1341,21 +1788,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           : badge.nameEn;
                   final displayColor = isUnlocked ? badge.color : Colors.grey;
                   const islamicGold = Color(0xFFD4AF37);
-                        
+
                   final certTitle = lang.currentLanguage == AppLanguage.kurdish
                       ? 'بڕوانامەی سەرکەوتن'
                       : lang.currentLanguage == AppLanguage.arabic
                           ? 'شهادة إنجاز'
                           : 'Certificate of Achievement';
-                  
-                  final awardedToText = lang.currentLanguage == AppLanguage.kurdish
+
+                  final awardedToText = lang.currentLanguage ==
+                          AppLanguage.kurdish
                       ? 'ئەم بڕوانامەی شانازییە دەدرێت بە:'
                       : lang.currentLanguage == AppLanguage.arabic
                           ? 'تُمنح هذه الشهادة بكل فخر إلى:'
-                      : 'This honorary certificate is proudly presented to:';
-                  
-                  final daysText = '${badge.daysRequired} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژی چاکبوونەوە" : lang.currentLanguage == AppLanguage.arabic ? "يوم من التعافي" : "Days of Recovery"}';
-                  
+                          : 'This honorary certificate is proudly presented to:';
+
+                  final daysText =
+                      '${badge.daysRequired} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژی چاکبوونەوە" : lang.currentLanguage == AppLanguage.arabic ? "يوم من التعافي" : "Days of Recovery"}';
+
                   // Description:
                   final descText = lang.currentLanguage == AppLanguage.kurdish
                       ? 'بۆ بەدەستهێنانی ئاستی باڵا و تەواوکردنی $daysText لە چاکبوونەوەی بەردەوام بە ئیرادەیەکی پۆڵایین و کۆششێکی بەرز.'
@@ -1363,7 +1812,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ? 'لإكماله $daysText من التعافي المستمر بكل عزيمة وإرادة حديدية وصبر عظيم.'
                           : 'For successfully completing $daysText of continuous recovery, demonstrating outstanding perseverance and strength of character.';
 
-                  final platformAttributionText = lang.currentLanguage == AppLanguage.kurdish
+                  final platformAttributionText = lang.currentLanguage ==
+                          AppLanguage.kurdish
                       ? 'ئەم بڕوانامەیە فەرمییە لەلایەن پلاتفۆرمی لا أبرح دراوە'
                       : lang.currentLanguage == AppLanguage.arabic
                           ? 'هذه الشهادة صادرة رسمياً من منصة لا أبرح'
@@ -1372,7 +1822,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   if (isUnlocked) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 24),
-                      padding: const EdgeInsets.all(5), // Inner layout border spacing
+                      padding: const EdgeInsets.all(
+                        5,
+                      ), // Inner layout border spacing
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -1386,7 +1838,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
-                            color: islamicGold.withOpacity(isDark ? 0.15 : 0.25),
+                            color: islamicGold.withOpacity(
+                              isDark ? 0.15 : 0.25,
+                            ),
                             blurRadius: 25,
                             offset: const Offset(0, 10),
                           ),
@@ -1398,14 +1852,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ],
                       ),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 24,
+                        ),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: isDark
-                                ? [const Color(0xFF1E293B), const Color(0xFF0F172A)]
-                                : [const Color(0xFFFFFDF9), const Color(0xFFFAF6EE), const Color(0xFFF3EAD8)],
+                                ? [
+                                    const Color(0xFF1E293B),
+                                    const Color(0xFF0F172A),
+                                  ]
+                                : [
+                                    const Color(0xFFFFFDF9),
+                                    const Color(0xFFFAF6EE),
+                                    const Color(0xFFF3EAD8),
+                                  ],
                           ),
                           borderRadius: BorderRadius.circular(17),
                           border: Border.all(
@@ -1417,63 +1881,102 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           children: [
                             // Corner decorations
                             Positioned(
-                              top: 0, left: 0,
-                              child: Icon(Icons.star, size: 16, color: islamicGold.withOpacity(0.4)),
+                              top: 0,
+                              left: 0,
+                              child: Icon(
+                                Icons.star,
+                                size: 16,
+                                color: islamicGold.withOpacity(0.4),
+                              ),
                             ),
                             Positioned(
-                              top: 0, right: 0,
-                              child: Icon(Icons.star, size: 16, color: islamicGold.withOpacity(0.4)),
+                              top: 0,
+                              right: 0,
+                              child: Icon(
+                                Icons.star,
+                                size: 16,
+                                color: islamicGold.withOpacity(0.4),
+                              ),
                             ),
                             Positioned(
-                              bottom: 0, left: 0,
-                              child: Icon(Icons.star, size: 16, color: islamicGold.withOpacity(0.4)),
+                              bottom: 0,
+                              left: 0,
+                              child: Icon(
+                                Icons.star,
+                                size: 16,
+                                color: islamicGold.withOpacity(0.4),
+                              ),
                             ),
                             Positioned(
-                              bottom: 0, right: 0,
-                              child: Icon(Icons.star, size: 16, color: islamicGold.withOpacity(0.4)),
+                              bottom: 0,
+                              right: 0,
+                              child: Icon(
+                                Icons.star,
+                                size: 16,
+                                color: islamicGold.withOpacity(0.4),
+                              ),
                             ),
-                            
+
                             // Certificate Content
                             Column(
                               children: [
                                 // Certificate Header
                                 Text(
                                   certTitle.toUpperCase(),
-                                  style: lang.getTextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    color: islamicGold,
-                                  ).copyWith(letterSpacing: 2.0),
+                                  style: lang
+                                      .getTextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                        color: islamicGold,
+                                      )
+                                      .copyWith(letterSpacing: 2.0),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 6),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.star, color: islamicGold.withOpacity(0.7), size: 12),
+                                    Icon(
+                                      Icons.star,
+                                      color: islamicGold.withOpacity(0.7),
+                                      size: 12,
+                                    ),
                                     const SizedBox(width: 8),
-                                    Icon(Icons.star, color: islamicGold, size: 16),
+                                    Icon(
+                                      Icons.star,
+                                      color: islamicGold,
+                                      size: 16,
+                                    ),
                                     const SizedBox(width: 8),
-                                    Icon(Icons.star, color: islamicGold.withOpacity(0.7), size: 12),
+                                    Icon(
+                                      Icons.star,
+                                      color: islamicGold.withOpacity(0.7),
+                                      size: 12,
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 18),
-                                
+
                                 // Awarded to label
                                 Text(
                                   awardedToText,
                                   style: lang.getTextStyle(
                                     fontSize: 12.5,
-                                    color: isDark ? Colors.white60 : Colors.black54,
+                                    color: isDark
+                                        ? Colors.white60
+                                        : Colors.black54,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 12),
-                                
+
                                 // User Name
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 12,
+                                  ),
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -1487,7 +1990,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     style: lang.getTextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : const Color(0xFF2C1C09),
+                                      color: isDark
+                                          ? Colors.white
+                                          : const Color(0xFF2C1C09),
                                       shadows: [
                                         Shadow(
                                           color: Colors.black.withOpacity(0.1),
@@ -1500,32 +2005,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                
+
                                 // Description Text
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ),
                                   child: Text(
                                     descText,
                                     style: lang.getTextStyle(
                                       fontSize: 14.5,
                                       fontWeight: FontWeight.w500,
-                                      color: isDark ? Colors.white70 : const Color(0xFF3E2D1E),
+                                      color: isDark
+                                          ? Colors.white70
+                                          : const Color(0xFF3E2D1E),
                                       height: 1.6,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                                 const SizedBox(height: 20),
-                                
+
                                 // Milestone Pill
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 6,
+                                  ),
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
-                                      colors: [displayColor.withOpacity(0.2), displayColor.withOpacity(0.08)],
+                                      colors: [
+                                        displayColor.withOpacity(0.2),
+                                        displayColor.withOpacity(0.08),
+                                      ],
                                     ),
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: displayColor.withOpacity(0.4)),
+                                    border: Border.all(
+                                      color: displayColor.withOpacity(0.4),
+                                    ),
                                   ),
                                   child: Text(
                                     name,
@@ -1537,10 +2054,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 const SizedBox(height: 28),
-                                
+
                                 // Signature Row
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     // Left: Team Signature
@@ -1552,25 +2070,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             style: GoogleFonts.dancingScript(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
-                                              color: isDark ? Colors.white.withOpacity(0.8) : const Color(0xFF2C1C09),
+                                              color: isDark
+                                                  ? Colors.white.withOpacity(
+                                                      0.8,
+                                                    )
+                                                  : const Color(0xFF2C1C09),
                                             ),
                                           ),
                                           const SizedBox(height: 4),
                                           Container(
                                             width: 80,
                                             height: 1.2,
-                                            color: isDark ? Colors.white30 : Colors.black26,
+                                            color: isDark
+                                                ? Colors.white30
+                                                : Colors.black26,
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            lang.currentLanguage == AppLanguage.kurdish
+                                            lang.currentLanguage ==
+                                                    AppLanguage.kurdish
                                                 ? 'بەڕێوبەرایەتی پلاتفۆرم'
-                                                : lang.currentLanguage == AppLanguage.arabic
+                                                : lang.currentLanguage ==
+                                                        AppLanguage.arabic
                                                     ? 'إدارة المنصة'
                                                     : 'Platform Team',
                                             style: lang.getTextStyle(
                                               fontSize: 10,
-                                              color: isDark ? Colors.white38 : Colors.black38,
+                                              color: isDark
+                                                  ? Colors.white38
+                                                  : Colors.black38,
                                             ),
                                           ),
                                         ],
@@ -1582,44 +2110,66 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     Expanded(
                                       child: Column(
                                         children: [
-                                          Builder(builder: (_) {
-                                            String dateStr = '---';
-                                            if (_timerService.startDate != null) {
-                                              final startDate = _timerService.startDate!;
-                                              final bonusDays = _timerService.bonusDays;
-                                              final effectiveStartDate = startDate.subtract(Duration(days: bonusDays));
-                                              final unlockDate = effectiveStartDate.add(Duration(days: badge.daysRequired));
-                                              if (unlockDate.year >= 2024) {
-                                                dateStr = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
-                                              } else {
-                                                dateStr = '---';
+                                          Builder(
+                                            builder: (_) {
+                                              String dateStr = '---';
+                                              if (_timerService.startDate !=
+                                                  null) {
+                                                final startDate =
+                                                    _timerService.startDate!;
+                                                final bonusDays =
+                                                    _timerService.bonusDays;
+                                                final effectiveStartDate =
+                                                    startDate.subtract(
+                                                  Duration(days: bonusDays),
+                                                );
+                                                final unlockDate =
+                                                    effectiveStartDate.add(
+                                                  Duration(
+                                                    days: badge.daysRequired,
+                                                  ),
+                                                );
+                                                if (unlockDate.year >= 2024) {
+                                                  dateStr =
+                                                      '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
+                                                } else {
+                                                  dateStr = '---';
+                                                }
                                               }
-                                            }
-                                            return Text(
-                                              dateStr,
-                                              style: lang.getTextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.bold,
-                                                color: isDark ? Colors.white70 : Colors.black87,
-                                              ),
-                                            );
-                                          }),
+                                              return Text(
+                                                dateStr,
+                                                style: lang.getTextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: isDark
+                                                      ? Colors.white70
+                                                      : Colors.black87,
+                                                ),
+                                              );
+                                            },
+                                          ),
                                           const SizedBox(height: 4),
                                           Container(
                                             width: 80,
                                             height: 1.2,
-                                            color: isDark ? Colors.white30 : Colors.black26,
+                                            color: isDark
+                                                ? Colors.white30
+                                                : Colors.black26,
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            lang.currentLanguage == AppLanguage.kurdish
+                                            lang.currentLanguage ==
+                                                    AppLanguage.kurdish
                                                 ? 'ڕێکەوتی بەدەستهێنان'
-                                                : lang.currentLanguage == AppLanguage.arabic
+                                                : lang.currentLanguage ==
+                                                        AppLanguage.arabic
                                                     ? 'تاريخ الإنجاز'
                                                     : 'Date Achieved',
                                             style: lang.getTextStyle(
                                               fontSize: 10,
-                                              color: isDark ? Colors.white38 : Colors.black38,
+                                              color: isDark
+                                                  ? Colors.white38
+                                                  : Colors.black38,
                                             ),
                                           ),
                                         ],
@@ -1628,7 +2178,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ],
                                 ),
                                 const SizedBox(height: 20),
-                                
+
                                 // Footer Official Line
                                 Container(
                                   width: double.infinity,
@@ -1636,7 +2186,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   decoration: BoxDecoration(
                                     border: Border(
                                       top: BorderSide(
-                                        color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04),
+                                        color: isDark
+                                            ? Colors.white.withOpacity(0.06)
+                                            : Colors.black.withOpacity(0.04),
                                       ),
                                     ),
                                   ),
@@ -1653,7 +2205,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         platformAttributionText,
                                         style: lang.getTextStyle(
                                           fontSize: 10,
-                                          color: isDark ? Colors.white38 : Colors.black38,
+                                          color: isDark
+                                              ? Colors.white38
+                                              : Colors.black38,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -1671,10 +2225,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 24),
                       decoration: BoxDecoration(
-                        color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey.withOpacity(0.03),
+                        color: isDark
+                            ? Colors.white.withOpacity(0.02)
+                            : Colors.grey.withOpacity(0.03),
                         borderRadius: BorderRadius.circular(22),
                         border: Border.all(
-                          color: isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.2),
+                          color: isDark
+                              ? Colors.white.withOpacity(0.06)
+                              : Colors.grey.withOpacity(0.2),
                           width: 1.5,
                         ),
                       ),
@@ -1690,11 +2248,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 children: [
                                   Text(
                                     certTitle.toUpperCase(),
-                                    style: lang.getTextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w900,
-                                      color: Colors.grey,
-                                    ).copyWith(letterSpacing: 2.0),
+                                    style: lang
+                                        .getTextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w900,
+                                          color: Colors.grey,
+                                        )
+                                        .copyWith(letterSpacing: 2.0),
                                   ),
                                   const SizedBox(height: 20),
                                   Container(
@@ -1717,22 +2277,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          
+
                           // Lock and Motivation overlay
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 34),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 34,
+                            ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.05),
+                                    color: isDark
+                                        ? Colors.white.withOpacity(0.05)
+                                        : Colors.black.withOpacity(0.05),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
                                     Icons.lock_outline_rounded,
-                                    color: isDark ? Colors.white60 : Colors.black54,
+                                    color: isDark
+                                        ? Colors.white60
+                                        : Colors.black54,
                                     size: 32,
                                   ),
                                 ),
@@ -1740,57 +2307,81 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Text(
                                   lang.currentLanguage == AppLanguage.kurdish
                                       ? 'ئەم بڕوانامەیە قوفڵە'
-                                      : lang.currentLanguage == AppLanguage.arabic
+                                      : lang.currentLanguage ==
+                                              AppLanguage.arabic
                                           ? 'هذه الشهادة مغلقة'
                                           : 'Certificate Locked',
                                   style: lang.getTextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: isDark ? Colors.white70 : Colors.black87,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black87,
                                   ),
                                 ),
                                 const SizedBox(height: 6),
                                 Text(
                                   lang.currentLanguage == AppLanguage.kurdish
                                       ? 'لەگەڵ گەیشتن بە $daysText چالاک دەبێت'
-                                      : lang.currentLanguage == AppLanguage.arabic
+                                      : lang.currentLanguage ==
+                                              AppLanguage.arabic
                                           ? 'ستفتح عند تحقيق $daysText'
                                           : 'Unlocks upon reaching $daysText',
                                   style: lang.getTextStyle(
                                     fontSize: 12,
-                                    color: isDark ? Colors.white54 : Colors.black54,
+                                    color: isDark
+                                        ? Colors.white54
+                                        : Colors.black54,
                                   ),
                                 ),
                                 const SizedBox(height: 16),
                                 // Progress Bar toward certificate
-                                Builder(builder: (context) {
-                                  final pct = (userDays / badge.daysRequired).clamp(0.0, 1.0);
-                                  return SizedBox(
-                                    width: 200,
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(4),
-                                          child: LinearProgressIndicator(
-                                            value: pct,
-                                            minHeight: 6,
-                                            backgroundColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1),
-                                            valueColor: AlwaysStoppedAnimation<Color>(isDark ? Colors.white30 : Colors.black26),
+                                Builder(
+                                  builder: (context) {
+                                    final pct = (userDays / badge.daysRequired)
+                                        .clamp(0.0, 1.0);
+                                    return SizedBox(
+                                      width: 200,
+                                      child: Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
+                                            child: LinearProgressIndicator(
+                                              value: pct,
+                                              minHeight: 6,
+                                              backgroundColor: isDark
+                                                  ? Colors.white.withOpacity(
+                                                      0.05,
+                                                    )
+                                                  : Colors.grey.withOpacity(
+                                                      0.1,
+                                                    ),
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                isDark
+                                                    ? Colors.white30
+                                                    : Colors.black26,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          '${(pct * 100).toInt()}% ${lang.currentLanguage == AppLanguage.kurdish ? "تەواوبووە" : lang.currentLanguage == AppLanguage.arabic ? "مكتمل" : "completed"}',
-                                          style: lang.getTextStyle(
-                                            fontSize: 10,
-                                            color: isDark ? Colors.white38 : Colors.black38,
-                                            fontWeight: FontWeight.bold,
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '${(pct * 100).toInt()}% ${lang.currentLanguage == AppLanguage.kurdish ? "تەواوبووە" : lang.currentLanguage == AppLanguage.arabic ? "مكتمل" : "completed"}',
+                                            style: lang.getTextStyle(
+                                              fontSize: 10,
+                                              color: isDark
+                                                  ? Colors.white38
+                                                  : Colors.black38,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -1805,7 +2396,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
     );
-  }  void _showTimerSettingsModal(LanguageService lang) {
+  }
+
+  void _showTimerSettingsModal(LanguageService lang) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -1821,62 +2414,117 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(width: 40, height: 4, decoration: BoxDecoration(color: lang.isDarkMode ? Colors.white24 : Colors.grey[300], borderRadius: BorderRadius.circular(2))),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: lang.isDarkMode ? Colors.white24 : Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFF4facfe).withOpacity(0.2), borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.timer, color: Color(0xFF4facfe))),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4facfe).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.timer, color: Color(0xFF4facfe)),
+                  ),
                   const SizedBox(width: 12),
-                  Text(lang.timerSettings, style: lang.getTextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: lang.isDarkMode ? Colors.white : Colors.black87)),
+                  Text(
+                    lang.timerSettings,
+                    style: lang.getTextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: lang.isDarkMode ? Colors.white : Colors.black87,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(height: 28),
-              _buildSettingsOption(icon: Icons.calendar_today_rounded, title: lang.setCustomDateTime, color: const Color(0xFF4facfe), lang: lang, onTap: () async {
-                // Don't pop yet - we need the context for pickers
-                
-                // First pick date
-                final date = await showDatePicker(
-                  context: context, 
-                  initialDate: _timerService.startDate ?? DateTime.now(), 
-                  firstDate: DateTime(2000), 
-                  lastDate: DateTime.now(),
-                  builder: (context, child) => Theme(data: Theme.of(context).copyWith(colorScheme: const ColorScheme.dark(primary: Color(0xFF4facfe), surface: Color(0xFF1a2a4a))), child: child!),
-                );
-                
-                if (date == null) {
-                  if (mounted) Navigator.pop(context); // User cancelled
-                  return;
-                }
-                
-                if (!mounted) return;
-                
-                // Then pick time
-                final time = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.fromDateTime(_timerService.startDate ?? DateTime.now()),
-                  builder: (context, child) => Theme(data: Theme.of(context).copyWith(colorScheme: const ColorScheme.dark(primary: Color(0xFF4facfe), surface: Color(0xFF1a2a4a))), child: child!),
-                );
-                
-                if (time == null) {
-                  if (mounted) Navigator.pop(context); // User cancelled
-                  return;
-                }
-                
-                // Save the new date/time
-                final dateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-                await _timerService.setStartDate(dateTime);
-                
-                // Now close modal and refresh
-                if (mounted) {
-                  Navigator.pop(context);
-                  setState(() {});
-                }
-              }),
+              _buildSettingsOption(
+                icon: Icons.calendar_today_rounded,
+                title: lang.setCustomDateTime,
+                color: const Color(0xFF4facfe),
+                lang: lang,
+                onTap: () async {
+                  // Don't pop yet - we need the context for pickers
+
+                  // First pick date
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: _timerService.startDate ?? DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now(),
+                    builder: (context, child) => Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: const ColorScheme.dark(
+                          primary: Color(0xFF4facfe),
+                          surface: Color(0xFF1a2a4a),
+                        ),
+                      ),
+                      child: child!,
+                    ),
+                  );
+
+                  if (date == null) {
+                    if (mounted) Navigator.pop(context); // User cancelled
+                    return;
+                  }
+
+                  if (!mounted) return;
+
+                  // Then pick time
+                  final time = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.fromDateTime(
+                      _timerService.startDate ?? DateTime.now(),
+                    ),
+                    builder: (context, child) => Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: const ColorScheme.dark(
+                          primary: Color(0xFF4facfe),
+                          surface: Color(0xFF1a2a4a),
+                        ),
+                      ),
+                      child: child!,
+                    ),
+                  );
+
+                  if (time == null) {
+                    if (mounted) Navigator.pop(context); // User cancelled
+                    return;
+                  }
+
+                  // Save the new date/time
+                  final dateTime = DateTime(
+                    date.year,
+                    date.month,
+                    date.day,
+                    time.hour,
+                    time.minute,
+                  );
+                  await _timerService.setStartDate(dateTime);
+
+                  // Now close modal and refresh
+                  if (mounted) {
+                    Navigator.pop(context);
+                    setState(() {});
+                  }
+                },
+              ),
               const SizedBox(height: 12),
               _buildSettingsOption(
                 icon: Icons.timer_rounded,
-                title: lang.currentLanguage == AppLanguage.kurdish ? 'نوسینی ژمارەی ڕۆژ و کاتژمێر' : lang.currentLanguage == AppLanguage.arabic ? 'إدخال عدد الأيام والساعات' : 'Enter Days & Hours',
+                title: lang.currentLanguage == AppLanguage.kurdish
+                    ? 'نوسینی ژمارەی ڕۆژ و کاتژمێر'
+                    : lang.currentLanguage == AppLanguage.arabic
+                        ? 'إدخال عدد الأيام والساعات'
+                        : 'Enter Days & Hours',
                 color: const Color(0xFFD500F9),
                 lang: lang,
                 onTap: () {
@@ -1885,11 +2533,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 },
               ),
               const SizedBox(height: 12),
-              _buildSettingsOption(icon: Icons.refresh_rounded, title: lang.resetToNow, color: Colors.orange, lang: lang, onTap: () { Navigator.pop(context); _showResetConfirmDialog(lang); }),
+              _buildSettingsOption(
+                icon: Icons.refresh_rounded,
+                title: lang.resetToNow,
+                color: Colors.orange,
+                lang: lang,
+                onTap: () {
+                  Navigator.pop(context);
+                  _showResetConfirmDialog(lang);
+                },
+              ),
               const SizedBox(height: 12),
               _buildSettingsOption(
                 icon: Icons.wallpaper_rounded,
-                title: lang.currentLanguage == AppLanguage.kurdish ? 'گۆڕینی پاشبنەما' : lang.currentLanguage == AppLanguage.arabic ? 'تغيير الخلفية' : 'Change Background',
+                title: lang.currentLanguage == AppLanguage.kurdish
+                    ? 'گۆڕینی پاشبنەما'
+                    : lang.currentLanguage == AppLanguage.arabic
+                        ? 'تغيير الخلفية'
+                        : 'Change Background',
                 color: const Color(0xFF14B8A6),
                 lang: lang,
                 onTap: () {
@@ -1949,30 +2610,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           return Directionality(
             textDirection: lang.textDirection,
             child: Container(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.75),
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.75,
+              ),
               decoration: BoxDecoration(
                 color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(28),
+                ),
               ),
               padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(width: 40, height: 4, decoration: BoxDecoration(color: isDark ? Colors.white24 : Colors.grey[300], borderRadius: BorderRadius.circular(2))),
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.white24 : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: const Color(0xFF66BB6A).withOpacity(0.2), borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.image_rounded, color: Color(0xFF66BB6A))),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF66BB6A).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.image_rounded,
+                          color: Color(0xFF66BB6A),
+                        ),
+                      ),
                       const SizedBox(width: 12),
-                      Text(dialogTitle, style: lang.getTextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
+                      Text(
+                        dialogTitle,
+                        style: lang.getTextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 24),
                   Flexible(
                     child: GridView.builder(
                       shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
@@ -1992,12 +2682,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: isSelected ? const Color(0xFF4facfe) : (isDark ? Colors.white12 : Colors.grey[300]!),
+                                color: isSelected
+                                    ? const Color(0xFF4facfe)
+                                    : (isDark
+                                        ? Colors.white12
+                                        : Colors.grey[300]!),
                                 width: isSelected ? 3 : 1,
                               ),
-                              boxShadow: isSelected ? [
-                                BoxShadow(color: const Color(0xFF4facfe).withOpacity(0.3), blurRadius: 10, spreadRadius: 1),
-                              ] : [],
+                              boxShadow: isSelected
+                                  ? [
+                                      BoxShadow(
+                                        color: const Color(
+                                          0xFF4facfe,
+                                        ).withOpacity(0.3),
+                                        blurRadius: 10,
+                                        spreadRadius: 1,
+                                      ),
+                                    ]
+                                  : [],
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(14),
@@ -2013,7 +2715,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     Container(
                                       color: Colors.black.withOpacity(0.3),
                                       child: const Center(
-                                        child: Icon(Icons.check_circle_rounded, color: Colors.white, size: 32),
+                                        child: Icon(
+                                          Icons.check_circle_rounded,
+                                          color: Colors.white,
+                                          size: 32,
+                                        ),
                                       ),
                                     ),
                                 ],
@@ -2032,7 +2738,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       onPressed: () async {
                         try {
                           final picker = ImagePicker();
-                          final picked = await picker.pickImage(source: ImageSource.gallery, maxWidth: 800, maxHeight: 800, imageQuality: 70);
+                          final picked = await picker.pickImage(
+                            source: ImageSource.gallery,
+                            maxWidth: 800,
+                            maxHeight: 800,
+                            imageQuality: 70,
+                          );
                           if (picked != null) {
                             final bytes = await picked.readAsBytes();
                             final base64Str = base64Encode(bytes);
@@ -2046,12 +2757,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         }
                       },
                       icon: const Icon(Icons.photo_library_rounded),
-                      label: Text(uploadText, style: lang.getTextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white)),
+                      label: Text(
+                        uploadText,
+                        style: lang.getTextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF66BB6A),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                     ),
                   ),
@@ -2076,7 +2796,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     String hoursLabel;
     String saveBtn;
     String cancelBtn;
-    
+
     switch (lang.currentLanguage) {
       case AppLanguage.kurdish:
         title = 'نوسینی ژمارەی ڕۆژەکان';
@@ -2111,16 +2831,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           textDirection: lang.textDirection,
           child: AlertDialog(
             backgroundColor: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
             title: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: const Color(0xFFD500F9).withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                  child: const Icon(Icons.timer_rounded, color: Color(0xFFD500F9)),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD500F9).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.timer_rounded,
+                    color: Color(0xFFD500F9),
+                  ),
                 ),
                 const SizedBox(width: 12),
-                Expanded(child: Text(title, style: lang.getTextStyle(fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87, fontSize: 18))),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: lang.getTextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
               ],
             ),
             content: Column(
@@ -2128,7 +2865,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               children: [
                 Text(
                   desc,
-                  style: lang.getTextStyle(color: isDark ? Colors.white70 : Colors.black54, fontSize: 14),
+                  style: lang.getTextStyle(
+                    color: isDark ? Colors.white70 : Colors.black54,
+                    fontSize: 14,
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -2137,16 +2877,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: TextField(
                         controller: daysController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: lang.getTextStyle(color: isDark ? Colors.white : Colors.black87, fontWeight: FontWeight.bold, fontSize: 20),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        style: lang.getTextStyle(
+                          color: isDark ? Colors.white : Colors.black87,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           labelText: daysLabel,
-                          labelStyle: lang.getTextStyle(color: const Color(0xFFAB47BC)),
+                          labelStyle: lang.getTextStyle(
+                            color: const Color(0xFFAB47BC),
+                          ),
                           filled: true,
-                          fillColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFAB47BC), width: 2)),
+                          fillColor: isDark
+                              ? Colors.white.withOpacity(0.05)
+                              : Colors.grey[100],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFAB47BC),
+                              width: 2,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -2155,16 +2914,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: TextField(
                         controller: hoursController,
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: lang.getTextStyle(color: isDark ? Colors.white : Colors.black87, fontWeight: FontWeight.bold, fontSize: 20),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        style: lang.getTextStyle(
+                          color: isDark ? Colors.white : Colors.black87,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           labelText: hoursLabel,
-                          labelStyle: lang.getTextStyle(color: const Color(0xFFAB47BC)),
+                          labelStyle: lang.getTextStyle(
+                            color: const Color(0xFFAB47BC),
+                          ),
                           filled: true,
-                          fillColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: Color(0xFFAB47BC), width: 2)),
+                          fillColor: isDark
+                              ? Colors.white.withOpacity(0.05)
+                              : Colors.grey[100],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFAB47BC),
+                              width: 2,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -2175,19 +2953,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text(cancelBtn, style: lang.getTextStyle(color: isDark ? Colors.white54 : Colors.grey)),
+                child: Text(
+                  cancelBtn,
+                  style: lang.getTextStyle(
+                    color: isDark ? Colors.white54 : Colors.grey,
+                  ),
+                ),
               ),
               ElevatedButton(
                 onPressed: () async {
                   int days = int.tryParse(daysController.text.trim()) ?? 0;
                   int hours = int.tryParse(hoursController.text.trim()) ?? 0;
-                  
+
                   if (days > 0 || hours > 0) {
                     final now = DateTime.now();
-                    final newStartDate = now.subtract(Duration(days: days, hours: hours));
+                    final newStartDate = now.subtract(
+                      Duration(days: days, hours: hours),
+                    );
                     await _timerService.setStartDate(newStartDate);
                   }
-                  
+
                   if (mounted) {
                     Navigator.pop(context);
                     setState(() {});
@@ -2195,9 +2980,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFAB47BC),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
-                child: Text(saveBtn, style: lang.getTextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                child: Text(
+                  saveBtn,
+                  style: lang.getTextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -2206,18 +2999,48 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildSettingsOption({required IconData icon, required String title, required Color color, required LanguageService lang, required VoidCallback onTap}) {
+  Widget _buildSettingsOption({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required LanguageService lang,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        decoration: BoxDecoration(color: lang.isDarkMode ? Colors.white.withOpacity(0.1) : Colors.grey[100], borderRadius: BorderRadius.circular(16)),
+        decoration: BoxDecoration(
+          color: lang.isDarkMode
+              ? Colors.white.withOpacity(0.1)
+              : Colors.grey[100],
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Row(
           children: [
-            Container(padding: const EdgeInsets.all(10), decoration: BoxDecoration(color: color.withOpacity(0.2), borderRadius: BorderRadius.circular(12)), child: Icon(icon, color: color)),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color),
+            ),
             const SizedBox(width: 16),
-            Expanded(child: Text(title, style: lang.getTextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: lang.isDarkMode ? Colors.white : Colors.black87))),
-            Icon(lang.isRTL ? Icons.chevron_left : Icons.chevron_right, color: lang.isDarkMode ? Colors.white38 : Colors.grey),
+            Expanded(
+              child: Text(
+                title,
+                style: lang.getTextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: lang.isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
+            Icon(
+              lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
+              color: lang.isDarkMode ? Colors.white38 : Colors.grey,
+            ),
           ],
         ),
       ),
@@ -2230,17 +3053,68 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       builder: (context) => Directionality(
         textDirection: lang.textDirection,
         child: AlertDialog(
-          backgroundColor: lang.isDarkMode ? const Color(0xFF1a2a4a) : Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Row(children: [
-            Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.orange.withOpacity(0.2), borderRadius: BorderRadius.circular(10)), child: const Icon(Icons.warning_rounded, color: Colors.orange)),
-            const SizedBox(width: 12),
-            Text(lang.resetTimer, style: lang.getTextStyle(fontWeight: FontWeight.bold, color: lang.isDarkMode ? Colors.white : Colors.black87)),
-          ]),
-          content: Text(lang.resetConfirm, style: lang.getTextStyle(fontSize: 16, color: lang.isDarkMode ? Colors.white70 : Colors.black54)),
+          backgroundColor:
+              lang.isDarkMode ? const Color(0xFF1a2a4a) : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.orange.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.warning_rounded, color: Colors.orange),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                lang.resetTimer,
+                style: lang.getTextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: lang.isDarkMode ? Colors.white : Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            lang.resetConfirm,
+            style: lang.getTextStyle(
+              fontSize: 16,
+              color: lang.isDarkMode ? Colors.white70 : Colors.black54,
+            ),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: Text(lang.cancel, style: lang.getTextStyle(color: lang.isDarkMode ? Colors.white54 : Colors.grey, fontWeight: FontWeight.w600))),
-            ElevatedButton(onPressed: () { Navigator.pop(context); _timerService.resetTimer().then((_) => setState(() {})); }, style: ElevatedButton.styleFrom(backgroundColor: Colors.orange, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))), child: Text(lang.yes, style: lang.getTextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                lang.cancel,
+                style: lang.getTextStyle(
+                  color: lang.isDarkMode ? Colors.white54 : Colors.grey,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _timerService.resetTimer().then((_) => setState(() {}));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                lang.yes,
+                style: lang.getTextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -2250,12 +3124,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String _getCurrentQuote(LanguageService lang) {
     final quote = _quotesService.currentQuote;
     if (quote == null) return lang.motivationalQuote;
-    
+
     switch (lang.currentLanguage) {
       case AppLanguage.arabic:
-        return quote.textAr.isNotEmpty ? '"${quote.textAr}"' : '"${quote.text}"';
+        return quote.textAr.isNotEmpty
+            ? '"${quote.textAr}"'
+            : '"${quote.text}"';
       case AppLanguage.kurdish:
-        return quote.textKu.isNotEmpty ? '"${quote.textKu}"' : '"${quote.text}"';
+        return quote.textKu.isNotEmpty
+            ? '"${quote.textKu}"'
+            : '"${quote.text}"';
       case AppLanguage.english:
         return '"${quote.text}"';
     }
@@ -2263,33 +3141,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   // Cached star widgets for performance - reduced to 15 for mobile performance
   List<Widget> _buildCachedStars(Size size) {
-    _starPositions ??= List.generate(15, (index) => {
-      'top': (index * 31) % size.height,
-      'left': (index * 47) % size.width,
-      'opacity': 0.2 + (index % 4) * 0.15,
-    });
-    
-    return _starPositions!.map((pos) => Positioned(
-      top: pos['top']!,
-      left: pos['left']!,
-      child: Container(
-        width: 2,
-        height: 2,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(pos['opacity']!),
-          shape: BoxShape.circle,
-        ),
-      ),
-    )).toList();
-  }
+    _starPositions ??= List.generate(
+      15,
+      (index) => {
+        'top': (index * 31) % size.height,
+        'left': (index * 47) % size.width,
+        'opacity': 0.2 + (index % 4) * 0.15,
+      },
+    );
 
+    return _starPositions!
+        .map(
+          (pos) => Positioned(
+            top: pos['top']!,
+            left: pos['left']!,
+            child: Container(
+              width: 2,
+              height: 2,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(pos['opacity']!),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     final lang = Provider.of<LanguageService>(context);
     final size = MediaQuery.of(context).size;
     final isDark = lang.isDarkMode;
-    
+
     return Directionality(
       textDirection: lang.textDirection,
       child: Scaffold(
@@ -2304,18 +3188,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: isDark ? [const Color(0xFF0F172A), const Color(0xFF16283E), const Color(0xFF0F172A)] : [const Color(0xFFF8FAFA), const Color(0xFFF1F7F6), const Color(0xFFF8FAFA)],
+                  colors: isDark
+                      ? [
+                          const Color(0xFF0F172A),
+                          const Color(0xFF16283E),
+                          const Color(0xFF0F172A),
+                        ]
+                      : [
+                          const Color(0xFFF8FAFA),
+                          const Color(0xFFF1F7F6),
+                          const Color(0xFFF8FAFA),
+                        ],
                 ),
               ),
             ),
             if (isDark) ..._buildCachedStars(size),
-            
+
             SafeArea(
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 120,
+                  ),
                   child: Column(
                     children: [
                       // Header - Optimized for small screens
@@ -2324,14 +3223,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           final screenWidth = constraints.maxWidth;
                           final isVerySmall = screenWidth < 340;
                           final isSmallScreen = screenWidth < 380;
-                          final iconPadding = isVerySmall ? 5.0 : (isSmallScreen ? 7.0 : 8.0);
-                          final iconSize = isVerySmall ? 18.0 : (isSmallScreen ? 21.0 : 24.0);
-                          final spacing = isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
-                          
-                          final btnBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFFFFFFF);
-                          final btnShadow = isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 2))];
+                          final iconPadding =
+                              isVerySmall ? 5.0 : (isSmallScreen ? 7.0 : 8.0);
+                          final iconSize = isVerySmall
+                              ? 18.0
+                              : (isSmallScreen ? 21.0 : 24.0);
+                          final topImageIconSize = isVerySmall
+                              ? 34.0
+                              : (isSmallScreen ? 38.0 : 42.0);
+                          final spacing =
+                              isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
+
+                          final btnBg = isDark
+                              ? const Color(0xFF1E293B)
+                              : const Color(0xFFFFFFFF);
+                          final btnShadow = isDark
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.04),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ];
                           final btnRadius = BorderRadius.circular(14);
-                          
+
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -2341,9 +3257,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 children: [
                                   // Menu Button - Balanced premium touch target with container matching settings
                                   GestureDetector(
-                                    onTap: () => _scaffoldKey.currentState?.openDrawer(),
+                                    onTap: () =>
+                                        _scaffoldKey.currentState?.openDrawer(),
                                     child: Container(
-                                      margin: EdgeInsets.symmetric(horizontal: spacing / 2),
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: spacing / 2,
+                                      ),
                                       padding: EdgeInsets.all(iconPadding),
                                       decoration: BoxDecoration(
                                         color: btnBg,
@@ -2351,8 +3270,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         boxShadow: btnShadow,
                                       ),
                                       child: Icon(
-                                        Icons.menu_rounded, 
-                                        color: isDark ? Colors.white70 : Colors.black54, 
+                                        Icons.menu_rounded,
+                                        color: isDark
+                                            ? Colors.white70
+                                            : Colors.black54,
                                         size: iconSize,
                                       ),
                                     ),
@@ -2360,18 +3281,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   SizedBox(width: spacing / 2),
                                   // Leaderboard
                                   GestureDetector(
-                                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LeaderboardScreen())),
-                                    child: Container(
-                                      padding: EdgeInsets.all(iconPadding),
-                                      decoration: BoxDecoration(
-                                        color: btnBg,
-                                        borderRadius: btnRadius,
-                                        boxShadow: btnShadow,
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const LeaderboardScreen(),
                                       ),
-                                      child: Icon(
-                                        Icons.emoji_events_rounded,
-                                        color: const Color(0xFFD97706),
-                                        size: iconSize,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(iconPadding / 2),
+                                      child: Image.asset(
+                                        'assets/images/icon_top_leaderboard.png',
+                                        width: topImageIconSize,
+                                        height: topImageIconSize,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                   ),
@@ -2379,23 +3302,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   // Awards (Badges + Certificates) - Combined popup
                                   PopupMenuButton<String>(
                                     onSelected: (value) {
-                                      if (value == 'badges') _showBadgesDialog(lang);
-                                      if (value == 'certificates') _showCertificatesDialog(lang);
+                                      if (value == 'badges')
+                                        _showBadgesDialog(lang);
+                                      if (value == 'certificates')
+                                        _showCertificatesDialog(lang);
                                     },
                                     offset: const Offset(0, 45),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                    color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-                                    child: Container(
-                                      padding: EdgeInsets.all(iconPadding),
-                                      decoration: BoxDecoration(
-                                        color: btnBg,
-                                        borderRadius: btnRadius,
-                                        boxShadow: btnShadow,
-                                      ),
-                                      child: Icon(
-                                        Icons.military_tech_rounded,
-                                        color: const Color(0xFF0D9488),
-                                        size: iconSize,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    color: isDark
+                                        ? const Color(0xFF1a2a4a)
+                                        : Colors.white,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(iconPadding / 2),
+                                      child: Image.asset(
+                                        'assets/images/icon_top_badges.png',
+                                        width: topImageIconSize,
+                                        height: topImageIconSize,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     itemBuilder: (context) => [
@@ -2411,10 +3336,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             ),
                                             const SizedBox(width: 12),
                                             Text(
-                                              lang.currentLanguage == AppLanguage.kurdish ? 'ئۆسمەکان' 
-                                                : lang.currentLanguage == AppLanguage.arabic ? 'الأوسمة' 
-                                                : 'Badges',
-                                              style: lang.getTextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isDark ? Colors.white : Colors.black87),
+                                              lang.currentLanguage ==
+                                                      AppLanguage.kurdish
+                                                  ? 'ئۆسمەکان'
+                                                  : lang.currentLanguage ==
+                                                          AppLanguage.arabic
+                                                      ? 'الأوسمة'
+                                                      : 'Badges',
+                                              style: lang.getTextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black87,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -2431,10 +3366,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             ),
                                             const SizedBox(width: 12),
                                             Text(
-                                              lang.currentLanguage == AppLanguage.kurdish ? 'بڕوانامەکان' 
-                                                : lang.currentLanguage == AppLanguage.arabic ? 'الشهادات' 
-                                                : 'Certificates',
-                                              style: lang.getTextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: isDark ? Colors.white : Colors.black87),
+                                              lang.currentLanguage ==
+                                                      AppLanguage.kurdish
+                                                  ? 'بڕوانامەکان'
+                                                  : lang.currentLanguage ==
+                                                          AppLanguage.arabic
+                                                      ? 'الشهادات'
+                                                      : 'Certificates',
+                                              style: lang.getTextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: isDark
+                                                    ? Colors.white
+                                                    : Colors.black87,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -2451,34 +3396,50 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         return Stack(
                                           clipBehavior: Clip.none,
                                           children: [
-                                            Container(
-                                              padding: EdgeInsets.all(iconPadding),
-                                              decoration: BoxDecoration(
-                                                color: btnBg,
-                                                borderRadius: btnRadius,
-                                                boxShadow: btnShadow,
+                                            Padding(
+                                              padding: EdgeInsets.all(
+                                                iconPadding / 2,
                                               ),
-                                              child: Icon(
-                                                Icons.notifications_rounded,
-                                                color: const Color(0xFFF43F5E),
-                                                size: iconSize,
+                                              child: Image.asset(
+                                                'assets/images/icon_top_notifications.png',
+                                                width: topImageIconSize,
+                                                height: topImageIconSize,
+                                                fit: BoxFit.contain,
                                               ),
                                             ),
-                                            if (_announcementsService.unreadCount > 0)
+                                            if (_announcementsService
+                                                    .unreadCount >
+                                                0)
                                               Positioned(
                                                 right: -4,
                                                 top: -4,
                                                 child: Container(
-                                                  padding: const EdgeInsets.all(4),
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xFFF43F5E),
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(color: Colors.white, width: 1.5),
+                                                  padding: const EdgeInsets.all(
+                                                    4,
                                                   ),
-                                                  constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(
+                                                      0xFFF43F5E,
+                                                    ),
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 1.5,
+                                                    ),
+                                                  ),
+                                                  constraints:
+                                                      const BoxConstraints(
+                                                    minWidth: 18,
+                                                    minHeight: 18,
+                                                  ),
                                                   child: Text(
                                                     '${_announcementsService.unreadCount}',
-                                                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ),
@@ -2493,20 +3454,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               // Middle - User info (Expanded to prevent overflow)
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: spacing),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: spacing,
+                                  ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        lang.welcome(_getUserName(lang)).replaceAll('!', ''),
-                                        style: lang.getTextStyle(fontSize: isSmallScreen ? 12 : 14, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+                                        lang
+                                            .welcome(_getUserName(lang))
+                                            .replaceAll('!', ''),
+                                        style: lang.getTextStyle(
+                                          fontSize: isSmallScreen ? 12 : 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black87,
+                                        ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
                                       Text(
-                                        _formatDate(lang), 
-                                        style: lang.getTextStyle(fontSize: isSmallScreen ? 9 : 10, color: isDark ? Colors.white54 : Colors.black45),
+                                        _formatDate(lang),
+                                        style: lang.getTextStyle(
+                                          fontSize: isSmallScreen ? 9 : 10,
+                                          color: isDark
+                                              ? Colors.white54
+                                              : Colors.black45,
+                                        ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
@@ -2516,16 +3492,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ),
                               // Right - Settings
                               GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const SettingsScreen(),
+                                  ),
+                                ),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(horizontal: spacing / 2),
+                                  margin: EdgeInsets.symmetric(
+                                    horizontal: spacing / 2,
+                                  ),
                                   padding: EdgeInsets.all(iconPadding),
                                   decoration: BoxDecoration(
                                     color: btnBg,
                                     borderRadius: btnRadius,
                                     boxShadow: btnShadow,
                                   ),
-                                  child: Icon(Icons.settings_rounded, color: isDark ? Colors.white70 : Colors.black54, size: iconSize),
+                                  child: Icon(
+                                    Icons.settings_rounded,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                    size: iconSize,
+                                  ),
                                 ),
                               ),
                             ],
@@ -2533,7 +3522,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         },
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Timer Card - Using isolated widget for performance
                       RecoveryTimerWidget(
                         timerService: _timerService,
@@ -2547,232 +3536,380 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                       // Category Group: Support & Help
                       _buildCategoryHeader(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'پاڵپشتی و فریاگوزاری خێرا'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'الدعم والإنقاذ السريع'
-                          : 'Immediate Support & Help',
-                        lang, isDark, const Color(0xFFF43F5E)
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'پاڵپشتی و فریاگوزاری خێرا'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'الدعم والإنقاذ السريع'
+                                : 'Immediate Support & Help',
+                        lang,
+                        isDark,
+                        const Color(0xFFF43F5E),
                       ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'ڕاهێنانی هەناسەدان'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'تمرين التنفس'
-                          : 'Breathing Exercise',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'ئارام به‌ و به‌ قوڵی هه‌ناسه‌ بده‌ بۆ ڕووبه‌ڕووبوونه‌وه‌ی خه‌مۆكی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'استرخِ وتنفس بعمق لمقاومة الرغبات الطارئة'
-                          : 'Relax and breathe deeply to resist sudden urges',
-                        iconAsset: 'assets/images/icon_breathing.png',
-                        glowColors: [const Color(0xFF06B6D4), const Color(0xFF0891B2)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BreathingExerciseScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'ئارەزوویەکی بەهێزت هەیە؟'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'هل تشعر برغبة شديدة؟'
-                          : 'Feeling a strong urge?',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'بۆ یارمەتی خێرا و ئامۆژگاری فریاگوزاری'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'للحصول على مساعدة فورية ونصائح إسعافية'
-                          : 'For instant help and emergency tips',
-                        iconAsset: 'assets/images/icon_tips.png',
-                        glowColors: [const Color(0xFFFF4757), const Color(0xFFFF6B6B)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TipsScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'دکتۆر و ڕەفیقی تعافی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'دكتور ورفيق التعافي'
-                          : 'Doctor & Companion of Recovery',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'ڕاوێژکاری و چاودێری پزیشکی بەردەوام'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'استشارات طبية ورعاية مستمرة للتعافي'
-                          : 'Medical consultation and continuous recovery support',
-                        iconAsset: 'assets/images/icon_dr_taafi.png',
-                        glowColors: [const Color(0xFF0D9488), const Color(0xFF14B8A6)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'دكتور ورفيق التعافي', url: 'https://ta3afi.pages.dev'))),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'کۆمەڵگەی لا ئەبرەح'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'مجتمع لا أبرح'
-                          : 'La Abrah Community',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'له‌گه‌ڵ براكانت به‌شداربه‌ له‌ گه‌شتی چاكبوونه‌وه‌'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'شارك إخوانك في رحلة التعافي والدعم الجماعي'
-                          : 'Join your brothers in the journey of group recovery',
-                        iconAsset: 'assets/images/icon_community.png',
-                        glowColors: [const Color(0xFF00B4D8), const Color(0xFF0077B6)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'مجتمع لا أبرح', url: 'https://laabrah12.lovable.app/'))),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Category Group: Daily Tools
-                      _buildCategoryHeader(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'ئامرازەکانی چاکبوونەوەی ڕۆژانە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'أدوات التعافي اليومية'
-                          : 'Daily Recovery Tools',
-                        lang, isDark, const Color(0xFF0D9488)
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'خوەکان'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'العادات'
-                          : 'Habits',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'خوه‌ ئه‌رێنییه‌كانت به‌هێز بكه‌ و چاودێرییان بكه‌'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'ابنِ عادات إيجابية جديدة وتتبع التزامك بها'
-                          : 'Build new positive habits and track your adherence',
-                        iconAsset: 'assets/images/icon_habits.png',
-                        glowColors: [const Color(0xFF22C55E), const Color(0xFF15803D)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const HabitsScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'بەدواداچوون'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'تتبع التقدم'
-                          : 'Progress Tracking',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'ئامار و نه‌خشه‌ی به‌ره‌وپێشچوونی ڕۆژانه‌ت ببینه‌'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'شاهد إحصائيات ونسب تقدمك اليومي بالرسوم'
-                          : 'View statistics and daily progress charts',
-                        iconAsset: 'assets/images/icon_tracking.png',
-                        glowColors: [const Color(0xFF64748B), const Color(0xFF334155)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TrackingScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'ڕۆژنامەکەم'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'يومياتي'
-                          : 'My Journal',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'هه‌سته‌كان و بیركردنه‌وه‌كانت بنووسه‌ بۆ كه‌مكردنه‌وه‌ی فشار'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'اكتب مشاعرك وأفكارك اليومية لتخفيف الضغوط'
-                          : 'Write your daily feelings and thoughts to ease stress',
-                        iconAsset: 'assets/images/icon_journal.png',
-                        glowColors: [const Color(0xFF14B8A6), const Color(0xFF0D9488)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const JournalScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
 
                       _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'بەڵێننامەی پابەندبوون'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'وثيقة الالتزام'
-                          : 'Commitment Document',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'نامه‌كانت بۆ داهاتووی خۆت و به‌ڵێنی پاكی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'رسائلك لنفسك المستقبلية وعهد الطهارة'
-                          : 'Letters to your future self and promise of purity',
-                        iconAsset: 'assets/images/icon_commitment.png',
-                        glowColors: [const Color(0xFFEF4444), const Color(0xFFDC2626)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const CommitmentScreen())),
+                        title: lang.currentLanguage == AppLanguage.kurdish
+                            ? 'ڕاهێنانی هەناسەدان'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'تمرين التنفس'
+                                : 'Breathing Exercise',
+                        subtitle: lang.currentLanguage == AppLanguage.kurdish
+                            ? 'ئارام به‌ و به‌ قوڵی هه‌ناسه‌ بده‌ بۆ ڕووبه‌ڕووبوونه‌وه‌ی خه‌مۆكی'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'استرخِ وتنفس بعمق لمقاومة الرغبات الطارئة'
+                                : 'Relax and breathe deeply to resist sudden urges',
+                        iconAsset: 'assets/images/icon_breathing.png',
+                        glowColors: [
+                          const Color(0xFF06B6D4),
+                          const Color(0xFF0891B2),
+                        ],
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const BreathingExerciseScreen(),
+                          ),
+                        ),
                         lang: lang,
                         isDark: isDark,
                       ),
-                      
+
+                      _buildPremiumSequentialCard(
+                        title: lang.currentLanguage == AppLanguage.kurdish
+                            ? 'ئارەزوویەکی بەهێزت هەیە؟'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'هل تشعر برغبة شديدة؟'
+                                : 'Feeling a strong urge?',
+                        subtitle: lang.currentLanguage == AppLanguage.kurdish
+                            ? 'بۆ یارمەتی خێرا و ئامۆژگاری فریاگوزاری'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'للحصول على مساعدة فورية ونصائح إسعافية'
+                                : 'For instant help and emergency tips',
+                        iconAsset: 'assets/images/icon_tips.png',
+                        glowColors: [
+                          const Color(0xFFFF4757),
+                          const Color(0xFFFF6B6B),
+                        ],
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const TipsScreen()),
+                        ),
+                        lang: lang,
+                        isDark: isDark,
+                      ),
+
+                      _buildActionGrid(
+                        lang: lang,
+                        isDark: isDark,
+                        children: [
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'دکتۆر و ڕەفیقی تعافی'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'دكتور ورفيق التعافي'
+                                    : 'Doctor & Companion',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'ڕاوێژکاری بەردەوام'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'استشارات مستمرة'
+                                        : 'Continuous support',
+                            iconAsset: 'assets/images/icon_dr_taafi.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'دكتور ورفيق التعافي',
+                                  url: 'https://ta3afi.pages.dev',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'کۆمەڵگەی لا ئەبرەح'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'مجتمع لا أبرح'
+                                    : 'La Abrah Community',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'پاڵپشتیی کۆمەڵە'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'دعم جماعي'
+                                        : 'Group support',
+                            iconAsset: 'assets/images/icon_community.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'مجتمع لا أبرح',
+                                  url: 'https://laabrah12.lovable.app/',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 16),
-                      
+
+                      // Category Group: Daily Tools
+                      _buildCategoryHeader(
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'ئامرازەکانی چاکبوونەوەی ڕۆژانە'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'أدوات التعافي اليومية'
+                                : 'Daily Recovery Tools',
+                        lang,
+                        isDark,
+                        const Color(0xFF0D9488),
+                      ),
+
+                      _buildActionGrid(
+                        lang: lang,
+                        isDark: isDark,
+                        children: [
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'خوەکان'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'العادات'
+                                    : 'Habits',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'چاودێری ڕۆژانە'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'متابعة يومية'
+                                        : 'Daily tracking',
+                            iconAsset: 'assets/images/icon_habits.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const HabitsScreen(),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'بەدواداچوون'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'تتبع التقدم'
+                                    : 'Progress Tracking',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'ئامار و گراف'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'إحصائيات ورسوم'
+                                        : 'Stats and charts',
+                            iconAsset: 'assets/images/icon_tracking.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const TrackingScreen(),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'ڕۆژنامەکەم'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'يومياتي'
+                                    : 'My Journal',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'نووسینی هەستەکان'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'كتابة المشاعر'
+                                        : 'Write feelings',
+                            iconAsset: 'assets/images/icon_journal.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const JournalScreen(),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'بەڵێننامەی پابەندبوون'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'وثيقة الالتزام'
+                                    : 'Commitment Document',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'بەڵێنی پاکی'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'عهد الطهارة'
+                                        : 'Promise of purity',
+                            iconAsset: 'assets/images/icon_commitment.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const CommitmentScreen(),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+
                       // Category Group: Spiritual & Cognitive
                       _buildCategoryHeader(
-                        lang.currentLanguage == AppLanguage.kurdish ? 'لایه نی ڕۆحی و مەعریفی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'الجانب الروحي والمعرفي'
-                          : 'Spiritual & Cognitive',
-                        lang, isDark, const Color(0xFFD97706)
+                        lang.currentLanguage == AppLanguage.kurdish
+                            ? 'لایه نی ڕۆحی و مەعریفی'
+                            : lang.currentLanguage == AppLanguage.arabic
+                                ? 'الجانب الروحي والمعرفي'
+                                : 'Spiritual & Cognitive',
+                        lang,
+                        isDark,
+                        const Color(0xFFD97706),
                       ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'گوێ لە قورئانی پیرۆز بگرە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'استمع للقرآن الكريم'
-                          : 'Listen to Holy Quran',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'كاته‌به‌تاڵه‌كانت پڕبكه‌وه‌ به‌قورئان بۆدو��ركه‌وتنه‌وه‌ لەزلە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'املأ أوقات فراغك بالقرآن الكريم لتجنب الزلات'
-                          : 'Fill your free time with the Quran to avoid relapse',
-                        iconAsset: 'assets/images/icon_quran.png',
-                        glowColors: [const Color(0xFF10B981), const Color(0xFF059669)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'القرآن الكريم', url: 'https://www.mp3quran.net/ar'))),
+
+                      _buildActionGrid(
                         lang: lang,
                         isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'دۆزی ئیمانی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'جرعة إيمانية'
-                          : 'Faith Dose',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'چیرۆكی په‌ندئامێز له‌سه‌ر ڕێگای سه‌ركه‌وتن'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'قصص وعبر ملهمة من حياة السلف الصالح'
-                          : 'Inspiring stories and lessons from the righteous predecessors',
-                        iconAsset: 'assets/images/icon_stories.png',
-                        glowColors: [const Color(0xFF0D9488), const Color(0xFFDB2777)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StoriesScreen())),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'ڕێگەی ئاسان'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'الطريقة السهلة'
-                          : 'Easy Way',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'گوێ لە فێرکارییە دەنگییەکانی چاکبوونەوە بگرە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'استمع إلى الشروحات الصوتية للتعافي السريع'
-                          : 'Listen to audio explanations for rapid recovery',
-                        iconAsset: 'assets/images/icon_easy_way.png',
-                        glowColors: [const Color(0xFFEA580C), const Color(0xFFF97316)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'الطريقة السهلة', url: 'https://muhamadabdulah.lovable.app/'))),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'مۆدێلی ئازادی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'نموذج الحرية'
-                          : 'Freedom Model',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'تێگەیشتن لە فەلسەفەی کۆتاییهێنان بە بەکارهێنان'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'فهم فلسفة التخلص النهائي من السلوك الإدماني'
-                          : 'Understanding the philosophy of final addiction cessation',
-                        iconAsset: 'assets/images/icon_freedom_model.png',
-                        glowColors: [const Color(0xFF0EA5E9), const Color(0xFF0369A1)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'نموذج الحرية', url: 'https://namoothaj-5nds9uxr.manus.space/'))),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'پرسیار و وەڵامی شەرعی'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'أسئلة وأجوبة شرعية'
-                          : 'Sharia Q&A',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'وەڵامە شەرعییەکان سەبارعت بە پاکی و چاکبوونەوە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'فتاوى وأحكام شرعية حول الطهارة والتعافي'
-                          : 'Sharia rulings and fatwas about purity and recovery',
-                        iconAsset: 'assets/images/icon_sharia.png',
-                        glowColors: [const Color(0xFF78350F), const Color(0xFF92400E)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'الجانب الشرعي', url: 'https://aikurdi.web.app'))),
-                        lang: lang,
-                        isDark: isDark,
-                      ),
-                      
-                      _buildPremiumSequentialCard(
-                        title: lang.currentLanguage == AppLanguage.kurdish ? 'ڤیدیۆ و دەنگەکانی چاکبوونەوە'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'فيديوهات وصوتيات التعافي'
-                          : 'Recovery Videos & Audio',
-                        subtitle: lang.currentLanguage == AppLanguage.kurdish ? 'کورتە ڤیدیۆ و وانەی چاکبوونەوەی بەسوود'
-                          : lang.currentLanguage == AppLanguage.arabic ? 'مقاطع فيديو ومحاضرات توعوية مفيدة للتعافي'
-                          : 'Informative videos and useful recovery lectures',
-                        iconAsset: 'assets/images/icon_media.png',
-                        glowColors: [const Color(0xFF14B8A6), const Color(0xFF6D28D9)],
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const WebViewScreen(title: 'فيديوهات وصوتيات التعافي', url: 'https://yusf4.lovable.app/'))),
-                        lang: lang,
-                        isDark: isDark,
+                        children: [
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'گوێ لە قورئانی پیرۆز بگرە'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'استمع للقرآن الكريم'
+                                    : 'Listen to Quran',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'قورئان و ئارامی'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'قرآن وطمأنينة'
+                                        : 'Quran and calm',
+                            iconAsset: 'assets/images/icon_quran.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'القرآن الكريم',
+                                  url: 'https://www.mp3quran.net/ar',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'دۆزی ئیمانی'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'جرعة إيمانية'
+                                    : 'Faith Dose',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'چیرۆک و پەند'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'قصص وعبر'
+                                        : 'Stories and lessons',
+                            iconAsset: 'assets/images/icon_stories.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const StoriesScreen(),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'ڕێگەی ئاسان'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'الطريقة السهلة'
+                                    : 'Easy Way',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'فێرکاری دەنگی'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'شروحات صوتية'
+                                        : 'Audio lessons',
+                            iconAsset: 'assets/images/icon_easy_way.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'الطريقة السهلة',
+                                  url: 'https://muhamadabdulah.lovable.app/',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'مۆدێلی ئازادی'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'نموذج الحرية'
+                                    : 'Freedom Model',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'تێگەیشتنی قووڵ'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'فهم أعمق'
+                                        : 'Deeper understanding',
+                            iconAsset: 'assets/images/icon_freedom_model.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'نموذج الحرية',
+                                  url:
+                                      'https://namoothaj-5nds9uxr.manus.space/',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                          _buildCompactSectionTile(
+                            title: lang.currentLanguage == AppLanguage.kurdish
+                                ? 'ڤیدیۆ و دەنگەکان'
+                                : lang.currentLanguage == AppLanguage.arabic
+                                    ? 'فيديوهات وصوتيات'
+                                    : 'Videos & Audio',
+                            subtitle:
+                                lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'وانەی بەسوود'
+                                    : lang.currentLanguage == AppLanguage.arabic
+                                        ? 'محاضرات مفيدة'
+                                        : 'Useful lectures',
+                            iconAsset: 'assets/images/icon_media.png',
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const WebViewScreen(
+                                  title: 'فيديوهات وصوتيات التعافي',
+                                  url: 'https://yusf4.lovable.app/',
+                                ),
+                              ),
+                            ),
+                            lang: lang,
+                            isDark: isDark,
+                          ),
+                        ],
                       ),
 
                       const SizedBox(height: 24),
                       // Developer Analytics Dashboard (only visible to developers)
-                      if (_analyticsService.isDeveloper) _buildAnalyticsDashboard(lang, isDark),
+                      if (_analyticsService.isDeveloper)
+                        _buildAnalyticsDashboard(lang, isDark),
                       const SizedBox(height: 32),
                     ],
                   ),
@@ -2785,13 +3922,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildTimeUnit(int value, String label, LanguageService lang, Color color, int maxValue) {
+  Widget _buildTimeUnit(
+    int value,
+    String label,
+    LanguageService lang,
+    Color color,
+    int maxValue,
+  ) {
     final fillPercent = (value / maxValue).clamp(0.0, 1.0);
-    
+
     // Deeper, richer colors using the passed color
-    final Color bottomColor = HSVColor.fromColor(color).withValue(0.6).toColor(); // Darker
+    final Color bottomColor = HSVColor.fromColor(
+      color,
+    ).withValue(0.6).toColor(); // Darker
     final Color midColor = color;
-    final Color topColor = HSVColor.fromColor(color).withSaturation(0.7).withValue(0.9).toColor(); // Lighter
+    final Color topColor = HSVColor.fromColor(
+      color,
+    ).withSaturation(0.7).withValue(0.9).toColor(); // Lighter
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -2810,7 +3957,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ],
             ),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.35), width: 1.5),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.35),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.15),
@@ -2820,7 +3970,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(18), // Slightly less than container to avoid artifact
+            borderRadius: BorderRadius.circular(
+              18,
+            ), // Slightly less than container to avoid artifact
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
@@ -2831,7 +3983,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(18),
                   ),
                 ),
-                
+
                 // Water fill with rich gradient
                 if (fillPercent > 0)
                   Positioned(
@@ -2839,7 +3991,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     left: 0,
                     right: 0,
                     child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300), // Faster animation for seconds
+                      duration: const Duration(
+                        milliseconds: 300,
+                      ), // Faster animation for seconds
                       curve: Curves.easeInOut, // Smoother linear-like movement
                       // Calculate height ensuring movement from start: minHeight + (variable * range)
                       height: 15.0 + (fillPercent * (110.0 - 15.0)),
@@ -2907,7 +4061,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: Colors.white.withOpacity(0.95),
                           fontWeight: FontWeight.w600,
                           shadows: [
-                            Shadow(color: Colors.black.withOpacity(0.3), blurRadius: 2, offset: const Offset(0, 1)),
+                            Shadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 2,
+                              offset: const Offset(0, 1),
+                            ),
                           ],
                         ),
                       ),
@@ -2938,7 +4096,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isDark 
+          colors: isDark
               ? [const Color(0xFF1a2a4a), const Color(0xFF0d1a2d)]
               : [Colors.white, const Color(0xFFF8F9FA)],
         ),
@@ -2964,20 +4122,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF14B8A6)]),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
+                  ),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(Icons.analytics_rounded, color: Colors.white, size: 24),
+                child: const Icon(
+                  Icons.analytics_rounded,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'إحصائيات المستخدمين' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'ئاماری بەکارهێنەران' 
+                    lang.currentLanguage == AppLanguage.arabic
+                        ? 'إحصائيات المستخدمين'
+                        : lang.currentLanguage == AppLanguage.kurdish
+                            ? 'ئاماری بەکارهێنەران'
                             : 'User Analytics',
                     style: lang.getTextStyle(
                       fontSize: 18,
@@ -2986,10 +4150,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   ),
                   Text(
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'للمطور فقط • تحديث مباشر' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'تەنها بۆ دروستکەر • لایڤ' 
+                    lang.currentLanguage == AppLanguage.arabic
+                        ? 'للمطور فقط • تحديث مباشر'
+                        : lang.currentLanguage == AppLanguage.kurdish
+                            ? 'تەنها بۆ دروستکەر • لایڤ'
                             : 'Developer only • Live',
                     style: lang.getTextStyle(
                       fontSize: 11,
@@ -3016,14 +4180,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                     ),
                     const SizedBox(width: 4),
-                    const Text('LIVE', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.green)),
+                    const Text(
+                      'LIVE',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          
+
           // Stats Cards Row
           Row(
             children: [
@@ -3034,8 +4205,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   builder: (context, snapshot) {
                     final count = snapshot.data ?? 0;
                     return _buildStatCard(
-                      title: lang.currentLanguage == AppLanguage.arabic ? 'اليوم' 
-                           : lang.currentLanguage == AppLanguage.kurdish ? 'ئەمڕۆ' : 'Today',
+                      title: lang.currentLanguage == AppLanguage.arabic
+                          ? 'اليوم'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'ئەمڕۆ'
+                              : 'Today',
                       value: count.toString(),
                       icon: Icons.today,
                       color: const Color(0xFF4CAF50),
@@ -3053,8 +4227,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   builder: (context, snapshot) {
                     final count = snapshot.data ?? 0;
                     return _buildStatCard(
-                      title: lang.currentLanguage == AppLanguage.arabic ? 'الأسبوع' 
-                           : lang.currentLanguage == AppLanguage.kurdish ? 'هەفتە' : 'Week',
+                      title: lang.currentLanguage == AppLanguage.arabic
+                          ? 'الأسبوع'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'هەفتە'
+                              : 'Week',
                       value: count.toString(),
                       icon: Icons.date_range,
                       color: const Color(0xFF2196F3),
@@ -3072,8 +4249,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   builder: (context, snapshot) {
                     final count = snapshot.data ?? 0;
                     return _buildStatCard(
-                      title: lang.currentLanguage == AppLanguage.arabic ? 'الشهر' 
-                           : lang.currentLanguage == AppLanguage.kurdish ? 'مانگ' : 'Month',
+                      title: lang.currentLanguage == AppLanguage.arabic
+                          ? 'الشهر'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'مانگ'
+                              : 'Month',
                       value: count.toString(),
                       icon: Icons.calendar_month,
                       color: const Color(0xFF9C27B0),
@@ -3086,7 +4266,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // Line Chart for past 7 days
           FutureBuilder<List<Map<String, dynamic>>>(
             future: _analyticsService.getDailyUserCounts(),
@@ -3094,25 +4274,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               }
-              
+
               final data = snapshot.data!;
-              final maxCount = data.map((d) => d['count'] as int).fold(0, (a, b) => a > b ? a : b);
+              final maxCount = data
+                  .map((d) => d['count'] as int)
+                  .fold(0, (a, b) => a > b ? a : b);
               final chartMax = maxCount == 0 ? 10 : maxCount + 2;
-              
+
               return Container(
                 height: 150,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1),
+                  color: isDark
+                      ? Colors.white.withOpacity(0.05)
+                      : Colors.grey.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      lang.currentLanguage == AppLanguage.arabic ? 'النشاط اليومي - آخر 7 أيام' 
-                         : lang.currentLanguage == AppLanguage.kurdish ? 'چالاکی ڕۆژانە - ٧ ڕۆژی ڕابردوو' 
-                         : 'Daily Activity - Last 7 Days',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'النشاط اليومي - آخر 7 أيام'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'چالاکی ڕۆژانە - ٧ ڕۆژی ڕابردوو'
+                              : 'Daily Activity - Last 7 Days',
                       style: lang.getTextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -3127,8 +4313,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: data.map((item) {
                           final count = item['count'] as int;
                           final dayName = item['dayName'] as String;
-                          final heightPercent = chartMax > 0 ? (count / chartMax) : 0.0;
-                          
+                          final heightPercent =
+                              chartMax > 0 ? (count / chartMax) : 0.0;
+
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -3148,7 +4335,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   gradient: const LinearGradient(
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
-                                    colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
+                                    colors: [
+                                      Color(0xFF0D9488),
+                                      Color(0xFF14B8A6),
+                                    ],
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
@@ -3158,7 +4348,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 dayName,
                                 style: TextStyle(
                                   fontSize: 9,
-                                  color: isDark ? Colors.white54 : Colors.black45,
+                                  color:
+                                      isDark ? Colors.white54 : Colors.black45,
                                 ),
                               ),
                             ],
@@ -3172,7 +4363,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             },
           ),
           const SizedBox(height: 16),
-          
+
           // Recent Logins (Live - minute by minute)
           StreamBuilder<List<Map<String, dynamic>>>(
             stream: _analyticsService.getRecentLoginsStream(),
@@ -3180,13 +4371,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const SizedBox();
               }
-              
+
               final logins = snapshot.data!;
-              
+
               return Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1),
+                  color: isDark
+                      ? Colors.white.withOpacity(0.05)
+                      : Colors.grey.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -3200,14 +4393,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           decoration: BoxDecoration(
                             color: Colors.green,
                             shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: Colors.green.withOpacity(0.5), blurRadius: 8)],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green.withOpacity(0.5),
+                                blurRadius: 8,
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          lang.currentLanguage == AppLanguage.arabic ? 'تسجيلات الدخول الأخيرة' 
-                             : lang.currentLanguage == AppLanguage.kurdish ? 'داغڵبوونەکانی ئەمڕۆ' 
-                             : 'Recent Logins Today',
+                          lang.currentLanguage == AppLanguage.arabic
+                              ? 'تسجيلات الدخول الأخيرة'
+                              : lang.currentLanguage == AppLanguage.kurdish
+                                  ? 'داغڵبوونەکانی ئەمڕۆ'
+                                  : 'Recent Logins Today',
                           style: lang.getTextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -3229,10 +4429,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ...logins.take(10).map((login) {
                       final name = login['name'] as String;
                       final time = login['time'] as DateTime?;
-                      final timeStr = time != null 
-                          ? '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}' 
+                      final timeStr = time != null
+                          ? '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}'
                           : '--:--';
-                      
+
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Row(
@@ -3261,13 +4461,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 name,
                                 style: lang.getTextStyle(
                                   fontSize: 12,
-                                  color: isDark ? Colors.white70 : Colors.black87,
+                                  color:
+                                      isDark ? Colors.white70 : Colors.black87,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.green.withOpacity(0.15),
                                 borderRadius: BorderRadius.circular(8),
@@ -3333,8 +4537,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
   }
-  Widget _buildTimeSeparator() => Text(':', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white.withOpacity(0.5)));
 
+  Widget _buildTimeSeparator() => Text(
+        ':',
+        style: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.bold,
+          color: Colors.white.withOpacity(0.5),
+        ),
+      );
 
   Widget _buildDrawer(LanguageService lang) {
     final isDark = lang.isDarkMode;
@@ -3350,7 +4561,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               // Header with profile - no gradient background
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 24,
+                ),
                 child: Column(
                   children: [
                     // Profile image with green border
@@ -3358,7 +4572,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFF00BFA5), width: 3),
+                        border: Border.all(
+                          color: const Color(0xFF00BFA5),
+                          width: 3,
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: const Color(0xFF00BFA5).withOpacity(0.3),
@@ -3369,21 +4586,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       child: CircleAvatar(
                         radius: 40,
-                        backgroundColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
-                        backgroundImage: (_authService.currentUser?.photoURL != null && _authService.currentUser!.photoURL!.isNotEmpty)
+                        backgroundColor: isDark
+                            ? Colors.grey.shade800
+                            : Colors.grey.shade300,
+                        backgroundImage: (_authService.currentUser?.photoURL !=
+                                    null &&
+                                _authService.currentUser!.photoURL!.isNotEmpty)
                             ? NetworkImage(_authService.currentUser!.photoURL!)
                             : null,
-                        onBackgroundImageError: (_authService.currentUser?.photoURL != null && _authService.currentUser!.photoURL!.isNotEmpty)
-                            ? (_, __) {} : null,
-                        child: (_authService.currentUser?.photoURL == null || _authService.currentUser!.photoURL!.isEmpty)
-                            ? Icon(_authService.isGuest ? Icons.person_outline : Icons.person, size: 40, color: isDark ? Colors.white70 : Colors.grey.shade600)
+                        onBackgroundImageError:
+                            (_authService.currentUser?.photoURL != null &&
+                                    _authService
+                                        .currentUser!.photoURL!.isNotEmpty)
+                                ? (_, __) {}
+                                : null,
+                        child: (_authService.currentUser?.photoURL == null ||
+                                _authService.currentUser!.photoURL!.isEmpty)
+                            ? Icon(
+                                _authService.isGuest
+                                    ? Icons.person_outline
+                                    : Icons.person,
+                                size: 40,
+                                color: isDark
+                                    ? Colors.white70
+                                    : Colors.grey.shade600,
+                              )
                             : null,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text(_getUserName(lang), style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
+                    Text(
+                      _getUserName(lang),
+                      style: lang.getTextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
                     const SizedBox(height: 4),
-                    Text(lang.appSlogan, style: lang.getTextStyle(fontSize: 12, color: isDark ? Colors.white60 : Colors.black54), textAlign: TextAlign.center),
+                    Text(
+                      lang.appSlogan,
+                      style: lang.getTextStyle(
+                        fontSize: 12,
+                        color: isDark ? Colors.white60 : Colors.black54,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 16),
                     // Share App Button
                     GestureDetector(
@@ -3391,11 +4639,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         Navigator.pop(context);
                         final uri = Uri.parse('https://laabrah.lovable.app');
                         if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
                         }
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
                             colors: [Color(0xFF00C9FF), Color(0xFF92FE9D)],
@@ -3414,15 +4668,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.share_rounded, color: Colors.white, size: 20),
+                            const Icon(
+                              Icons.share_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                             const SizedBox(width: 8),
                             Text(
-                              lang.currentLanguage == AppLanguage.arabic 
-                                  ? 'شارك التطبيق' 
-                                  : lang.currentLanguage == AppLanguage.kurdish 
-                                      ? 'هاوبەشی بکە' 
+                              lang.currentLanguage == AppLanguage.arabic
+                                  ? 'شارك التطبيق'
+                                  : lang.currentLanguage == AppLanguage.kurdish
+                                      ? 'هاوبەشی بکە'
                                       : 'Share App',
-                              style: lang.getTextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: lang.getTextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -3432,291 +4694,359 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
 
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 120),
-                children: [
-                  _buildDrawerItem('assets/images/icon_home.png', lang.home, true, lang, () => Navigator.pop(context)),
-                  _buildDrawerItem(
-                    'assets/images/icon_roadmap.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'خارطة التعافي' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'نەخشەی چاکبوونەوە' 
-                            : 'Recovery Roadmap', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const RoadmapScreen())); 
-                    }
+              const SizedBox(height: 16),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 0,
+                    bottom: 120,
                   ),
-                  _buildDrawerItem(
-                    'assets/images/icon_journal.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'يومياتي' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'ڕۆژنامەکەم' 
-                            : 'My Journal', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const JournalScreen())); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_habits.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'العادات' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'ڕەوشتەکان' 
-                            : 'Habits', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const HabitsScreen())); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_tracking.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'المتابعة' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'بەدواداچوون' 
-                            : 'Tracking', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TrackingScreen())); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_library.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'المكتبة' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'کتێبخانە' 
-                            : 'Library', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LibraryScreen())); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_community.png',
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'مجموعة لا أبرح للدردشة' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'مجموعة لا أبرح دردشة' 
-                            : 'La Abraha Chat Group',
-                    false,
-                    lang,
-                    () async {
-                      Navigator.pop(context);
-                      final url = 'https://web.telegram.org/k/#@Ta3fi_group';
-                      if (kIsWeb) {
-                        final uri = Uri.parse(url);
-                        if (await canLaunchUrl(uri)) {
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
-                        }
-                      } else {
+                  children: [
+                    _buildDrawerItem(
+                      'assets/images/icon_home.png',
+                      lang.home,
+                      true,
+                      lang,
+                      () => Navigator.pop(context),
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_roadmap.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'خارطة التعافي'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'نەخشەی چاکبوونەوە'
+                              : 'Recovery Roadmap',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => WebViewScreen(
-                              url: url,
-                              title: 'Telegram',
-                            ),
+                            builder: (_) => const RoadmapScreen(),
                           ),
                         );
-                      }
-                    },
-                  ),
-
-                  _buildDrawerItem(
-                    'assets/images/icon_commitment.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'تحدي ٩٠ يوم' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'چاڵینجی ٩٠ ڕۆژ' 
-                            : '90-Day Challenge', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const ChallengeScreen())); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_freedom_model.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'اعرف مستواك الإدماني' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'مستوای ئیدمانت بزانە' 
-                            : 'Know Your Addiction Level', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const AssessmentScreen())); 
-                    },
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_popup_badges.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'الأوسمة' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'ئۆسمەکان' 
-                            : 'Badges',
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      _showBadgesDialog(lang); 
-                    }
-                  ),
-                  _buildDrawerItem(
-                    'assets/images/icon_popup_certificates.png', 
-                    lang.currentLanguage == AppLanguage.arabic 
-                        ? 'الشهادات' 
-                        : lang.currentLanguage == AppLanguage.kurdish 
-                            ? 'بڕوانامەکان' 
-                            : 'Certificates', 
-                    false, 
-                    lang, 
-                    () { 
-                      Navigator.pop(context); 
-                      _showCertificatesDialog(lang); 
-                    }
-                  ),
-
-                ],
-
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_journal.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'يومياتي'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'ڕۆژنامەکەم'
+                              : 'My Journal',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const JournalScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_habits.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'العادات'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'ڕەوشتەکان'
+                              : 'Habits',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HabitsScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_tracking.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'المتابعة'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'بەدواداچوون'
+                              : 'Tracking',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const TrackingScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_library.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'المكتبة'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'کتێبخانە'
+                              : 'Library',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LibraryScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_community.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'مجموعة لا أبرح للدردشة'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'مجموعة لا أبرح دردشة'
+                              : 'La Abraha Chat Group',
+                      false,
+                      lang,
+                      () async {
+                        Navigator.pop(context);
+                        final url = 'https://web.telegram.org/k/#@Ta3fi_group';
+                        if (kIsWeb) {
+                          final uri = Uri.parse(url);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  WebViewScreen(url: url, title: 'Telegram'),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_challenge.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'تحدي ٩٠ يوم'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'چاڵینجی ٩٠ ڕۆژ'
+                              : '90-Day Challenge',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ChallengeScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_freedom_model.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'اعرف مستواك الإدماني'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'مستوای ئیدمانت بزانە'
+                              : 'Know Your Addiction Level',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AssessmentScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_popup_badges.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'الأوسمة'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'ئۆسمەکان'
+                              : 'Badges',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        _showBadgesDialog(lang);
+                      },
+                    ),
+                    _buildDrawerItem(
+                      'assets/images/icon_popup_certificates.png',
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'الشهادات'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'بڕوانامەکان'
+                              : 'Certificates',
+                      false,
+                      lang,
+                      () {
+                        Navigator.pop(context);
+                        _showCertificatesDialog(lang);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                lang.currentLanguage == AppLanguage.arabic
-                    ? 'التعافي من الإدمان'
-                    : lang.currentLanguage == AppLanguage.kurdish
-                        ? 'چاکبوونەوە لە ئاڵوودەبوون'
-                        : 'Recovery from Addiction',
-                style: lang.getTextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  lang.currentLanguage == AppLanguage.arabic
+                      ? 'التعافي من الإدمان'
+                      : lang.currentLanguage == AppLanguage.kurdish
+                          ? 'چاکبوونەوە لە ئاڵوودەبوون'
+                          : 'Recovery from Addiction',
+                  style: lang.getTextStyle(
+                    fontSize: 12,
+                    color: isDark ? Colors.white38 : Colors.black38,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-  Widget _buildDrawerItem(dynamic iconOrAsset, String title, bool isActive, LanguageService lang, VoidCallback onTap, {bool isDisabled = false}) {
+  Widget _buildDrawerItem(
+    dynamic iconOrAsset,
+    String title,
+    bool isActive,
+    LanguageService lang,
+    VoidCallback onTap, {
+    bool isDisabled = false,
+  }) {
     final isDark = lang.isDarkMode;
     final primaryColor = const Color(0xFF0D9488);
-    final isRTL = lang.currentLanguage == AppLanguage.arabic || lang.currentLanguage == AppLanguage.kurdish;
+    final isRTL = lang.currentLanguage == AppLanguage.arabic ||
+        lang.currentLanguage == AppLanguage.kurdish;
 
     Widget iconWidget;
     if (iconOrAsset is IconData) {
       iconWidget = Icon(
         iconOrAsset,
-        color: isActive 
-            ? primaryColor 
-            : (isDisabled ? (isDark ? Colors.white24 : Colors.black26) : (isDark ? Colors.white54 : Colors.black54)),
-        size: 30,
+        color: isActive
+            ? primaryColor
+            : (isDisabled
+                ? (isDark ? Colors.white24 : Colors.black26)
+                : (isDark ? Colors.white54 : Colors.black54)),
+        size: 24,
       );
     } else if (iconOrAsset is String) {
       iconWidget = Image.asset(
         iconOrAsset,
-        width: 32,
-        height: 32,
+        width: 30,
+        height: 30,
         fit: BoxFit.contain,
       );
     } else {
-      iconWidget = const SizedBox(width: 30, height: 30);
+      iconWidget = const SizedBox(width: 28, height: 28);
     }
 
     final itemContent = [
       Container(
-        padding: const EdgeInsets.all(8),
+        width: 42,
+        height: 42,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isActive 
-              ? primaryColor.withOpacity(isDark ? 0.2 : 0.15) 
-              : Colors.transparent,
-          shape: BoxShape.circle,
+          color: isActive
+              ? primaryColor.withOpacity(isDark ? 0.18 : 0.12)
+              : (isDark
+                  ? Colors.white.withOpacity(0.05)
+                  : const Color(0xFFF1F5F9)),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: iconWidget,
       ),
-      const SizedBox(width: 14),
+      const SizedBox(width: 12),
       Expanded(
         child: Text(
           title,
           style: lang.getTextStyle(
-            fontSize: 16.0,
+            fontSize: 14.5,
             fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-            color: isActive 
-                ? primaryColor 
-                : (isDisabled ? (isDark ? Colors.white24 : Colors.black26) : (isDark ? Colors.white70 : Colors.black87)),
+            color: isActive
+                ? primaryColor
+                : (isDisabled
+                    ? (isDark ? Colors.white24 : Colors.black26)
+                    : (isDark ? Colors.white70 : Colors.black87)),
           ),
           textAlign: isRTL ? TextAlign.right : TextAlign.left,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       if (isActive)
         Container(
-          width: 5,
-          height: 18,
+          width: 4,
+          height: 24,
           decoration: BoxDecoration(
             color: primaryColor,
-            borderRadius: BorderRadius.circular(2.5),
+            borderRadius: BorderRadius.circular(4),
             boxShadow: [
-              BoxShadow(
-                color: primaryColor.withOpacity(0.5),
-                blurRadius: 8,
-              ),
+              BoxShadow(color: primaryColor.withOpacity(0.35), blurRadius: 6),
             ],
           ),
         ),
     ];
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           if (isActive)
             BoxShadow(
-              color: primaryColor.withOpacity(isDark ? 0.08 : 0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              color: primaryColor.withOpacity(isDark ? 0.10 : 0.06),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
             ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         child: Material(
           color: isActive
-              ? (isDark ? const Color(0xFF1E293B).withOpacity(0.5) : Colors.white.withOpacity(0.9))
-              : (isDark ? const Color(0xFF1E293B).withOpacity(0.15) : Colors.black.withOpacity(0.03)),
+              ? (isDark
+                  ? const Color(0xFF12362F).withOpacity(0.74)
+                  : const Color(0xFFEFFCF8))
+              : (isDark
+                  ? const Color(0xFF111827).withOpacity(0.34)
+                  : Colors.white.withOpacity(0.78)),
           child: InkWell(
             onTap: isDisabled ? null : onTap,
             splashColor: primaryColor.withOpacity(0.15),
             highlightColor: primaryColor.withOpacity(0.05),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: isActive 
-                      ? primaryColor.withOpacity(0.4) 
-                      : (isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.04)),
-                  width: isActive ? 1.5 : 1.0,
+                  color: isActive
+                      ? primaryColor.withOpacity(0.30)
+                      : (isDark
+                          ? Colors.white.withOpacity(0.06)
+                          : const Color(0xFFE2E8F0)),
+                  width: 1,
                 ),
               ),
               child: Row(
@@ -3729,9 +5059,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildCategoryHeader(String title, LanguageService lang, bool isDark, Color color) {
+  Widget _buildCategoryHeader(
+    String title,
+    LanguageService lang,
+    bool isDark,
+    Color color,
+  ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 10, left: 2, right: 2),
+      padding: const EdgeInsets.only(top: 18, bottom: 10, left: 2, right: 2),
       child: Row(
         children: [
           Container(
@@ -3749,12 +5084,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               style: lang.getTextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w800,
-                color: isDark ? Colors.white.withOpacity(0.95) : const Color(0xFF1E293B),
+                color: isDark
+                    ? Colors.white.withOpacity(0.95)
+                    : const Color(0xFF1E293B),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildActionGrid({
+    required List<Widget> children,
+    required LanguageService lang,
+    required bool isDark,
+  }) {
+    final isRTL = lang.currentLanguage == AppLanguage.arabic ||
+        lang.currentLanguage == AppLanguage.kurdish;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final spacing = constraints.maxWidth < 360 ? 8.0 : 10.0;
+        return Directionality(
+          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+          child: Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: children.map((child) {
+              final itemWidth = (constraints.maxWidth - spacing) / 2;
+              return SizedBox(width: itemWidth, child: child);
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 
@@ -3774,6 +5137,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     'assets/images/icon_freedom_model.png': Icons.psychology_rounded,
     'assets/images/icon_sharia.png': Icons.question_answer_rounded,
     'assets/images/icon_media.png': Icons.play_circle_rounded,
+    'assets/images/icon_challenge.png': Icons.emoji_events_rounded,
   };
 
   // Category accents: coral = support, teal = daily tools, amber = spiritual
@@ -3792,6 +5156,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     'assets/images/icon_freedom_model.png': Color(0xFFD97706),
     'assets/images/icon_sharia.png': Color(0xFFD97706),
     'assets/images/icon_media.png': Color(0xFFD97706),
+    'assets/images/icon_challenge.png': Color(0xFF0D9488),
   };
 
   Widget _buildPremiumSequentialCard({
@@ -3804,37 +5169,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     required bool isDark,
   }) {
     final accentColor = _cardAccents[iconAsset] ?? const Color(0xFF0D9488);
-    final cardIcon = _cardIcons[iconAsset] ?? Icons.grid_view_rounded;
-    final isRTL = lang.currentLanguage == AppLanguage.arabic || lang.currentLanguage == AppLanguage.kurdish;
-    
+    final isRTL = lang.currentLanguage == AppLanguage.arabic ||
+        lang.currentLanguage == AppLanguage.kurdish;
+
     final cardContent = [
       Container(
-        width: 48,
-        height: 48,
+        width: 62,
+        height: 62,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: accentColor.withOpacity(isDark ? 0.18 : 0.10),
+          borderRadius: BorderRadius.circular(20),
+          color: accentColor.withOpacity(isDark ? 0.16 : 0.09),
+          border: Border.all(color: accentColor.withOpacity(0.18), width: 1),
         ),
-        child: Icon(
-          cardIcon,
-          color: accentColor,
-          size: 24,
+        child: Padding(
+          padding: const EdgeInsets.all(7),
+          child: Image.asset(iconAsset, fit: BoxFit.contain),
         ),
       ),
-      const SizedBox(width: 14),
+      const SizedBox(width: 13),
       Expanded(
         child: Column(
-          crossAxisAlignment: isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: lang.getTextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
-                color: isDark ? Colors.white.withOpacity(0.95) : const Color(0xFF1E293B),
+                color: isDark
+                    ? Colors.white.withOpacity(0.95)
+                    : const Color(0xFF1E293B),
               ),
               textAlign: isRTL ? TextAlign.right : TextAlign.left,
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 3),
@@ -3861,30 +5229,136 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ];
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(22),
         child: Material(
-          color: isDark ? const Color(0xFF1E293B) : Colors.white,
+          color: isDark ? const Color(0xFF15231F) : Colors.white,
           child: InkWell(
             onTap: onTap,
             splashColor: accentColor.withOpacity(0.10),
             highlightColor: accentColor.withOpacity(0.04),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: isDark 
-                      ? Colors.white.withOpacity(0.06) 
+                  color: isDark
+                      ? Colors.white.withOpacity(0.07)
                       : const Color(0xFFE2E8F0),
                   width: 1,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: accentColor.withOpacity(isDark ? 0.06 : 0.05),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
               child: Row(
                 children: isRTL ? cardContent.reversed.toList() : cardContent,
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCompactSectionTile({
+    required String title,
+    required String subtitle,
+    required String iconAsset,
+    required VoidCallback onTap,
+    required LanguageService lang,
+    required bool isDark,
+  }) {
+    final accentColor = _cardAccents[iconAsset] ?? const Color(0xFF0D9488);
+    final isRTL = lang.currentLanguage == AppLanguage.arabic ||
+        lang.currentLanguage == AppLanguage.kurdish;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(22),
+        splashColor: accentColor.withOpacity(0.10),
+        highlightColor: accentColor.withOpacity(0.04),
+        child: Container(
+          height: 132,
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF15231F) : Colors.white,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withOpacity(0.07)
+                  : const Color(0xFFE2E8F0),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: accentColor.withOpacity(isDark ? 0.05 : 0.045),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment:
+                isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment:
+                    isRTL ? MainAxisAlignment.end : MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 54,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      color: accentColor.withOpacity(isDark ? 0.16 : 0.09),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: accentColor.withOpacity(0.16),
+                        width: 1,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Image.asset(iconAsset, fit: BoxFit.contain),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              Text(
+                title,
+                style: lang.getTextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w800,
+                  color: isDark
+                      ? Colors.white.withOpacity(0.95)
+                      : const Color(0xFF1E293B),
+                  height: 1.18,
+                ),
+                textAlign: isRTL ? TextAlign.right : TextAlign.left,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: lang.getTextStyle(
+                  fontSize: 11,
+                  color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                  height: 1.2,
+                ),
+                textAlign: isRTL ? TextAlign.right : TextAlign.left,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ),
@@ -3900,18 +5374,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     required LanguageService lang,
     required bool isDark,
   }) {
-    final Color bgColor = isDark 
-        ? Colors.white.withOpacity(0.06) 
+    final Color bgColor = isDark
+        ? Colors.white.withOpacity(0.06)
         : Colors.black.withOpacity(0.04);
-    final Color borderColor = isDark 
-        ? Colors.white.withOpacity(0.08) 
+    final Color borderColor = isDark
+        ? Colors.white.withOpacity(0.08)
         : Colors.black.withOpacity(0.08);
-    final Color textColor = isDark 
-        ? Colors.white.withOpacity(0.9) 
-        : Colors.black.withOpacity(0.8);
-    final Color shadowColor = isDark 
-        ? Colors.black.withOpacity(0.2) 
-        : Colors.black.withOpacity(0.05);
+    final Color textColor =
+        isDark ? Colors.white.withOpacity(0.9) : Colors.black.withOpacity(0.8);
+    final Color shadowColor =
+        isDark ? Colors.black.withOpacity(0.2) : Colors.black.withOpacity(0.05);
 
     return Material(
       color: Colors.transparent,
@@ -3999,23 +5471,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           return FadeTransition(opacity: animation, child: child);
         },
         child: Container(
-          key: ValueKey<String>('quote_${quote.id}_${_quotesService.quotes.indexOf(quote)}'),
+          key: ValueKey<String>(
+            'quote_${quote.id}_${_quotesService.quotes.indexOf(quote)}',
+          ),
           width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 90, maxHeight: 120), // Smaller height
+          constraints: const BoxConstraints(
+            minHeight: 90,
+            maxHeight: 120,
+          ), // Smaller height
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDark 
-                ? [const Color(0xFF0a1f1a), const Color(0xFF0d2a23), const Color(0xFF0a1f1a)]
-                : [const Color(0xFFFFFDF5), const Color(0xFFFFF8E7), const Color(0xFFFFFDF5)],
+              colors: isDark
+                  ? [
+                      const Color(0xFF0a1f1a),
+                      const Color(0xFF0d2a23),
+                      const Color(0xFF0a1f1a),
+                    ]
+                  : [
+                      const Color(0xFFFFFDF5),
+                      const Color(0xFFFFF8E7),
+                      const Color(0xFFFFFDF5),
+                    ],
             ),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: islamicGold.withOpacity(0.6),
-              width: 2,
-            ),
+            border: Border.all(color: islamicGold.withOpacity(0.6), width: 2),
             boxShadow: [
               BoxShadow(
                 color: islamicGold.withOpacity(isDark ? 0.2 : 0.15),
@@ -4031,24 +5513,47 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               children: [
                 // Simple corner decorations - using Icon instead of CustomPaint for performance
                 Positioned(
-                  top: 4, left: 4,
-                  child: Icon(Icons.star, size: 14, color: islamicGold.withOpacity(0.4)),
+                  top: 4,
+                  left: 4,
+                  child: Icon(
+                    Icons.star,
+                    size: 14,
+                    color: islamicGold.withOpacity(0.4),
+                  ),
                 ),
                 Positioned(
-                  top: 4, right: 4,
-                  child: Icon(Icons.star, size: 14, color: islamicGold.withOpacity(0.4)),
+                  top: 4,
+                  right: 4,
+                  child: Icon(
+                    Icons.star,
+                    size: 14,
+                    color: islamicGold.withOpacity(0.4),
+                  ),
                 ),
                 Positioned(
-                  bottom: 4, left: 4,
-                  child: Icon(Icons.star, size: 14, color: islamicGold.withOpacity(0.4)),
+                  bottom: 4,
+                  left: 4,
+                  child: Icon(
+                    Icons.star,
+                    size: 14,
+                    color: islamicGold.withOpacity(0.4),
+                  ),
                 ),
                 Positioned(
-                  bottom: 4, right: 4,
-                  child: Icon(Icons.star, size: 14, color: islamicGold.withOpacity(0.4)),
+                  bottom: 4,
+                  right: 4,
+                  child: Icon(
+                    Icons.star,
+                    size: 14,
+                    color: islamicGold.withOpacity(0.4),
+                  ),
                 ),
                 // Content
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -4059,7 +5564,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           quote.textAr, // Always show Arabic text
                           style: GoogleFonts.amiri(
                             fontSize: 16,
-                            color: isDark ? const Color(0xFFE8DCC8) : const Color(0xFF2C3E2D),
+                            color: isDark
+                                ? const Color(0xFFE8DCC8)
+                                : const Color(0xFF2C3E2D),
                             fontWeight: FontWeight.w500,
                             height: 1.6,
                           ),
@@ -4089,8 +5596,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   String _formatDate(LanguageService lang) {
     final now = DateTime.now();
-    final months = lang.currentLanguage == AppLanguage.english ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : lang.currentLanguage == AppLanguage.arabic ? ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'] : ['کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران', 'تەمووز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم'];
-    final days = lang.currentLanguage == AppLanguage.english ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] : lang.currentLanguage == AppLanguage.arabic ? ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'] : ['یەکشەممە', 'دووشەممە', 'سێشەممە', 'چوارشەممە', 'پێنجشەممە', 'هەینی', 'شەممە'];
+    final months = lang.currentLanguage == AppLanguage.english
+        ? [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ]
+        : lang.currentLanguage == AppLanguage.arabic
+            ? [
+                'كانون الثاني',
+                'شباط',
+                'آذار',
+                'نيسان',
+                'أيار',
+                'حزيران',
+                'تموز',
+                'آب',
+                'أيلول',
+                'تشرين الأول',
+                'تشرين الثاني',
+                'كانون الأول',
+              ]
+            : [
+                'کانوونی دووەم',
+                'شوبات',
+                'ئازار',
+                'نیسان',
+                'ئایار',
+                'حوزەیران',
+                'تەمووز',
+                'ئاب',
+                'ئەیلوول',
+                'تشرینی یەکەم',
+                'تشرینی دووەم',
+                'کانوونی یەکەم',
+              ];
+    final days = lang.currentLanguage == AppLanguage.english
+        ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        : lang.currentLanguage == AppLanguage.arabic
+            ? [
+                'الأحد',
+                'الاثنين',
+                'الثلاثاء',
+                'الأربعاء',
+                'الخميس',
+                'الجمعة',
+                'السبت',
+              ]
+            : [
+                'یەکشەممە',
+                'دووشەممە',
+                'سێشەممە',
+                'چوارشەممە',
+                'پێنجشەممە',
+                'هەینی',
+                'شەممە',
+              ];
     return '${days[now.weekday % 7]}، ${now.day} ${months[now.month - 1]} ${now.year}';
   }
 
@@ -4103,17 +5673,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     switch (lang.currentLanguage) {
       case AppLanguage.arabic:
         title = '\u062a\u0637\u0628\u064a\u0642 \u062e\u062a\u0645\u0629';
-        description = '\u0631\u0641\u064a\u0642\u0643 \u0627\u0644\u0625\u064a\u0645\u0627\u0646\u064a \u2022 \u0642\u0631\u0622\u0646 \u0643\u0631\u064a\u0645 \u2022 \u0645\u0648\u0627\u0642\u064a\u062a \u0627\u0644\u0635\u0644\u0627\u0629 \u2022 \u0623\u0630\u0643\u0627\u0631 \u0648\u0623\u062d\u0627\u062f\u064a\u062b \u2022 \u0662\u0664\u0660 \u0642\u0627\u0631\u0626 \u2022 \u0645\u062c\u0627\u0646\u064a \u0628\u0627\u0644\u0643\u0627\u0645\u0644';
-        downloadBtn = '\ud83d\udcf1 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642';
+        description =
+            '\u0631\u0641\u064a\u0642\u0643 \u0627\u0644\u0625\u064a\u0645\u0627\u0646\u064a \u2022 \u0642\u0631\u0622\u0646 \u0643\u0631\u064a\u0645 \u2022 \u0645\u0648\u0627\u0642\u064a\u062a \u0627\u0644\u0635\u0644\u0627\u0629 \u2022 \u0623\u0630\u0643\u0627\u0631 \u0648\u0623\u062d\u0627\u062f\u064a\u062b \u2022 \u0662\u0664\u0660 \u0642\u0627\u0631\u0626 \u2022 \u0645\u062c\u0627\u0646\u064a \u0628\u0627\u0644\u0643\u0627\u0645\u0644';
+        downloadBtn =
+            '\ud83d\udcf1 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642';
         break;
       case AppLanguage.kurdish:
         title = '\u0626\u06d5\u067e\u06cc \u062e\u06d5\u062a\u0645\u06d5';
-        description = '\u0647\u0627\u0648\u0695\u06ce\u06cc \u0626\u06cc\u0645\u0627\u0646\u06cc\u062a \u2022 \u0642\u0648\u0631\u0626\u0627\u0646\u06cc \u067e\u06cc\u0631\u06c6\u0632 \u2022 \u0643\u0627\u062a\u06d5\u0643\u0627\u0646\u06cc \u0646\u0648\u06ce\u0698 \u2022 \u0626\u06d5\u0632\u0643\u0627\u0631 \u0648 \u062d\u06d5\u062f\u06cc\u0633 \u2022 \u0662\u0664\u0660 \u0642\u0627\u0631\u06cc \u2022 \u0628\u06d5\u062e\u06c6\u0695\u0627\u06cc\u06cc';
-        downloadBtn = '\ud83d\udcf1 \u062f\u0627\u0628\u06d5\u0632\u0627\u0646\u062f\u0646\u06cc \u0626\u06d5\u067e';
+        description =
+            '\u0647\u0627\u0648\u0695\u06ce\u06cc \u0626\u06cc\u0645\u0627\u0646\u06cc\u062a \u2022 \u0642\u0648\u0631\u0626\u0627\u0646\u06cc \u067e\u06cc\u0631\u06c6\u0632 \u2022 \u0643\u0627\u062a\u06d5\u0643\u0627\u0646\u06cc \u0646\u0648\u06ce\u0698 \u2022 \u0626\u06d5\u0632\u0643\u0627\u0631 \u0648 \u062d\u06d5\u062f\u06cc\u0633 \u2022 \u0662\u0664\u0660 \u0642\u0627\u0631\u06cc \u2022 \u0628\u06d5\u062e\u06c6\u0695\u0627\u06cc\u06cc';
+        downloadBtn =
+            '\ud83d\udcf1 \u062f\u0627\u0628\u06d5\u0632\u0627\u0646\u062f\u0646\u06cc \u0626\u06d5\u067e';
         break;
       case AppLanguage.english:
         title = 'Khatmah App';
-        description = 'Your faith companion \u2022 Quran \u2022 Prayer Times \u2022 Adhkar & Hadith \u2022 240 Reciters \u2022 Completely Free';
+        description =
+            'Your faith companion \u2022 Quran \u2022 Prayer Times \u2022 Adhkar & Hadith \u2022 240 Reciters \u2022 Completely Free';
         downloadBtn = '\ud83d\udcf1 Download App';
         break;
     }
@@ -4129,40 +5704,84 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isDark
-              ? [const Color(0xFF1B3A2D), const Color(0xFF0D1F17)]
-              : [const Color(0xFFE8F5E9), Colors.white],
+                ? [const Color(0xFF1B3A2D), const Color(0xFF0D1F17)]
+                : [const Color(0xFFE8F5E9), Colors.white],
           ),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          border: Border.all(color: isDark ? const Color(0xFF4CAF50).withOpacity(0.3) : Colors.transparent),
+          border: Border.all(
+            color: isDark
+                ? const Color(0xFF4CAF50).withOpacity(0.3)
+                : Colors.transparent,
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40, height: 4,
-              decoration: BoxDecoration(color: isDark ? Colors.white24 : Colors.black12, borderRadius: BorderRadius.circular(2)),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white24 : Colors.black12,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFF1B5E20), Color(0xFF4CAF50)]),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1B5E20), Color(0xFF4CAF50)],
+                ),
                 borderRadius: BorderRadius.circular(24),
-                boxShadow: [BoxShadow(color: const Color(0xFF1B5E20).withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))],
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF1B5E20).withOpacity(0.4),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-              child: const Icon(Icons.menu_book_rounded, color: Colors.white, size: 40),
+              child: const Icon(
+                Icons.menu_book_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
             ),
             const SizedBox(height: 16),
-            Text(title, style: lang.getTextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF1B5E20))),
+            Text(
+              title,
+              style: lang.getTextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : const Color(0xFF1B5E20),
+              ),
+            ),
             const SizedBox(height: 12),
-            Text(description, style: lang.getTextStyle(fontSize: 14, color: isDark ? Colors.white70 : Colors.black54, height: 1.5), textAlign: TextAlign.center),
+            Text(
+              description,
+              style: lang.getTextStyle(
+                fontSize: 14,
+                color: isDark ? Colors.white70 : Colors.black54,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (i) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2),
-                child: Icon(Icons.star_rounded, color: Color(0xFFFFD700), size: 22),
-              )),
+              children: List.generate(
+                5,
+                (i) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2),
+                  child: Icon(
+                    Icons.star_rounded,
+                    color: Color(0xFFFFD700),
+                    size: 22,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -4170,7 +5789,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.khatmah.quran.yusf.app');
+                  final uri = Uri.parse(
+                    'https://play.google.com/store/apps/details?id=com.khatmah.quran.yusf.app',
+                  );
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri, mode: LaunchMode.externalApplication);
                   }
@@ -4179,13 +5800,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                 ),
                 child: Ink(
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFF1B5E20), Color(0xFF4CAF50)], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1B5E20), Color(0xFF4CAF50)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [BoxShadow(color: const Color(0xFF1B5E20).withOpacity(0.4), blurRadius: 12, offset: const Offset(0, 4))],
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1B5E20).withOpacity(0.4),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -4193,9 +5826,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.download_rounded, color: Colors.white, size: 22),
+                        const Icon(
+                          Icons.download_rounded,
+                          color: Colors.white,
+                          size: 22,
+                        ),
                         const SizedBox(width: 10),
-                        Text(downloadBtn, style: lang.getTextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+                        Text(
+                          downloadBtn,
+                          style: lang.getTextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -4209,7 +5853,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
-
 
 // Islamic corner decoration painter
 class _IslamicCornerPainter extends CustomPainter {
@@ -4236,7 +5879,7 @@ class _IslamicCornerPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     final path = Path();
-    
+
     if (isTopLeft) {
       // Curved L-shape for top-left
       path.moveTo(0, size.height * 0.6);
@@ -4274,7 +5917,12 @@ class _IslamicCornerPainter extends CustomPainter {
     } else if (isBottomRight) {
       path.moveTo(size.width, size.height * 0.4);
       path.lineTo(size.width, size.height * 0.85);
-      path.quadraticBezierTo(size.width, size.height, size.width * 0.85, size.height);
+      path.quadraticBezierTo(
+        size.width,
+        size.height,
+        size.width * 0.85,
+        size.height,
+      );
       path.lineTo(size.width * 0.4, size.height);
       path.moveTo(size.width * 0.8, size.height * 0.8);
       path.arcToPoint(
@@ -4289,5 +5937,3 @@ class _IslamicCornerPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
-
