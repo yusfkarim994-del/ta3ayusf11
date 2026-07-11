@@ -22,18 +22,18 @@ class CommitmentLetter {
       id: json['id'] ?? '',
       content: json['content'] ?? '',
       userName: json['userName'] ?? '',
-      createdAt: json['createdAt'] != null 
-          ? DateTime.parse(json['createdAt']) 
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
           : DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'content': content,
-    'userName': userName,
-    'createdAt': createdAt.toIso8601String(),
-  };
+        'id': id,
+        'content': content,
+        'userName': userName,
+        'createdAt': createdAt.toIso8601String(),
+      };
 }
 
 class CommitmentService extends ChangeNotifier {
@@ -47,7 +47,8 @@ class CommitmentService extends ChangeNotifier {
 
   List<CommitmentLetter> get letters => _letters;
   int get totalLetters => _letters.length;
-  CommitmentLetter? get currentLetter => _letters.isNotEmpty ? _letters[_currentIndex] : null;
+  CommitmentLetter? get currentLetter =>
+      _letters.isNotEmpty ? _letters[_currentIndex] : null;
 
   /// Get current user ID
   String? get _userId => _auth.currentUser?.uid;
@@ -56,7 +57,10 @@ class CommitmentService extends ChangeNotifier {
   CollectionReference? get _collection {
     final uid = _userId;
     if (uid == null) return null;
-    return _firestore.collection('users').doc(uid).collection('commitment_letters');
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('commitment_letters');
   }
 
   Future<void> loadLetters() async {
@@ -76,12 +80,12 @@ class CommitmentService extends ChangeNotifier {
         debugPrint('Error loading commitment letters from Firestore: $e');
       }
     }
-    
+
     // Fallback to local storage
     try {
       final prefs = await SharedPreferences.getInstance();
       final lettersJson = prefs.getString(_lettersKey);
-      
+
       if (lettersJson != null && lettersJson.isNotEmpty) {
         final List<dynamic> decoded = jsonDecode(lettersJson);
         _letters = decoded.map((e) => CommitmentLetter.fromJson(e)).toList();
@@ -152,9 +156,11 @@ class CommitmentService extends ChangeNotifier {
       );
       _letters.insert(0, letter);
       _currentIndex = 0;
-      await _saveLocally();
-      await _saveToFirestore(letter);
+      _saveLocally();
       notifyListeners();
+      _saveToFirestore(letter).catchError(
+        (e) => debugPrint('Background commitment sync error: $e'),
+      );
       return true;
     } catch (e) {
       debugPrint('Error adding commitment letter: $e');
@@ -197,12 +203,51 @@ class CommitmentService extends ChangeNotifier {
   }
 
   String formatDate(DateTime date, String language) {
-    final months = language == 'arabic' 
-        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+    final months = language == 'arabic'
+        ? [
+            'يناير',
+            'فبراير',
+            'مارس',
+            'أبريل',
+            'مايو',
+            'يونيو',
+            'يوليو',
+            'أغسطس',
+            'سبتمبر',
+            'أكتوبر',
+            'نوفمبر',
+            'ديسمبر'
+          ]
         : language == 'kurdish'
-            ? ['کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران', 'تەمووز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم']
-            : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    
+            ? [
+                'کانوونی دووەم',
+                'شوبات',
+                'ئازار',
+                'نیسان',
+                'ئایار',
+                'حوزەیران',
+                'تەمووز',
+                'ئاب',
+                'ئەیلوول',
+                'تشرینی یەکەم',
+                'تشرینی دووەم',
+                'کانوونی یەکەم'
+              ]
+            : [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+              ];
+
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }

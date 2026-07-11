@@ -11,7 +11,8 @@ class JournalScreen extends StatefulWidget {
   State<JournalScreen> createState() => _JournalScreenState();
 }
 
-class _JournalScreenState extends State<JournalScreen> with TickerProviderStateMixin {
+class _JournalScreenState extends State<JournalScreen>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   final TextEditingController _contentController = TextEditingController();
@@ -30,7 +31,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
     _animationController.forward();
-    
+
     // Load journal entries
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<JournalService>(context, listen: false).loadEntries();
@@ -72,15 +73,17 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
 
   Future<void> _saveEntry() async {
     if (_contentController.text.trim().isEmpty) return;
-    
+
     final journalService = Provider.of<JournalService>(context, listen: false);
-    
+
     if (_editingId != null) {
-      await journalService.updateEntry(_editingId!, _contentController.text.trim(), _selectedMood);
+      await journalService.updateEntry(
+          _editingId!, _contentController.text.trim(), _selectedMood);
     } else {
-      await journalService.addEntry(_contentController.text.trim(), _selectedMood);
+      await journalService.addEntry(
+          _contentController.text.trim(), _selectedMood);
     }
-    
+
     _cancelWriting();
   }
 
@@ -93,10 +96,16 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
   Widget build(BuildContext context) {
     final lang = Provider.of<LanguageService>(context);
     final isDark = lang.isDarkMode;
-    
+
     // Localized strings
-    String title, writeHint, saveText, cancelText, noEntriesText, deleteConfirmText, todayText;
-    
+    String title,
+        writeHint,
+        saveText,
+        cancelText,
+        noEntriesText,
+        deleteConfirmText,
+        todayText;
+
     switch (lang.currentLanguage) {
       case AppLanguage.arabic:
         title = 'يومياتي';
@@ -112,7 +121,8 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
         writeHint = 'هەستەکان و بیرکردنەوەکانت لێرە بنووسە...';
         saveText = 'پاشەکەوتکردن';
         cancelText = 'پاشگەزبوونەوە';
-        noEntriesText = 'هێشتا هیچ ڕۆژنامەیەکت نەنووسیوە\nئەمڕۆ دەستبکە بە نووسینی هەستەکانت';
+        noEntriesText =
+            'هێشتا هیچ ڕۆژنامەیەکت نەنووسیوە\nئەمڕۆ دەستبکە بە نووسینی هەستەکانت';
         deleteConfirmText = 'دڵنیایت لە سڕینەوە؟';
         todayText = 'ئەمڕۆ';
         break;
@@ -121,16 +131,17 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
         writeHint = 'Write your feelings and thoughts here...';
         saveText = 'Save';
         cancelText = 'Cancel';
-        noEntriesText = 'You haven\'t written any journal entries yet\nStart writing your feelings today';
+        noEntriesText =
+            'You haven\'t written any journal entries yet\nStart writing your feelings today';
         deleteConfirmText = 'Are you sure you want to delete?';
         todayText = 'Today';
         break;
     }
 
-    final languageCode = lang.currentLanguage == AppLanguage.arabic 
-        ? 'arabic' 
-        : lang.currentLanguage == AppLanguage.kurdish 
-            ? 'kurdish' 
+    final languageCode = lang.currentLanguage == AppLanguage.arabic
+        ? 'arabic'
+        : lang.currentLanguage == AppLanguage.kurdish
+            ? 'kurdish'
             : 'english';
 
     return Directionality(
@@ -142,8 +153,16 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isDark
-                  ? [const Color(0xFF1A1A2E), const Color(0xFF16213E), const Color(0xFF0F0F23)]
-                  : [const Color(0xFFF8F9FF), const Color(0xFFE8ECFF), const Color(0xFFD4DBFF)],
+                  ? [
+                      const Color(0xFF071A22),
+                      const Color(0xFF102B35),
+                      const Color(0xFF081216)
+                    ]
+                  : [
+                      const Color(0xFFFFFBF4),
+                      const Color(0xFFF2FFFC),
+                      const Color(0xFFEAF5FF)
+                    ],
             ),
           ),
           child: SafeArea(
@@ -152,22 +171,31 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               child: Column(
                 children: [
                   _buildHeader(lang, isDark, title),
+                  if (!_isWriting) _buildJournalHero(lang, isDark, todayText),
                   Expanded(
                     child: _isWriting
-                        ? _buildWritingView(lang, isDark, writeHint, saveText, cancelText, languageCode)
-                        : _buildJournalList(lang, isDark, noEntriesText, languageCode, deleteConfirmText),
+                        ? _buildWritingView(lang, isDark, writeHint, saveText,
+                            cancelText, languageCode)
+                        : _buildJournalList(lang, isDark, noEntriesText,
+                            languageCode, deleteConfirmText),
                   ),
                 ],
               ),
             ),
           ),
         ),
-        floatingActionButton: !_isWriting ? _buildFAB(isDark) : null,
+        floatingActionButton: !_isWriting ? _buildFAB(lang, isDark) : null,
       ),
     );
   }
 
   Widget _buildHeader(LanguageService lang, bool isDark, String title) {
+    final subtitle = lang.currentLanguage == AppLanguage.arabic
+        ? 'مساحة هادئة لتفريغ قلبك كل يوم'
+        : lang.currentLanguage == AppLanguage.kurdish
+            ? 'شوێنێکی ئارام بۆ نووسینی هەستەکانت'
+            : 'A calm space for your thoughts';
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Row(
@@ -175,8 +203,15 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
           // Back button
           Container(
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
+              color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0F766E).withOpacity(0.10),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: IconButton(
               onPressed: () => Navigator.pop(context),
@@ -187,27 +222,43 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
             ),
           ),
           const SizedBox(width: 16),
-          // Title with gradient
           Expanded(
-            child: Text(
-              title,
-              style: lang.getTextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : const Color(0xFF2D3436),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: lang.getTextStyle(
+                    fontSize: 29,
+                    fontWeight: FontWeight.w900,
+                    color: isDark ? Colors.white : const Color(0xFF172A2F),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: lang.getTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white60 : const Color(0xFF607478),
+                  ),
+                ),
+              ],
             ),
           ),
-          // Mood stats button
           Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.teal.withOpacity(0.2),
-                  Colors.blue.withOpacity(0.2),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(12),
+              color: isDark ? Colors.white.withOpacity(0.10) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0D9488).withOpacity(0.12),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: IconButton(
               onPressed: () => _showMoodStats(lang, isDark),
@@ -219,7 +270,112 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
     );
   }
 
-  Widget _buildFAB(bool isDark) {
+  Widget _buildJournalHero(
+      LanguageService lang, bool isDark, String todayText) {
+    return Consumer<JournalService>(
+      builder: (context, journalService, child) {
+        final entries = journalService.sortedEntries;
+        final total = entries.length;
+        final latestMood =
+            entries.isNotEmpty ? entries.first.mood : JournalMood.neutral;
+        final title = lang.currentLanguage == AppLanguage.arabic
+            ? 'اكتب لتفهم نفسك لا لتحاكمها'
+            : lang.currentLanguage == AppLanguage.kurdish
+                ? 'بنووسە بۆ تێگەیشتن لە خۆت، نەک دادگاییکردن'
+                : 'Write to understand yourself';
+        final subtitle = total == 0
+            ? (lang.currentLanguage == AppLanguage.arabic
+                ? 'ابدأ بأول سطر اليوم'
+                : lang.currentLanguage == AppLanguage.kurdish
+                    ? 'ئەمڕۆ بە یەکەم دێڕ دەست پێبکە'
+                    : 'Start with one line today')
+            : (lang.currentLanguage == AppLanguage.arabic
+                ? '$total يومية محفوظة'
+                : lang.currentLanguage == AppLanguage.kurdish
+                    ? '$total ڕۆژنامە پاشەکەوتکراوە'
+                    : '$total saved entries');
+
+        return Container(
+          margin: const EdgeInsets.fromLTRB(20, 4, 20, 14),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [const Color(0xFF0F766E), const Color(0xFF1E293B)]
+                  : [const Color(0xFF0D9488), const Color(0xFF38BDF8)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0D9488).withOpacity(0.25),
+                blurRadius: 28,
+                offset: const Offset(0, 16),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 68,
+                height: 68,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: Colors.white.withOpacity(0.24)),
+                ),
+                child: Center(
+                    child: Text(latestMood.emoji,
+                        style: const TextStyle(fontSize: 34))),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      todayText,
+                      style: lang.getTextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white.withOpacity(0.75),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      title,
+                      style: lang.getTextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      subtitle,
+                      style: lang.getTextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white.withOpacity(0.78),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFAB(LanguageService lang, bool isDark) {
+    final label = lang.currentLanguage == AppLanguage.arabic
+        ? 'اكتب'
+        : lang.currentLanguage == AppLanguage.kurdish
+            ? 'بنووسە'
+            : 'Write';
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -239,14 +395,19 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
         backgroundColor: Colors.transparent,
         elevation: 0,
         icon: const Icon(Icons.edit_rounded, color: Colors.white),
-        label: const Text('', style: TextStyle(color: Colors.white)),
+        label: Text(
+          label,
+          style: lang.getTextStyle(
+              color: Colors.white, fontWeight: FontWeight.w800),
+        ),
       ),
     );
   }
 
-  Widget _buildWritingView(LanguageService lang, bool isDark, String writeHint, String saveText, String cancelText, String languageCode) {
+  Widget _buildWritingView(LanguageService lang, bool isDark, String writeHint,
+      String saveText, String cancelText, String languageCode) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 120),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -256,8 +417,10 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
           // Writing area
           Container(
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-              borderRadius: BorderRadius.circular(24),
+              color: isDark
+                  ? Colors.white.withOpacity(0.07)
+                  : Colors.white.withOpacity(0.94),
+              borderRadius: BorderRadius.circular(30),
               border: Border.all(
                 color: _selectedMood.color.withOpacity(0.3),
                 width: 2,
@@ -265,35 +428,57 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               boxShadow: [
                 BoxShadow(
                   color: _selectedMood.color.withOpacity(0.1),
-                  blurRadius: 30,
-                  offset: const Offset(0, 10),
+                  blurRadius: 34,
+                  offset: const Offset(0, 16),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(28),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
-                  padding: const EdgeInsets.all(20),
-                  constraints: const BoxConstraints(minHeight: 300),
-                  child: TextField(
-                    controller: _contentController,
-                    maxLines: null,
-                    minLines: 10,
-                    style: lang.getTextStyle(
-                      fontSize: 16,
-                      height: 1.8,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: writeHint,
-                      hintStyle: lang.getTextStyle(
-                        fontSize: 14,
-                        color: isDark ? Colors.white38 : Colors.black38,
+                  constraints: const BoxConstraints(minHeight: 340),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 18,
+                        right: lang.isRTL ? null : 18,
+                        left: lang.isRTL ? 18 : null,
+                        child: Icon(Icons.format_quote_rounded,
+                            size: 44,
+                            color: _selectedMood.color.withOpacity(0.14)),
                       ),
-                      border: InputBorder.none,
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.all(22),
+                        child: TextField(
+                          controller: _contentController,
+                          maxLines: null,
+                          minLines: 12,
+                          style: lang.getTextStyle(
+                            fontSize: 16,
+                            height: 1.9,
+                            color:
+                                isDark ? Colors.white : const Color(0xFF263238),
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: isDark
+                                ? const Color(0xFF122129).withOpacity(0.70)
+                                : const Color(0xFFF8FAFC),
+                            hintText: writeHint,
+                            hintStyle: lang.getTextStyle(
+                              fontSize: 14,
+                              color: isDark
+                                  ? Colors.white38
+                                  : const Color(0xFF78909C),
+                            ),
+                            contentPadding: const EdgeInsets.all(20),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -326,15 +511,18 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                 flex: 2,
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
-                      colors: [_selectedMood.color, _selectedMood.color.withOpacity(0.7)],
+                      colors: [
+                        _selectedMood.color,
+                        _selectedMood.color.withOpacity(0.7)
+                      ],
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: _selectedMood.color.withOpacity(0.3),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
@@ -345,7 +533,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                       shadowColor: Colors.transparent,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: Row(
@@ -373,20 +561,21 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
     );
   }
 
-  Widget _buildMoodSelector(LanguageService lang, bool isDark, String languageCode) {
+  Widget _buildMoodSelector(
+      LanguageService lang, bool isDark, String languageCode) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          lang.currentLanguage == AppLanguage.arabic 
-              ? 'كيف تشعر الآن؟' 
-              : lang.currentLanguage == AppLanguage.kurdish 
-                  ? 'ئێستا چۆن هەستت پێ دەکەیت؟' 
+          lang.currentLanguage == AppLanguage.arabic
+              ? 'كيف تشعر الآن؟'
+              : lang.currentLanguage == AppLanguage.kurdish
+                  ? 'ئێستا چۆن هەستت پێ دەکەیت؟'
                   : 'How are you feeling?',
           style: lang.getTextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w900,
+            color: isDark ? Colors.white : const Color(0xFF172A2F),
           ),
         ),
         const SizedBox(height: 16),
@@ -403,23 +592,36 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   margin: const EdgeInsets.only(right: 12),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
                   decoration: BoxDecoration(
-                    color: isSelected 
-                        ? mood.color.withOpacity(0.2) 
-                        : isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    gradient: isSelected
+                        ? LinearGradient(colors: [
+                            mood.color.withOpacity(0.24),
+                            mood.color.withOpacity(0.08)
+                          ])
+                        : null,
+                    color: isSelected
+                        ? null
+                        : isDark
+                            ? Colors.white.withOpacity(0.07)
+                            : Colors.white.withOpacity(0.94),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: isSelected ? mood.color : Colors.transparent,
+                      color: isSelected
+                          ? mood.color
+                          : (isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
                       width: 2,
                     ),
-                    boxShadow: isSelected ? [
-                      BoxShadow(
-                        color: mood.color.withOpacity(0.3),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ] : null,
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: mood.color.withOpacity(0.3),
+                              blurRadius: 16,
+                              offset: const Offset(0, 8),
+                            ),
+                          ]
+                        : null,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -433,8 +635,11 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                         mood.getName(languageCode),
                         style: lang.getTextStyle(
                           fontSize: 11,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected ? mood.color : (isDark ? Colors.white60 : Colors.black54),
+                          fontWeight:
+                              isSelected ? FontWeight.w900 : FontWeight.w700,
+                          color: isSelected
+                              ? mood.color
+                              : (isDark ? Colors.white60 : Colors.black54),
                         ),
                       ),
                     ],
@@ -448,26 +653,43 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
     );
   }
 
-  Widget _buildJournalList(LanguageService lang, bool isDark, String noEntriesText, String languageCode, String deleteConfirmText) {
+  Widget _buildJournalList(LanguageService lang, bool isDark,
+      String noEntriesText, String languageCode, String deleteConfirmText) {
     return Consumer<JournalService>(
       builder: (context, journalService, child) {
         final entries = journalService.sortedEntries;
-        
+
         if (entries.isEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(34),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.white.withOpacity(0.05) : Colors.white.withOpacity(0.8),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: isDark
+                          ? [
+                              Colors.white.withOpacity(0.11),
+                              Colors.white.withOpacity(0.03)
+                            ]
+                          : [Colors.white, const Color(0xFFE0F7FA)],
+                    ),
                     shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF0D9488).withOpacity(0.16),
+                        blurRadius: 34,
+                        offset: const Offset(0, 16),
+                      ),
+                    ],
                   ),
                   child: Icon(
-                    Icons.book_outlined,
+                    Icons.menu_book_rounded,
                     size: 60,
-                    color: isDark ? Colors.white24 : Colors.black26,
+                    color: isDark ? Colors.white38 : const Color(0xFF0D9488),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -486,43 +708,104 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 120),
-          itemCount: entries.length,
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 120),
+          itemCount: entries.length + 1,
           itemBuilder: (context, index) {
-            final entry = entries[index];
-            return _buildJournalCard(lang, isDark, entry, languageCode, deleteConfirmText, journalService);
+            if (index == 0) {
+              return _buildReflectionPrompt(lang, isDark);
+            }
+
+            final entry = entries[index - 1];
+            return _buildJournalCard(lang, isDark, entry, languageCode,
+                deleteConfirmText, journalService);
           },
         );
       },
     );
   }
 
-  Widget _buildJournalCard(LanguageService lang, bool isDark, JournalEntry entry, String languageCode, String deleteConfirmText, JournalService journalService) {
+  Widget _buildReflectionPrompt(LanguageService lang, bool isDark) {
+    final text = lang.currentLanguage == AppLanguage.arabic
+        ? 'سؤال اليوم: ما الشيء الصغير الذي ساعدك على الثبات؟'
+        : lang.currentLanguage == AppLanguage.kurdish
+            ? 'پرسیاری ئەمڕۆ: کام شتی بچووک یارمەتیدایت بۆ پابەندبوون؟'
+            : 'Today: what small thing helped you stay steady?';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark
+            ? Colors.white.withOpacity(0.07)
+            : Colors.white.withOpacity(0.92),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+            color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: const Color(0xFF38BDF8).withOpacity(0.15),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child:
+                const Icon(Icons.lightbulb_rounded, color: Color(0xFF0284C7)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: lang.getTextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                color: isDark ? Colors.white70 : const Color(0xFF31524D),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildJournalCard(
+      LanguageService lang,
+      bool isDark,
+      JournalEntry entry,
+      String languageCode,
+      String deleteConfirmText,
+      JournalService journalService) {
     return GestureDetector(
-      onTap: () => _showFullEntry(lang, isDark, entry, languageCode, journalService),
+      onTap: () =>
+          _showFullEntry(lang, isDark, entry, languageCode, journalService),
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: isDark
+              ? Colors.white.withOpacity(0.07)
+              : Colors.white.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(26),
           border: Border.all(
-            color: entry.mood.color.withOpacity(0.2),
-            width: 1,
+            color: entry.mood.color.withOpacity(0.28),
+            width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: entry.mood.color.withOpacity(0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
+              color: entry.mood.color.withOpacity(0.12),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(26),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -533,9 +816,10 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: entry.mood.color.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(18),
                         ),
-                        child: Text(entry.mood.emoji, style: const TextStyle(fontSize: 24)),
+                        child: Text(entry.mood.emoji,
+                            style: const TextStyle(fontSize: 24)),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -546,7 +830,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                               entry.mood.getName(languageCode),
                               style: lang.getTextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w900,
                                 color: entry.mood.color,
                               ),
                             ),
@@ -567,7 +851,8 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                           Icons.more_vert,
                           color: isDark ? Colors.white38 : Colors.black38,
                         ),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                         itemBuilder: (context) => [
                           PopupMenuItem(
                             value: 'edit',
@@ -575,7 +860,12 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                               children: [
                                 const Icon(Icons.edit_rounded, size: 20),
                                 const SizedBox(width: 8),
-                                Text(lang.currentLanguage == AppLanguage.arabic ? 'تعديل' : lang.currentLanguage == AppLanguage.kurdish ? 'دەستکاری' : 'Edit'),
+                                Text(lang.currentLanguage == AppLanguage.arabic
+                                    ? 'تعديل'
+                                    : lang.currentLanguage ==
+                                            AppLanguage.kurdish
+                                        ? 'دەستکاری'
+                                        : 'Edit'),
                               ],
                             ),
                           ),
@@ -583,10 +873,16 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                             value: 'delete',
                             child: Row(
                               children: [
-                                const Icon(Icons.delete_rounded, size: 20, color: Colors.red),
+                                const Icon(Icons.delete_rounded,
+                                    size: 20, color: Colors.red),
                                 const SizedBox(width: 8),
                                 Text(
-                                  lang.currentLanguage == AppLanguage.arabic ? 'حذف' : lang.currentLanguage == AppLanguage.kurdish ? 'سڕینەوە' : 'Delete',
+                                  lang.currentLanguage == AppLanguage.arabic
+                                      ? 'حذف'
+                                      : lang.currentLanguage ==
+                                              AppLanguage.kurdish
+                                          ? 'سڕینەوە'
+                                          : 'Delete',
                                   style: const TextStyle(color: Colors.red),
                                 ),
                               ],
@@ -597,7 +893,8 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                           if (value == 'edit') {
                             _startEditing(entry);
                           } else if (value == 'delete') {
-                            _showDeleteConfirmation(entry.id, deleteConfirmText, lang, isDark);
+                            _showDeleteConfirmation(
+                                entry.id, deleteConfirmText, lang, isDark);
                           }
                         },
                       ),
@@ -612,18 +909,21 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                     style: lang.getTextStyle(
                       fontSize: 14,
                       height: 1.6,
-                      color: isDark ? Colors.white.withOpacity(0.8) : Colors.black87,
+                      color: isDark
+                          ? Colors.white.withOpacity(0.82)
+                          : const Color(0xFF263238),
                     ),
                   ),
                   // Show "Read more" if content is long
-                  if (entry.content.length > 150 || entry.content.split('\n').length > 4)
+                  if (entry.content.length > 150 ||
+                      entry.content.split('\n').length > 4)
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
-                        lang.currentLanguage == AppLanguage.arabic 
-                            ? 'اضغط للمزيد...' 
-                            : lang.currentLanguage == AppLanguage.kurdish 
-                                ? 'کلیک بکە بۆ زیاتر...' 
+                        lang.currentLanguage == AppLanguage.arabic
+                            ? 'اضغط للمزيد...'
+                            : lang.currentLanguage == AppLanguage.kurdish
+                                ? 'کلیک بکە بۆ زیاتر...'
                                 : 'Tap for more...',
                         style: lang.getTextStyle(
                           fontSize: 12,
@@ -640,8 +940,9 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
       ),
     );
   }
-  
-  void _showFullEntry(LanguageService lang, bool isDark, JournalEntry entry, String languageCode, JournalService journalService) {
+
+  void _showFullEntry(LanguageService lang, bool isDark, JournalEntry entry,
+      String languageCode, JournalService journalService) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -667,7 +968,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              
+
               // Header
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -679,7 +980,8 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                         color: entry.mood.color.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      child: Text(entry.mood.emoji, style: const TextStyle(fontSize: 28)),
+                      child: Text(entry.mood.emoji,
+                          style: const TextStyle(fontSize: 28)),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
@@ -715,20 +1017,24 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                   ],
                 ),
               ),
-              
-              Divider(color: isDark ? Colors.white12 : Colors.grey[200], height: 1),
-              
+
+              Divider(
+                  color: isDark ? Colors.white12 : Colors.grey[200], height: 1),
+
               // Full Content
               Expanded(
                 child: SingleChildScrollView(
                   controller: scrollController,
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 20, bottom: 120),
                   child: Text(
                     entry.content,
                     style: lang.getTextStyle(
                       fontSize: 16,
                       height: 1.8,
-                      color: isDark ? Colors.white.withOpacity(0.9) : Colors.black87,
+                      color: isDark
+                          ? Colors.white.withOpacity(0.9)
+                          : Colors.black87,
                     ),
                   ),
                 ),
@@ -740,7 +1046,8 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
     );
   }
 
-  void _showDeleteConfirmation(String id, String confirmText, LanguageService lang, bool isDark) {
+  void _showDeleteConfirmation(
+      String id, String confirmText, LanguageService lang, bool isDark) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -758,7 +1065,11 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              lang.currentLanguage == AppLanguage.arabic ? 'إلغاء' : lang.currentLanguage == AppLanguage.kurdish ? 'پاشگەزبوونەوە' : 'Cancel',
+              lang.currentLanguage == AppLanguage.arabic
+                  ? 'إلغاء'
+                  : lang.currentLanguage == AppLanguage.kurdish
+                      ? 'پاشگەزبوونەوە'
+                      : 'Cancel',
               style: TextStyle(color: isDark ? Colors.white60 : Colors.black54),
             ),
           ),
@@ -769,10 +1080,15 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
             ),
             child: Text(
-              lang.currentLanguage == AppLanguage.arabic ? 'حذف' : lang.currentLanguage == AppLanguage.kurdish ? 'سڕینەوە' : 'Delete',
+              lang.currentLanguage == AppLanguage.arabic
+                  ? 'حذف'
+                  : lang.currentLanguage == AppLanguage.kurdish
+                      ? 'سڕینەوە'
+                      : 'Delete',
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -785,10 +1101,10 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
     final journalService = Provider.of<JournalService>(context, listen: false);
     final stats = journalService.getMoodStats();
     final totalEntries = stats.values.fold(0, (sum, count) => sum + count);
-    final languageCode = lang.currentLanguage == AppLanguage.arabic 
-        ? 'arabic' 
-        : lang.currentLanguage == AppLanguage.kurdish 
-            ? 'kurdish' 
+    final languageCode = lang.currentLanguage == AppLanguage.arabic
+        ? 'arabic'
+        : lang.currentLanguage == AppLanguage.kurdish
+            ? 'kurdish'
             : 'english';
 
     showModalBottomSheet(
@@ -804,7 +1120,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isDark 
+            colors: isDark
                 ? [const Color(0xFF1A1A2E), const Color(0xFF16213E)]
                 : [Colors.white, const Color(0xFFF8F9FF)],
           ),
@@ -823,7 +1139,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               ),
             ),
             const SizedBox(height: 20),
-            
+
             // Header with icon
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -843,14 +1159,15 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.insights_rounded, color: Colors.white, size: 24),
+                  child: const Icon(Icons.insights_rounded,
+                      color: Colors.white, size: 24),
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  lang.currentLanguage == AppLanguage.arabic 
-                      ? 'إحصائيات المشاعر' 
-                      : lang.currentLanguage == AppLanguage.kurdish 
-                          ? 'ئامارەکانی هەست' 
+                  lang.currentLanguage == AppLanguage.arabic
+                      ? 'إحصائيات المشاعر'
+                      : lang.currentLanguage == AppLanguage.kurdish
+                          ? 'ئامارەکانی هەست'
                           : 'Mood Statistics',
                   style: lang.getTextStyle(
                     fontSize: 22,
@@ -861,13 +1178,13 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               ],
             ),
             const SizedBox(height: 8),
-            
+
             // Total entries count
             Text(
-              lang.currentLanguage == AppLanguage.arabic 
-                  ? 'مجموع: $totalEntries يومية' 
-                  : lang.currentLanguage == AppLanguage.kurdish 
-                      ? 'کۆی گشتی: $totalEntries ڕۆژنامە' 
+              lang.currentLanguage == AppLanguage.arabic
+                  ? 'مجموع: $totalEntries يومية'
+                  : lang.currentLanguage == AppLanguage.kurdish
+                      ? 'کۆی گشتی: $totalEntries ڕۆژنامە'
                       : 'Total: $totalEntries entries',
               style: lang.getTextStyle(
                 fontSize: 14,
@@ -875,7 +1192,7 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
               ),
             ),
             const SizedBox(height: 24),
-            
+
             if (stats.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
@@ -888,10 +1205,10 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      lang.currentLanguage == AppLanguage.arabic 
-                          ? 'لا توجد بيانات بعد' 
-                          : lang.currentLanguage == AppLanguage.kurdish 
-                              ? 'هێشتا داتا نییە' 
+                      lang.currentLanguage == AppLanguage.arabic
+                          ? 'لا توجد بيانات بعد'
+                          : lang.currentLanguage == AppLanguage.kurdish
+                              ? 'هێشتا داتا نییە'
                               : 'No data yet',
                       style: TextStyle(
                         fontSize: 16,
@@ -907,29 +1224,33 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                   child: Column(
                     children: JournalMood.values.map((mood) {
                       final count = stats[mood] ?? 0;
-                      final percentage = totalEntries > 0 ? (count / totalEntries) : 0.0;
-                      
+                      final percentage =
+                          totalEntries > 0 ? (count / totalEntries) : 0.0;
+
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 120),
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, top: 16, bottom: 120),
                         decoration: BoxDecoration(
-                          color: isDark 
-                              ? Colors.white.withOpacity(0.05) 
+                          color: isDark
+                              ? Colors.white.withOpacity(0.05)
                               : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: count > 0 
-                                ? mood.color.withOpacity(0.3) 
+                            color: count > 0
+                                ? mood.color.withOpacity(0.3)
                                 : Colors.transparent,
                             width: 1,
                           ),
-                          boxShadow: count > 0 ? [
-                            BoxShadow(
-                              color: mood.color.withOpacity(0.1),
-                              blurRadius: 15,
-                              offset: const Offset(0, 5),
-                            ),
-                          ] : null,
+                          boxShadow: count > 0
+                              ? [
+                                  BoxShadow(
+                                    color: mood.color.withOpacity(0.1),
+                                    blurRadius: 15,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ]
+                              : null,
                         ),
                         child: Row(
                           children: [
@@ -946,39 +1267,49 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                               ),
                             ),
                             const SizedBox(width: 16),
-                            
+
                             // Name and progress bar
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         mood.getName(languageCode),
                                         style: lang.getTextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
-                                          color: count > 0 
-                                              ? (isDark ? Colors.white : Colors.black87)
-                                              : (isDark ? Colors.white38 : Colors.black26),
+                                          color: count > 0
+                                              ? (isDark
+                                                  ? Colors.white
+                                                  : Colors.black87)
+                                              : (isDark
+                                                  ? Colors.white38
+                                                  : Colors.black26),
                                         ),
                                       ),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 4),
                                         decoration: BoxDecoration(
-                                          color: mood.color.withOpacity(count > 0 ? 0.2 : 0.1),
-                                          borderRadius: BorderRadius.circular(10),
+                                          color: mood.color.withOpacity(
+                                              count > 0 ? 0.2 : 0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: Text(
                                           '$count',
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: count > 0 
-                                                ? mood.color 
-                                                : (isDark ? Colors.white24 : Colors.black26),
+                                            color: count > 0
+                                                ? mood.color
+                                                : (isDark
+                                                    ? Colors.white24
+                                                    : Colors.black26),
                                           ),
                                         ),
                                       ),
@@ -990,11 +1321,13 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                                     borderRadius: BorderRadius.circular(6),
                                     child: LinearProgressIndicator(
                                       value: percentage,
-                                      backgroundColor: isDark 
-                                          ? Colors.white.withOpacity(0.1) 
+                                      backgroundColor: isDark
+                                          ? Colors.white.withOpacity(0.1)
                                           : Colors.grey.withOpacity(0.2),
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        count > 0 ? mood.color : Colors.grey.withOpacity(0.3),
+                                        count > 0
+                                            ? mood.color
+                                            : Colors.grey.withOpacity(0.3),
                                       ),
                                       minHeight: 8,
                                     ),
@@ -1005,7 +1338,9 @@ class _JournalScreenState extends State<JournalScreen> with TickerProviderStateM
                                       '${(percentage * 100).toStringAsFixed(1)}%',
                                       style: TextStyle(
                                         fontSize: 11,
-                                        color: isDark ? Colors.white38 : Colors.black38,
+                                        color: isDark
+                                            ? Colors.white38
+                                            : Colors.black38,
                                       ),
                                     ),
                                   ],
