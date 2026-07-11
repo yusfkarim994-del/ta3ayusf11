@@ -10,7 +10,7 @@ class AssessmentScreen extends StatefulWidget {
   State<AssessmentScreen> createState() => _AssessmentScreenState();
 }
 
-class _AssessmentScreenState extends State<AssessmentScreen> {
+class _AssessmentScreenState extends State<AssessmentScreen> with TickerProviderStateMixin {
   final AssessmentService _assessmentService = AssessmentService();
   int _currentQuestionIndex = 0;
   int _currentPage = 0; // 0 = questions, 1 = result, 2 = history
@@ -20,10 +20,27 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
   // Store answers locally in state
   Map<String, int> _answers = {};
 
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+    _animationController.forward();
     _loadData();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -137,38 +154,137 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     return Directionality(
       textDirection: lang.textDirection,
       child: Scaffold(
-        backgroundColor: isDark ? const Color(0xFF0a1628) : const Color(0xFFF5F7FA),
-        appBar: AppBar(
-          backgroundColor: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white : Colors.black87),
-            onPressed: () => Navigator.pop(context),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: isDark
+                  ? const [Color(0xFF071A22), Color(0xFF102B35), Color(0xFF081216)]
+                  : const [Color(0xFFFFFBF4), Color(0xFFF2FFFC), Color(0xFFEAF5FF)],
+            ),
           ),
-          title: Text(
-            _getTitle(lang),
-            style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+          child: SafeArea(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: Column(
+                children: [
+                  _buildHeader(lang, isDark),
+                  Expanded(
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : _currentPage == 0
+                            ? _buildQuestionView(lang, isDark)
+                            : _currentPage == 1
+                                ? _buildResultView(lang, isDark)
+                                : _buildHistoryView(lang, isDark),
+                  ),
+                ],
+              ),
+            ),
           ),
-          actions: [
-            if (_currentPage != 2)
-              IconButton(
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(LanguageService lang, bool isDark) {
+    final title = _getTitle(lang);
+    final subtitle = _currentPage == 0
+        ? (_getQuestionText(lang))
+        : _currentPage == 1
+            ? (_getYourLevelText(lang))
+            : (_getNoHistoryText(lang).isNotEmpty ? _getHistorySubtitle(lang) : '');
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0F766E).withOpacity(0.10),
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(
+                lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: lang.getTextStyle(
+                    fontSize: 29,
+                    fontWeight: FontWeight.w900,
+                    color: isDark ? Colors.white : const Color(0xFF172A2F),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: lang.getTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white60 : const Color(0xFF607478),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Action buttons in header
+          if (_currentPage != 2)
+            Container(
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0F766E).withOpacity(0.10),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: IconButton(
                 icon: Icon(Icons.history, color: isDark ? Colors.white70 : Colors.black54),
                 onPressed: _showHistory,
               ),
-            if (_currentPage == 2)
-              IconButton(
+            ),
+          if (_currentPage == 2)
+            Container(
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0F766E).withOpacity(0.10),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: IconButton(
                 icon: Icon(Icons.quiz, color: isDark ? Colors.white70 : Colors.black54),
                 onPressed: _showQuestions,
               ),
-          ],
-        ),
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _currentPage == 0
-                ? _buildQuestionView(lang, isDark)
-                : _currentPage == 1
-                    ? _buildResultView(lang, isDark)
-                    : _buildHistoryView(lang, isDark),
+            ),
+        ],
       ),
     );
   }
@@ -189,11 +305,14 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              color: isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                  color: const Color(0xFF0D9488).withOpacity(0.10),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -247,7 +366,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 end: Alignment.bottomRight,
                 colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
               ),
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF0D9488).withOpacity(0.4),
@@ -300,10 +419,10 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     gradient: isSelected 
                         ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
                         : null,
-                    color: isSelected ? null : (isDark ? const Color(0xFF1a2a4a) : Colors.white),
-                    borderRadius: BorderRadius.circular(16),
+                    color: isSelected ? null : (isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95)),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: isSelected ? Colors.transparent : (isDark ? Colors.white24 : Colors.grey.shade300),
+                      color: isSelected ? Colors.transparent : (isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF)),
                       width: 2,
                     ),
                     boxShadow: isSelected ? [
@@ -312,7 +431,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),
-                    ] : null,
+                    ] : [
+                      BoxShadow(
+                        color: const Color(0xFF0D9488).withOpacity(0.10),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
@@ -367,7 +492,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                     label: Text(_getPreviousText(lang)),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: isDark ? Colors.white70 : Colors.grey.shade700,
-                      side: BorderSide(color: isDark ? Colors.white24 : Colors.grey.shade300),
+                      side: BorderSide(color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF)),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
@@ -429,7 +554,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                 end: Alignment.bottomRight,
                 colors: [levelColor, levelColor.withOpacity(0.7)],
               ),
-              borderRadius: BorderRadius.circular(28),
+              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: levelColor.withOpacity(0.4),
@@ -495,11 +620,14 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              color: isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                  color: const Color(0xFF0D9488).withOpacity(0.10),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -560,9 +688,16 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              color: isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(color: levelColor.withOpacity(0.3), width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF0D9488).withOpacity(0.10),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -610,10 +745,13 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark 
-                    ? [const Color(0xFF2d3a5a), const Color(0xFF1a2a4a)]
-                    : [Colors.blue.shade50, Colors.white],
+                    ? [Colors.white.withOpacity(0.10), Colors.white.withOpacity(0.05)]
+                    : [const Color(0xFFE0F2EF), Colors.white.withOpacity(0.95)],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -690,7 +828,7 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
                   label: Text(_getBackToHomeText(lang)),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: isDark ? Colors.white70 : Colors.grey.shade700,
-                    side: BorderSide(color: isDark ? Colors.white24 : Colors.grey.shade300),
+                    side: BorderSide(color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF)),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
@@ -768,9 +906,16 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            color: isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(color: levelColor.withOpacity(0.3), width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0D9488).withOpacity(0.10),
+                blurRadius: 15,
+                offset: const Offset(0, 5),
+              ),
+            ],
           ),
           child: Row(
             children: [
@@ -848,8 +993,8 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: isDark ? const Color(0xFF102B35) : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: Text(
           lang.currentLanguage == AppLanguage.arabic ? 'تأكيد الحذف'
               : lang.currentLanguage == AppLanguage.kurdish ? 'دڵنیابوونەوە' : 'Confirm Delete',
@@ -905,6 +1050,14 @@ class _AssessmentScreenState extends State<AssessmentScreen> {
       case AppLanguage.arabic: return 'اعرف مستواك الإدماني';
       case AppLanguage.kurdish: return 'مستوای ئیدمانت بزانە';
       case AppLanguage.english: return 'Know Your Addiction Level';
+    }
+  }
+
+  String _getHistorySubtitle(LanguageService lang) {
+    switch (lang.currentLanguage) {
+      case AppLanguage.arabic: return 'سجل التقييمات السابقة';
+      case AppLanguage.kurdish: return 'مێژووی هەڵسەنگاندنەکان';
+      case AppLanguage.english: return 'Previous assessment history';
     }
   }
 

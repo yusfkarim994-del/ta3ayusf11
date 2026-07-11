@@ -3643,7 +3643,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               MaterialPageRoute(
                                 builder: (context) => const WebViewScreen(
                                   title: 'مجتمع لا أبرح',
-                                  url: 'https://laabrah12.lovable.app/',
+                                  url: 'https://group-chat-kurdish-8vxh.arcada.app/',
                                 ),
                               ),
                             ),

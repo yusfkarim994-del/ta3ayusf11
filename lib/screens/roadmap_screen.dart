@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/roadmap_service.dart';
 import '../services/timer_service.dart';
@@ -15,10 +15,12 @@ class RoadmapScreen extends StatefulWidget {
   State<RoadmapScreen> createState() => _RoadmapScreenState();
 }
 
-class _RoadmapScreenState extends State<RoadmapScreen> {
+class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateMixin {
   final RoadmapService _roadmapService = RoadmapService();
   final RecoveryTimerService _timerService = RecoveryTimerService();
   late ScrollController _scrollController;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
   bool _isLoading = true;
   bool _showConfetti = false;
   int? _celebratingStage;
@@ -26,6 +28,14 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
+    );
+    _animationController.forward();
     _scrollController = ScrollController();
     _loadData();
   }
@@ -198,6 +208,7 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
 
   @override
   void dispose() {
+    _animationController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -221,11 +232,11 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
               colors: isDark
-                  ? [const Color(0xFF0a1628), const Color(0xFF0d1f3c), const Color(0xFF0a1628)]
-                  : [const Color(0xFFe8f0ff), const Color(0xFFd0e0f5), const Color(0xFFe8f0ff)],
+                  ? [const Color(0xFF071A22), const Color(0xFF102B35), const Color(0xFF081216)]
+                  : [const Color(0xFFFFFBF4), const Color(0xFFF2FFFC), const Color(0xFFEAF5FF)],
             ),
           ),
           child: DefaultTextStyle(
@@ -259,14 +270,17 @@ class _RoadmapScreenState extends State<RoadmapScreen> {
                 ),
                 // Main content
                 SafeArea(
-                  child: _isLoading
-                      ? Center(child: CircularProgressIndicator(color: isDark ? const Color(0xFF0D9488) : const Color(0xFF4a6cf7)))
-                      : Column(
-                          children: [
-                            _buildHeader(lang),
-                            Expanded(child: _buildRoadmap(lang)),
-                          ],
-                        ),
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: _isLoading
+                        ? Center(child: CircularProgressIndicator(color: const Color(0xFF0D9488)))
+                        : Column(
+                            children: [
+                              _buildHeader(lang),
+                              Expanded(child: _buildRoadmap(lang)),
+                            ],
+                          ),
+                  ),
                 ),
                 // Confetti overlay
                 if (_showConfetti) _ConfettiOverlay(stageNumber: _celebratingStage ?? 1),
