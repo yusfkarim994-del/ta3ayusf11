@@ -40,7 +40,7 @@ class _TipsScreenState extends State<TipsScreen> with TickerProviderStateMixin {
       setState(() => _isChangingTip = true);
       _fadeController.reverse();
 
-      await Future.delayed(const Duration(milliseconds: 260));
+      await Future.delayed(const Duration(seconds: 5));
 
       if (mounted) {
         _tipsService.nextTip();
