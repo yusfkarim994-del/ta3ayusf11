@@ -259,22 +259,187 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               colors: _getStageColors(),
             ),
           ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(lang),
-                Expanded(
-                  child: _currentTab == 0
-                      ? (_challengeService.isActive
-                          ? _buildActiveChallenge(lang, isDark)
-                          : _buildStartScreen(lang, isDark))
-                      : _currentTab == 1
-                          ? _buildStatsAndBadges(lang, isDark)
-                          : _buildHallOfFame(lang, isDark),
+          child: Stack(
+            children: [
+              Positioned(
+                top: -90,
+                right: -70,
+                child: Container(
+                  width: 260,
+                  height: 260,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [const Color(0xFFFFD700).withOpacity(0.16), Colors.transparent],
+                    ),
+                  ),
                 ),
-              ],
+              ),
+              Positioned(
+                bottom: 40,
+                left: -90,
+                child: Container(
+                  width: 280,
+                  height: 280,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [const Color(0xFF14B8A6).withOpacity(0.13), Colors.transparent],
+                    ),
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: Column(
+                  children: [
+                    _buildHeader(lang),
+                    Expanded(
+                      child: _currentTab == 0
+                          ? (_challengeService.isActive
+                              ? _buildActiveChallenge(lang, isDark)
+                              : _buildStartScreen(lang, isDark))
+                          : _currentTab == 1
+                              ? _buildStatsAndBadges(lang, isDark)
+                              : _buildHallOfFame(lang, isDark),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _challengeSurface({
+    required Widget child,
+    EdgeInsetsGeometry padding = const EdgeInsets.all(16),
+    double radius = 24,
+    Color? accent,
+  }) {
+    final glow = accent ?? const Color(0xFF14B8A6);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          padding: padding,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.white.withOpacity(0.13), Colors.white.withOpacity(0.04)],
+            ),
+            borderRadius: BorderRadius.circular(radius),
+            border: Border.all(color: Colors.white.withOpacity(0.16)),
+            boxShadow: [
+              BoxShadow(
+                color: glow.withOpacity(0.10),
+                blurRadius: 28,
+                offset: const Offset(0, 14),
+              ),
+            ],
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChallengeHeroBanner(LanguageService lang, {required bool isActive}) {
+    final stage = _challengeService.isActive ? _challengeService.getCurrentStage() : null;
+    final accent = stage?.color ?? const Color(0xFFFFD700);
+    final day = _challengeService.currentDay.clamp(1, 90);
+    return _challengeSurface(
+      radius: 32,
+      accent: accent,
+      padding: const EdgeInsets.all(22),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 74,
+                height: 74,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [accent.withOpacity(0.95), const Color(0xFFFFD700).withOpacity(0.85)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(color: accent.withOpacity(0.42), blurRadius: 28, offset: const Offset(0, 12)),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.32), width: 2),
+                ),
+                child: Center(
+                  child: Text(isActive ? (stage?.emoji ?? '🛡️') : '🛡️', style: const TextStyle(fontSize: 36)),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      isActive ? '${_getDayText(lang)} $day / 90' : _getTitle(lang),
+                      style: lang.getTextStyle(fontSize: 25, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      isActive ? _getStageName(stage!, lang) : _getSubtitle(lang),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: lang.getTextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white.withOpacity(0.74), height: 1.45),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: LinearProgressIndicator(
+              value: isActive ? (day / 90).clamp(0.0, 1.0) : 0.0,
+              minHeight: 12,
+              backgroundColor: Colors.black.withOpacity(0.24),
+              valueColor: AlwaysStoppedAnimation<Color>(accent),
             ),
           ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              _buildHeroMetric(Icons.local_fire_department_rounded, '${_challengeService.currentStreak}', 'Streak', Colors.orange),
+              const SizedBox(width: 10),
+              _buildHeroMetric(Icons.star_rounded, '${_challengeService.totalXP}', 'XP', const Color(0xFFFFD700)),
+              const SizedBox(width: 10),
+              _buildHeroMetric(Icons.flag_rounded, '${_challengeService.getCurrentStageNumber()}/18', _getStagesText(lang), const Color(0xFF14B8A6)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroMetric(IconData icon, String value, String label, Color color) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.18),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: color.withOpacity(0.26)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 20),
+            const SizedBox(height: 5),
+            Text(value, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
+            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white.withOpacity(0.58), fontSize: 10)),
+          ],
         ),
       ),
     );
@@ -282,7 +447,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
 
   Widget _buildHeader(LanguageService lang) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isSmall = constraints.maxWidth < 360;
@@ -291,15 +456,13 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
           return Row(
             children: [
               // Back to home button
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              _challengeSurface(
+                radius: 18,
+                padding: EdgeInsets.zero,
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: iconSize),
-                  padding: EdgeInsets.all(isSmall ? 6 : 8),
+                  padding: EdgeInsets.all(isSmall ? 10 : 12),
                   constraints: const BoxConstraints(),
                   tooltip: 'Back',
                 ),
@@ -314,11 +477,9 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               const SizedBox(width: 8),
               // Tab buttons - flexible
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                child: _challengeSurface(
+                  radius: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -332,13 +493,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               const SizedBox(width: 8),
               // XP Counter - compact
               if (_challengeService.isActive)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: isSmall ? 8 : 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFD700).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: const Color(0xFFFFD700)),
-                  ),
+                _challengeSurface(
+                  accent: const Color(0xFFFFD700),
+                  radius: 18,
+                  padding: EdgeInsets.symmetric(horizontal: isSmall ? 10 : 12, vertical: 8),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -367,11 +525,27 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
     final isActive = _currentTab == index;
     return GestureDetector(
       onTap: () => setState(() => _currentTab = index),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: isSmall ? 8 : 12, vertical: isSmall ? 6 : 8),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        padding: EdgeInsets.symmetric(horizontal: isSmall ? 10 : 14, vertical: isSmall ? 8 : 10),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white.withOpacity(0.2) : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
+          gradient: isActive
+              ? const LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF0D9488)])
+              : null,
+          color: isActive ? null : Colors.transparent,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: isActive ? Colors.white.withOpacity(0.16) : Colors.transparent,
+          ),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF14B8A6).withOpacity(0.35),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -382,8 +556,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               const SizedBox(width: 4),
               Text(label, style: lang.getTextStyle(
                 fontSize: 10,
-                color: isActive ? Colors.white : Colors.white54,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                           color: isActive ? Colors.white : Colors.white70,
+                           fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
               )),
             ],
           ],
@@ -496,13 +670,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
   }
 
   Widget _buildStatCard(String emoji, String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.5)),
-      ),
+    return _challengeSurface(
+      accent: color,
+      radius: 24,
+      padding: const EdgeInsets.all(18),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -518,12 +689,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
   Widget _buildBadgeItem(ChallengeBadge badge, bool isEarned, LanguageService lang) {
     return GestureDetector(
       onTap: () => _showBadgeDialog(badge, isEarned, lang),
-      child: Container(
-        decoration: BoxDecoration(
-          color: isEarned ? badge.color.withOpacity(0.3) : Colors.grey.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isEarned ? badge.color : Colors.grey.withOpacity(0.3), width: 2),
-        ),
+      child: _challengeSurface(
+        accent: isEarned ? badge.color : Colors.grey,
+        radius: 18,
+        padding: const EdgeInsets.all(10),
         child: Center(
           child: Text(
             isEarned ? badge.emoji : '🔒',
@@ -770,57 +939,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
         padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 120),
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
             AnimatedBuilder(
               animation: _floatAnimation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(0, _floatAnimation.value),
-                  child: child,
-                );
-              },
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFFFD700), Color(0xFFFF8C00)],
-                      ),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFFFD700).withOpacity(0.5),
-                          blurRadius: 30,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(Icons.shield, color: Colors.white, size: 60),
-                  ),
-                  const SizedBox(height: 24),
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [Color(0xFFFFD700), Color(0xFFFF8C00), Color(0xFFFFD700)],
-                    ).createShader(bounds),
-                    child: Text(
-                      _getTitle(lang),
-                      style: lang.getTextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _getSubtitle(lang),
-              style: lang.getTextStyle(fontSize: 16, color: Colors.white70),
-              textAlign: TextAlign.center,
+              builder: (context, child) => Transform.translate(offset: Offset(0, _floatAnimation.value), child: child),
+              child: _buildChallengeHeroBanner(lang, isActive: false),
             ),
             const SizedBox(height: 30),
             _buildStagesPreview(lang),
@@ -876,13 +999,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
   }
 
   Widget _buildStagesPreview(LanguageService lang) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _challengeSurface(
+      radius: 28,
+      accent: const Color(0xFFFFD700),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Text('🗺️ 18 ${_getStagesText(lang)}', style: lang.getTextStyle(
@@ -897,7 +1017,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                 final stage = ChallengeService.journeyStages[index];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 120),
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [stage.color.withOpacity(0.3), stage.color.withOpacity(0.1)],
@@ -970,11 +1090,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
         padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 120),
         child: Column(
           children: [
-            // Day counter
-            Text('${_getDayText(lang)} $currentDay / 90', style: lang.getTextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white,
-            )),
-            const SizedBox(height: 16),
+            _buildChallengeHeroBanner(lang, isActive: true),
+            const SizedBox(height: 18),
             // Hero section
             _buildHeroSection(currentLevel, nextLevel, lang),
             const SizedBox(height: 20),
@@ -1400,13 +1517,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
     final currentStageNum = _challengeService.getCurrentStageNumber();
     final realDay = _challengeService.realDay;
     final challengeStartDate = DateTime.now().subtract(Duration(days: realDay - 1));
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white24),
-      ),
+    return _challengeSurface(
+      radius: 24,
+      accent: const Color(0xFF14B8A6),
+      padding: const EdgeInsets.all(18),
       child: Column(
         children: [
           Text('🗺️ ${_getJourneyMap(lang)}', style: lang.getTextStyle(

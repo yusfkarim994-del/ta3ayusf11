@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/roadmap_service.dart';
@@ -319,9 +320,44 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Text(
-              title,
-              style: lang.getTextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: isDark
+                      ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)]
+                      : [Colors.white.withOpacity(0.95), Colors.white.withOpacity(0.75)],
+                ),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D9488).withOpacity(0.10),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: lang.getTextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    _t(lang, 'خطتك اليومية للتعافي', 'پلانی ڕۆژانەت بۆ چاکبوونەوە', 'Your daily recovery journey'),
+                    style: lang.getTextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white54 : Colors.black45,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           _buildDaysCircle(),
@@ -356,6 +392,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
       controller: _scrollController,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 6, bottom: 120),
       children: [
+        _buildRoadmapHero(lang),
+        const SizedBox(height: 14),
         // Stats card
         _buildStatsCard(lang),
         const SizedBox(height: 10),
@@ -386,6 +424,122 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
     );
   }
 
+  Widget _buildRoadmapHero(LanguageService lang) {
+    final isDark = lang.isDarkMode;
+    final currentStageNumber = _roadmapService.getCurrentStage();
+    final currentStage = RoadmapService.stages.firstWhere(
+      (stage) => stage.stageNumber == currentStageNumber,
+      orElse: () => RoadmapService.stages.first,
+    );
+    final l = _getLang(lang);
+    final progress = _roadmapService.getOverallProgress();
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            currentStage.color.withOpacity(isDark ? 0.42 : 0.82),
+            const Color(0xFF0D9488).withOpacity(isDark ? 0.22 : 0.92),
+            const Color(0xFF102B35).withOpacity(isDark ? 0.92 : 0.86),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: currentStage.color.withOpacity(isDark ? 0.18 : 0.22),
+            blurRadius: 34,
+            offset: const Offset(0, 16),
+          ),
+        ],
+        border: Border.all(color: Colors.white.withOpacity(0.18)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 74,
+                height: 74,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.16),
+                  border: Border.all(color: Colors.white.withOpacity(0.30), width: 2),
+                ),
+                child: Center(child: Text(currentStage.emoji, style: const TextStyle(fontSize: 36))),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      currentStage.getName(l),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: lang.getTextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15),
+                    ),
+                    const SizedBox(height: 7),
+                    Text(
+                      currentStage.getDescription(l),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: lang.getTextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white.withOpacity(0.76), height: 1.45),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              _buildHeroStat(Icons.calendar_today_rounded, '${_roadmapService.currentRecoveryDays}', _t(lang, 'يوم', 'ڕۆژ', 'Days')),
+              const SizedBox(width: 10),
+              _buildHeroStat(Icons.route_rounded, '$currentStageNumber/${RoadmapService.stages.length}', _t(lang, 'مرحلة', 'قۆناغ', 'Stage')),
+              const SizedBox(width: 10),
+              _buildHeroStat(Icons.check_circle_rounded, '${(progress * 100).round()}%', _t(lang, 'تقدم', 'پێشکەوتن', 'Progress')),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 11,
+              backgroundColor: Colors.black.withOpacity(0.20),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroStat(IconData icon, String value, String label) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.13),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: Colors.white.withOpacity(0.16)),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(height: 6),
+            Text(value, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900, decoration: TextDecoration.none)),
+            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white.withOpacity(0.66), fontSize: 10, decoration: TextDecoration.none)),
+          ],
+        ),
+      ),
+    );
+  }
+
   // ──────── STATS CARD ────────
   Widget _buildStatsCard(LanguageService lang) {
     final isDark = lang.isDarkMode;
@@ -396,18 +550,24 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
     final progress = _roadmapService.getOverallProgress();
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
           begin: Alignment.topLeft, end: Alignment.bottomRight,
           colors: [
-            isDark ? Colors.white.withOpacity(0.06) : Colors.white.withOpacity(0.95),
-            isDark ? Colors.white.withOpacity(0.02) : Colors.white.withOpacity(0.6),
+            isDark ? Colors.white.withOpacity(0.08) : Colors.white.withOpacity(0.98),
+            isDark ? Colors.white.withOpacity(0.03) : Colors.white.withOpacity(0.82),
           ],
         ),
         border: Border.all(color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.06)),
-        boxShadow: isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0D9488).withOpacity(isDark ? 0.10 : 0.08),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -521,17 +681,23 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
     }
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         gradient: LinearGradient(
           begin: Alignment.topLeft, end: Alignment.bottomRight,
           colors: isDark 
-              ? [Colors.white.withOpacity(0.06), Colors.white.withOpacity(0.02)] 
-              : [Colors.white.withOpacity(0.95), Colors.white.withOpacity(0.6)],
+              ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)] 
+              : [Colors.white.withOpacity(0.98), Colors.white.withOpacity(0.78)],
         ),
         border: Border.all(color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.05)),
-        boxShadow: isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0D9488).withOpacity(isDark ? 0.08 : 0.06),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -711,13 +877,23 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
     return GestureDetector(
         onTap: isUnlocked ? () => _showStageDetail(stage, lang) : null,
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 3),
-          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            color: isUnlocked
-                ? (isDark ? Colors.white.withOpacity(0.06) : Colors.white.withOpacity(0.85))
-                : (isDark ? Colors.white.withOpacity(0.02) : Colors.black.withOpacity(0.02)),
+            borderRadius: BorderRadius.circular(24),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isUnlocked
+                  ? [
+                      stage.color.withOpacity(isDark ? 0.14 : 0.16),
+                      isDark ? Colors.white.withOpacity(0.055) : Colors.white.withOpacity(0.92),
+                    ]
+                  : [
+                      isDark ? Colors.white.withOpacity(0.025) : Colors.black.withOpacity(0.018),
+                      isDark ? Colors.white.withOpacity(0.012) : Colors.black.withOpacity(0.010),
+                    ],
+            ),
             border: Border.all(
               color: isCurrent
                   ? stage.color.withOpacity(isDark ? 0.5 : 0.7)
@@ -728,9 +904,13 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
                           : (isDark ? Colors.white.withOpacity(0.04) : Colors.black.withOpacity(0.03)),
               width: isCurrent ? 1.5 : 1,
             ),
-            boxShadow: isCurrent
-                ? [BoxShadow(color: stage.color.withOpacity(isDark ? 0.15 : 0.1), blurRadius: 20, offset: const Offset(0, 4))]
-                : (isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: const Offset(0, 3))]),
+            boxShadow: [
+              BoxShadow(
+                color: (isCurrent ? stage.color : const Color(0xFF0D9488)).withOpacity(isCurrent ? 0.18 : 0.06),
+                blurRadius: isCurrent ? 28 : 14,
+                offset: const Offset(0, 9),
+              ),
+            ],
           ),
           child: Column(
             children: [

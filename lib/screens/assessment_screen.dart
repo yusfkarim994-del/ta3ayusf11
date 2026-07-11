@@ -164,26 +164,119 @@ class _AssessmentScreenState extends State<AssessmentScreen> with TickerProvider
                   : const [Color(0xFFFFFBF4), Color(0xFFF2FFFC), Color(0xFFEAF5FF)],
             ),
           ),
-          child: SafeArea(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  _buildHeader(lang, isDark),
-                  Expanded(
-                    child: _isLoading
-                        ? const Center(child: CircularProgressIndicator())
-                        : _currentPage == 0
-                            ? _buildQuestionView(lang, isDark)
-                            : _currentPage == 1
-                                ? _buildResultView(lang, isDark)
-                                : _buildHistoryView(lang, isDark),
-                  ),
-                ],
+          child: Stack(
+            children: [
+              Positioned(
+                top: -90,
+                right: -80,
+                child: _buildGlowOrb(const Color(0xFF0D9488), isDark ? 0.18 : 0.16, 260),
               ),
-            ),
+              Positioned(
+                bottom: 40,
+                left: -100,
+                child: _buildGlowOrb(const Color(0xFF38BDF8), isDark ? 0.12 : 0.10, 300),
+              ),
+              SafeArea(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    children: [
+                      _buildHeader(lang, isDark),
+                      Expanded(
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : _currentPage == 0
+                                ? _buildQuestionView(lang, isDark)
+                                : _currentPage == 1
+                                    ? _buildResultView(lang, isDark)
+                                    : _buildHistoryView(lang, isDark),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildGlowOrb(Color color, double opacity, double size) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(colors: [color.withOpacity(opacity), Colors.transparent]),
+      ),
+    );
+  }
+
+  Widget _buildAssessmentIntroCard(LanguageService lang, bool isDark) {
+    final progress = (_answers.length / AssessmentService.questions.length).clamp(0.0, 1.0);
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF0F766E), Color(0xFF0D9488), Color(0xFF38BDF8)],
+        ),
+        boxShadow: [
+          BoxShadow(color: const Color(0xFF0D9488).withOpacity(0.34), blurRadius: 30, offset: const Offset(0, 16)),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 68,
+                height: 68,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.18),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white.withOpacity(0.28)),
+                ),
+                child: const Icon(Icons.psychology_alt_rounded, color: Colors.white, size: 36),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_getTitle(lang), style: lang.getTextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: Colors.white, height: 1.2)),
+                    const SizedBox(height: 6),
+                    Text(
+                      _getQuestionText(lang),
+                      style: lang.getTextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white.withOpacity(0.76), height: 1.45),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('${_answers.length}/${AssessmentService.questions.length}', style: lang.getTextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
+              Text('${(progress * 100).round()}%', style: lang.getTextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 10,
+              backgroundColor: Colors.black.withOpacity(0.20),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -222,29 +315,50 @@ class _AssessmentScreenState extends State<AssessmentScreen> with TickerProvider
           ),
           const SizedBox(width: 16),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: lang.getTextStyle(
-                    fontSize: 29,
-                    fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF172A2F),
-                  ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: isDark
+                      ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)]
+                      : [Colors.white.withOpacity(0.95), Colors.white.withOpacity(0.78)],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: lang.getTextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white60 : const Color(0xFF607478),
-                  ),
+                borderRadius: BorderRadius.circular(26),
+                border: Border.all(
+                  color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
                 ),
-              ],
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF0D9488).withOpacity(0.10),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: lang.getTextStyle(
+                      fontSize: 29,
+                      fontWeight: FontWeight.w900,
+                      color: isDark ? Colors.white : const Color(0xFF172A2F),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: lang.getTextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white60 : const Color(0xFF607478),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // Action buttons in header
@@ -301,12 +415,20 @@ class _AssessmentScreenState extends State<AssessmentScreen> with TickerProvider
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          _buildAssessmentIntroCard(lang, isDark),
+          const SizedBox(height: 20),
           // Progress indicator
           Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95),
-              borderRadius: BorderRadius.circular(24),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? [Colors.white.withOpacity(0.09), Colors.white.withOpacity(0.03)]
+                      : [Colors.white.withOpacity(0.98), Colors.white.withOpacity(0.88)],
+                ),
+                borderRadius: BorderRadius.circular(24),
               border: Border.all(
                 color: isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF),
               ),
@@ -358,23 +480,24 @@ class _AssessmentScreenState extends State<AssessmentScreen> with TickerProvider
           const SizedBox(height: 24),
           
           // Question card
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
               ),
               borderRadius: BorderRadius.circular(30),
               boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0D9488).withOpacity(0.4),
-                  blurRadius: 25,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
+                  BoxShadow(
+                    color: const Color(0xFF0D9488).withOpacity(0.45),
+                    blurRadius: 32,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 14),
+                  ),
+                ],
+              ),
             child: Column(
               children: [
                 Container(
@@ -415,11 +538,15 @@ class _AssessmentScreenState extends State<AssessmentScreen> with TickerProvider
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: isSelected 
-                        ? const LinearGradient(colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
-                        : null,
-                    color: isSelected ? null : (isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95)),
+                    decoration: BoxDecoration(
+                      gradient: isSelected
+                          ? const LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF0D9488)])
+                          : LinearGradient(
+                              colors: isDark
+                                  ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.04)]
+                                  : [Colors.white, Colors.white.withOpacity(0.90)],
+                            ),
+                      color: isSelected ? null : (isDark ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.95)),
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
                       color: isSelected ? Colors.transparent : (isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE0F2EF)),
