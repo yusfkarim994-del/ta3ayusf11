@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
 class RecoveryTimerService extends ChangeNotifier {
-  static const String _globalStorageKey = 'recovery_start_date_global';
-
   DateTime? _startDate;
   Duration _currentDuration = Duration.zero;
   int _bonusDays = 0; // Bonus days from previous streaks (halved on relapse)
@@ -23,22 +21,22 @@ class RecoveryTimerService extends ChangeNotifier {
 
   int get months {
     if (_startDate == null) return 0;
-    final now = DateTime.now();
-    final int totalDays = now.difference(_startDate!).inDays;
+    final elapsed = DateTime.now().difference(_startDate!);
+    final int totalDays = elapsed.inHours ~/ 24;
     return totalDays < 0 ? 0 : (totalDays ~/ 30);
   }
 
   int get days {
     if (_startDate == null) return 0;
-    final now = DateTime.now();
-    final int totalDays = now.difference(_startDate!).inDays;
+    final elapsed = DateTime.now().difference(_startDate!);
+    final int totalDays = elapsed.inHours ~/ 24;
     return totalDays < 0 ? 0 : (totalDays % 30);
   }
 
   int get hours => _currentDuration.inHours % 24;
   int get minutes => _currentDuration.inMinutes % 60;
   int get seconds => _currentDuration.inSeconds % 60;
-  int get totalDays => _currentDuration.inDays;
+  int get totalDays => _currentDuration.inHours ~/ 24;
 
   /// Effective days for level calculation = current streak + bonus from previous streaks
   int get effectiveDays => totalDays + _bonusDays;
@@ -71,31 +69,24 @@ class RecoveryTimerService extends ChangeNotifier {
 
   Future<void> _saveLocalTimerState(SharedPreferences prefs, String storageKey,
       DateTime date, DateTime updatedAt) async {
-    for (final key in {storageKey, _globalStorageKey}) {
-      await prefs.setString(key, date.toIso8601String());
-      await prefs.setInt('${key}_bonus', _bonusDays);
-      await prefs.setInt('${key}_relapses', _relapseCount);
-      await prefs.setString('${key}_updated_at', updatedAt.toIso8601String());
-    }
+    await prefs.setString(storageKey, date.toIso8601String());
+    await prefs.setInt('${storageKey}_bonus', _bonusDays);
+    await prefs.setInt('${storageKey}_relapses', _relapseCount);
+    await prefs.setString('${storageKey}_updated_at', updatedAt.toIso8601String());
   }
 
   DateTime? _readLocalDate(SharedPreferences prefs, String storageKey) {
-    final savedDate =
-        prefs.getString(storageKey) ?? prefs.getString(_globalStorageKey);
+    final savedDate = prefs.getString(storageKey);
     return savedDate == null ? null : DateTime.tryParse(savedDate);
   }
 
   int _readLocalInt(SharedPreferences prefs, String storageKey, String suffix) {
-    return prefs.getInt('$storageKey$suffix') ??
-        prefs.getInt('$_globalStorageKey$suffix') ??
-        0;
+    return prefs.getInt('$storageKey$suffix') ?? 0;
   }
 
   DateTime _readLocalUpdatedAt(SharedPreferences prefs, String storageKey) {
     return DateTime.tryParse(
-          prefs.getString('${storageKey}_updated_at') ??
-              prefs.getString('${_globalStorageKey}_updated_at') ??
-              '',
+          prefs.getString('${storageKey}_updated_at') ?? '',
         ) ??
         DateTime.fromMillisecondsSinceEpoch(0);
   }
@@ -182,7 +173,13 @@ class RecoveryTimerService extends ChangeNotifier {
   }
 
   // Set start date - save locally and to Firebase
-  Future<void> setStartDate(DateTime date) async {
+  Future<void> setStartDate(DateTime date,
+      {bool resetProgressBonuses = false}) async {
+    if (resetProgressBonuses) {
+      _bonusDays = 0;
+      _relapseCount = 0;
+    }
+
     _startDate = date;
     _updateDuration();
     notifyListeners();

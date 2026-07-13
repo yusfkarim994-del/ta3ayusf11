@@ -341,7 +341,9 @@ class XPService extends ChangeNotifier {
             startDate = (data['recoveryStartDate'] as Timestamp).toDate();
           }
         }
-        int totalDays = startDate != null ? now.difference(startDate).inDays : 0;
+        int totalDays = startDate != null
+            ? now.difference(startDate).inHours ~/ 24
+            : 0;
 
         users.add({
           'userId': doc.id,

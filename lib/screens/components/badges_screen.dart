@@ -107,6 +107,11 @@ class BadgesScreen extends StatelessWidget {
     final isUnlocked = userDays >= badge.daysRequired;
     final name = _getBadgeName(badge, lang);
     final displayColor = isUnlocked ? badge.color : Colors.grey;
+    final progress = badge.daysRequired == 0
+        ? 1.0
+        : (userDays / badge.daysRequired).clamp(0.0, 1.0);
+    final remainingDays = (badge.daysRequired - userDays).clamp(0, badge.daysRequired);
+    final unlockDate = DateTime.now().add(Duration(days: remainingDays));
 
     return Opacity(
       opacity: isUnlocked ? 1.0 : 0.4,
@@ -158,6 +163,33 @@ class BadgesScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
+
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 54,
+                  height: 54,
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    strokeWidth: 5,
+                    backgroundColor: Colors.grey.withOpacity(0.2),
+                    valueColor: AlwaysStoppedAnimation(displayColor),
+                  ),
+                ),
+                Text(
+                  '${(progress * 100).floor()}%',
+                  style: lang.getTextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    color: displayColor,
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
             Text(
               name,
               style: lang.getTextStyle(
@@ -179,6 +211,39 @@ class BadgesScreen extends StatelessWidget {
               child: Text(
                 '${badge.daysRequired} ${_getDaysText(lang)}',
                 style: lang.getTextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: displayColor),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              isUnlocked
+                  ? (lang.currentLanguage == AppLanguage.arabic
+                      ? 'أنت تتقدم بقوة وثبات'
+                      : lang.currentLanguage == AppLanguage.kurdish
+                          ? 'بەهێزی و جێگیری بەردەوام بە'
+                          : 'You are progressing with strength')
+                  : (lang.currentLanguage == AppLanguage.arabic
+                      ? '$remainingDays يوم متبقي'
+                      : lang.currentLanguage == AppLanguage.kurdish
+                          ? '$remainingDays ڕۆژ ماوە'
+                          : '$remainingDays days left'),
+              textAlign: TextAlign.center,
+              style: lang.getTextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              '${unlockDate.day}/${unlockDate.month}/${unlockDate.year}',
+              style: lang.getTextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: displayColor,
               ),
             ),
           ],

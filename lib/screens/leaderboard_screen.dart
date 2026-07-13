@@ -193,7 +193,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> with SingleTicker
           // Calculate total days
           int totalDays = 0;
           if (startDate != null) {
-            totalDays = now.difference(startDate).inDays;
+            totalDays = now.difference(startDate).inHours ~/ 24;
             if (totalDays < 0) totalDays = 0;
           }
 

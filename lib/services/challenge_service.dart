@@ -286,25 +286,22 @@ class ChallengeService extends ChangeNotifier {
   /// Check for hidden reward (7 day streak)
   bool get hasHiddenReward => currentStreak >= 7 && currentStreak % 7 == 0;
 
-  /// The actual calendar day since start (uses calendar dates, not 24-hour periods)
+  /// The actual elapsed recovery days based on full 24-hour periods
   int get realDay {
     if (_startDate == null) return 0;
-    
-    // Use calendar dates instead of 24-hour periods
-    // This ensures day changes at midnight, not at the exact start time
-    final now = DateTime.now();
-    final startDateOnly = DateTime(_startDate!.year, _startDate!.month, _startDate!.day);
-    final nowDateOnly = DateTime(now.year, now.month, now.day);
-    
-    return nowDateOnly.difference(startDateOnly).inDays + 1;
+
+    // Count only fully completed 24-hour periods.
+    // Example: 20 hours = 0 days, 24 hours = 1 day.
+    final elapsed = DateTime.now().difference(_startDate!);
+    return elapsed.inHours ~/ 24;
   }
 
   /// The effective day (now allows progress even if tasks missed - just marks as incomplete)
   int get currentDay {
     if (_startDate == null) return 0;
-    // Allow user to progress regardless of missed days
-    // Missed days will show as red in calendar but won't block progress
-    return realDay;
+
+    // Keep UI on day 1 until first full 24-hour period completes.
+    return realDay <= 0 ? 1 : realDay;
   }
 
 
@@ -508,7 +505,8 @@ class ChallengeService extends ChangeNotifier {
 
   /// Get stage number (1-18)
   int getCurrentStageNumber() {
-    return ((currentDay - 1) ~/ 5) + 1;
+    final day = currentDay <= 0 ? 1 : currentDay;
+    return ((day - 1) ~/ 5) + 1;
   }
 
   /// Get random daily tasks for current day (2-3 tasks)

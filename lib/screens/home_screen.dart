@@ -29,6 +29,7 @@ import 'accountability_screen.dart';
 import 'challenge_screen.dart';
 import 'assessment_screen.dart';
 import 'roadmap_screen.dart';
+import 'components/certificates_screen.dart';
 import '../services/analytics_service.dart';
 import '../services/announcements_service.dart';
 import '../services/notification_service.dart';
@@ -162,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _showBadgesDialog(LanguageService lang) {
     final isDark = lang.isDarkMode;
     final allBadges = BadgesService.allBadges;
-    final userDays = _timerService.effectiveDays;
+    final userDays = _timerService.totalDays;
     final earnedBadges = BadgesService.getEarnedBadges(userDays);
 
     // Find highest earned and next badges
@@ -1470,10 +1471,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   void _showCertificatesDialog(LanguageService lang) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CertificatesScreen(
+          userDays: _timerService.totalDays,
+          userName: _getUserName(lang),
+          startDate: _timerService.startDate,
+        ),
+      ),
+    );
+    return;
+
     final isDark = lang.isDarkMode;
     final allBadges = BadgesService.allBadges;
     final userName = _getUserName(lang);
-    final userDays = _timerService.effectiveDays;
+    final userDays = _timerService.totalDays;
     final earnedBadges = BadgesService.getEarnedBadges(userDays);
 
     // Help build Ribbon and Seal Vector Widget
@@ -2970,7 +2983,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     final newStartDate = now.subtract(
                       Duration(days: days, hours: hours),
                     );
-                    await _timerService.setStartDate(newStartDate);
+                    await _timerService.setStartDate(
+                      newStartDate,
+                      resetProgressBonuses: true,
+                    );
                   }
 
                   if (mounted) {
