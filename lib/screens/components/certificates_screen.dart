@@ -100,14 +100,18 @@ class CertificatesScreen extends StatelessWidget {
     final progress = badge.daysRequired == 0
         ? 1.0
         : (userDays / badge.daysRequired).clamp(0.0, 1.0);
+    final remainingDays = (badge.daysRequired - userDays).clamp(0, 5000);
+
     final certTitle = _getCertTitle(lang);
     final congratsText = _getCongratsText(lang, isUnlocked, name);
     final motivationQuote = _getMotivationQuote(lang, isUnlocked);
     final awardedTo = _getAwardedToText(lang);
     final daysText = _getDaysText(badge, lang);
 
-    final remainingDays = (badge.daysRequired - userDays).clamp(0, 5000);
-    final targetDate = DateTime.now().add(Duration(days: remainingDays));
+    final now = DateTime.now();
+    final targetDate = userDays >= badge.daysRequired
+        ? now.subtract(Duration(days: userDays - badge.daysRequired))
+        : now.add(Duration(days: badge.daysRequired - userDays));
     final targetDateStr = '${targetDate.day.toString().padLeft(2, '0')}/${targetDate.month.toString().padLeft(2, '0')}/${targetDate.year}';
 
     return Opacity(
@@ -132,7 +136,11 @@ class CertificatesScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isUnlocked
-                  ? [const Color(0xFFFFFCF2), const Color(0xFFF5E6C8)]
+                  ? [
+                      const Color(0xFFFFFCF2),
+                      const Color(0xFFF5E6C8),
+                      const Color(0xFFFFF8E1),
+                    ]
                   : [Colors.grey.shade200, Colors.grey.shade300],
             ),
             borderRadius: BorderRadius.circular(24),
@@ -143,6 +151,34 @@ class CertificatesScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [displayColor, displayColor.withOpacity(0.75)],
+                  ),
+                  borderRadius: BorderRadius.circular(40),
+                  boxShadow: [
+                    BoxShadow(
+                      color: displayColor.withOpacity(0.3),
+                      blurRadius: 14,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  isUnlocked ? 'شهادة إنجاز' : 'شهادة مقفلة',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.4,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -164,6 +200,24 @@ class CertificatesScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  5,
+                  (index) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: Icon(
+                      Icons.star_rounded,
+                      color: const Color(0xFFD4AF37).withOpacity(0.9),
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
               Text(
                 name,
                 textAlign: TextAlign.center,
@@ -282,7 +336,7 @@ class CertificatesScreen extends StatelessWidget {
               Text(
                 '${badge.daysRequired}',
                 style: lang.getTextStyle(
-                  fontSize: 56,
+                  fontSize: 68,
                   fontWeight: FontWeight.w900,
                   color: const Color(0xFFD4AF37),
                 ),
@@ -300,23 +354,30 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
+              Text(
+                targetDateStr,
+                style: lang.getTextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: displayColor,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    targetDateStr,
-                    style: lang.getTextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFF5D4037),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  3,
+                  (index) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: Icon(
+                      Icons.auto_awesome,
+                      color: displayColor.withOpacity(0.75),
+                      size: 12,
                     ),
                   ),
-                  Icon(
-                    Icons.verified,
-                    color: isUnlocked ? const Color(0xFF14B8A6) : Colors.grey,
-                    size: 22,
-                  ),
-                ],
+                ),
               ),
             ],
           ),

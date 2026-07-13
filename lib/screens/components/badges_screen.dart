@@ -112,6 +112,7 @@ class BadgesScreen extends StatelessWidget {
         : (userDays / badge.daysRequired).clamp(0.0, 1.0);
     final remainingDays = (badge.daysRequired - userDays).clamp(0, badge.daysRequired);
     final unlockDate = DateTime.now().add(Duration(days: remainingDays));
+    final unlockDateText = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
 
     return Opacity(
       opacity: isUnlocked ? 1.0 : 0.4,
@@ -121,7 +122,11 @@ class BadgesScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [displayColor.withOpacity(0.2), displayColor.withOpacity(0.05)],
+            colors: [
+              displayColor.withOpacity(0.28),
+              displayColor.withOpacity(0.10),
+              Colors.white.withOpacity(isDark ? 0.03 : 0.5),
+            ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: displayColor.withOpacity(0.5), width: 2),
@@ -132,6 +137,28 @@ class BadgesScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [displayColor, displayColor.withOpacity(0.7)],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  isUnlocked ? 'مفتوح' : 'مغلق',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1,
+                  ),
+                ),
+              ),
+            ),
+
             Stack(
               children: [
                 Container(
@@ -216,6 +243,31 @@ class BadgesScreen extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(isDark ? 0.08 : 0.65),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.18),
+                ),
+              ),
+              child: Text(
+                isUnlocked
+                    ? 'وسام يُجسد قوة الإرادة والانتصار المستمر على النفس.'
+                    : 'استمر في التقدم، فهذا الوسام ينتظر لحظة انتصارك القادمة.',
+                textAlign: TextAlign.center,
+                style: lang.getTextStyle(
+                  fontSize: 11,
+                  height: 1.5,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
             Text(
               isUnlocked
                   ? (lang.currentLanguage == AppLanguage.arabic
@@ -239,11 +291,28 @@ class BadgesScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             Text(
-              '${unlockDate.day}/${unlockDate.month}/${unlockDate.year}',
+              unlockDateText,
               style: lang.getTextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
                 color: displayColor,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                3,
+                (index) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Icon(
+                    Icons.auto_awesome,
+                    color: displayColor.withOpacity(0.75),
+                    size: 12,
+                  ),
+                ),
               ),
             ),
           ],
