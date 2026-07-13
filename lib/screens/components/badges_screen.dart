@@ -112,7 +112,7 @@ class BadgesScreen extends StatelessWidget {
         : (userDays / badge.daysRequired).clamp(0.0, 1.0);
     final remainingDays = (badge.daysRequired - userDays).clamp(0, badge.daysRequired);
     final unlockDate = DateTime.now().add(Duration(days: remainingDays));
-    final unlockDateText = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year}';
+    final unlockDateText = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year.toString()}';
 
     return Opacity(
       opacity: isUnlocked ? 1.0 : 0.4,
@@ -189,7 +189,7 @@ class BadgesScreen extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
 
             Stack(
               alignment: Alignment.center,
@@ -215,7 +215,7 @@ class BadgesScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
 
             Text(
               name,
@@ -228,7 +228,7 @@ class BadgesScreen extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
@@ -241,7 +241,7 @@ class BadgesScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
 
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -288,18 +288,26 @@ class BadgesScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 8),
-
-            Text(
-              unlockDateText,
-              style: lang.getTextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w800,
-                color: displayColor,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: displayColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: displayColor.withOpacity(0.3),
+                ),
+              ),
+              child: Text(
+                unlockDateText,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w900,
+                  color: displayColor,
+                  letterSpacing: 1.0,
+                ),
               ),
             ),
-
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

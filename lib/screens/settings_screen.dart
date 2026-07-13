@@ -686,26 +686,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
               GestureDetector(
                 onTap: () => _showProfileModal(lang, isDark, isGuest),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.withOpacity(0.1)),
-                    boxShadow: isDark ? [] : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4))],
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: isDark
+                          ? [const Color(0xFF1a2a4a), const Color(0xFF0d1a2d)]
+                          : [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: (isDark ? const Color(0xFF4facfe) : const Color(0xFF4facfe)).withOpacity(0.25),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
                       // Avatar
                       Container(
-                        width: 60, height: 60,
+                        width: 64, height: 64,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
+                          border: Border.all(color: Colors.white.withOpacity(0.6), width: 2.5),
+                          boxShadow: [
+                            BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 10),
+                          ],
                         ),
                         child: ClipOval(
                           child: _profileImageUrl != null && _profileImageUrl!.isNotEmpty
-                              ? Image.network(_profileImageUrl!, fit: BoxFit.cover, width: 60, height: 60, errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 30, color: Colors.white))
-                              : Icon(isGuest ? Icons.person_outline : Icons.person, size: 30, color: Colors.white),
+                              ? Image.network(_profileImageUrl!, fit: BoxFit.cover, width: 64, height: 64, errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 32, color: Colors.white))
+                              : Icon(isGuest ? Icons.person_outline : Icons.person, size: 32, color: Colors.white),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -716,14 +730,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               user?.displayName ?? user?.email?.split('@').first ?? lang.guest,
-                              style: lang.getTextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87),
+                              style: lang.getTextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.white),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               user?.email ?? (isGuest ? lang.guestMode : ''),
-                              style: lang.getTextStyle(fontSize: 13, color: isDark ? Colors.white54 : Colors.black54),
+                              style: lang.getTextStyle(fontSize: 13, color: Colors.white.withOpacity(0.75)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -731,14 +745,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       // Edit Icon
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(Icons.edit, color: isDark ? Colors.white70 : Colors.black54, size: 20),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                      ),
                     ],
                   ),
                 ),
@@ -951,7 +965,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               // Logout Button
               Container(
-                decoration: _getCardDecoration(isDark),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.red.withOpacity(0.15)),
+                  boxShadow: [
+                    BoxShadow(color: Colors.red.withOpacity(0.06), blurRadius: 10, offset: const Offset(0, 4)),
+                  ],
+                ),
                 child: _buildSettingsItem(
                   icon: _buildGradientIcon(Icons.power_settings_new_rounded, [const Color(0xFFff758c), const Color(0xFFff7eb3)]), 
                   title: lang.logout, 
@@ -961,7 +982,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   isDestructive: true,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+
+              // App Version
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'v4.0.10+55',
+                    style: lang.getTextStyle(
+                      fontSize: 12,
+                      color: isDark ? Colors.white24 : Colors.grey[400]!,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -1126,12 +1162,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   // Helper: Section Header
   Widget _buildSectionHeader(String title, LanguageService lang, bool isDark) {
-    return Text(
-      title,
-      style: lang.getTextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: isDark ? Colors.white54 : Colors.grey[600]!,
+    return Padding(
+      padding: const EdgeInsets.only(left: 4, right: 4),
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 16,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
+              ),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: lang.getTextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white60 : Colors.grey[600]!,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1141,8 +1197,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return BoxDecoration(
       color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
       borderRadius: BorderRadius.circular(20),
-      // No borders on iOS lists usually
-      boxShadow: isDark ? [] : [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4))],
+      border: Border.all(
+        color: isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.1),
+      ),
+      boxShadow: isDark
+          ? [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))]
+          : [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 12, offset: const Offset(0, 4))],
     );
   }
 
@@ -1394,19 +1454,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }) {
     final isDark = lang.isDarkMode;
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      leading: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: isDestructive
+                      ? Colors.red.withOpacity(isDark ? 0.15 : 0.08)
+                      : (isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.06)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: icon,
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: lang.getTextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: isDestructive ? Colors.red : (isDark ? Colors.white : Colors.black87),
+                      ),
+                    ),
+                    if (subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 3),
+                      Text(
+                        subtitle,
+                        style: lang.getTextStyle(
+                          fontSize: 12,
+                          color: isDark ? Colors.white54 : Colors.black45,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              trailing ?? Icon(
+                lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
+                color: isDark ? Colors.white24 : Colors.grey[400],
+                size: 22,
+              ),
+            ],
+          ),
         ),
-        child: icon,
       ),
-      title: Text(title, style: lang.getTextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: isDestructive ? Colors.red : (isDark ? Colors.white : Colors.black87))),
-      subtitle: subtitle.isNotEmpty ? Text(subtitle, style: lang.getTextStyle(fontSize: 12, color: isDark ? Colors.white54 : Colors.black45)) : null,
-      trailing: trailing ?? Icon(lang.isRTL ? Icons.chevron_left : Icons.chevron_right, color: isDark ? Colors.white38 : Colors.grey),
-      onTap: onTap,
     );
   }
 

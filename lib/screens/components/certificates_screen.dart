@@ -112,7 +112,7 @@ class CertificatesScreen extends StatelessWidget {
     final targetDate = userDays >= badge.daysRequired
         ? now.subtract(Duration(days: userDays - badge.daysRequired))
         : now.add(Duration(days: badge.daysRequired - userDays));
-    final targetDateStr = '${targetDate.day.toString().padLeft(2, '0')}/${targetDate.month.toString().padLeft(2, '0')}/${targetDate.year}';
+    final targetDateStr = '${targetDate.day.toString().padLeft(2, '0')}/${targetDate.month.toString().padLeft(2, '0')}/${targetDate.year.toString()}';
 
     return Opacity(
       opacity: isUnlocked ? 1.0 : 0.45,
@@ -130,7 +130,7 @@ class CertificatesScreen extends StatelessWidget {
           ],
         ),
         child: Container(
-          padding: const EdgeInsets.all(28),
+          padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
@@ -181,7 +181,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
@@ -209,7 +209,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 12),
 
               Stack(
                 alignment: Alignment.center,
@@ -248,7 +248,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
               Text(
                 name,
@@ -260,7 +260,7 @@ class CertificatesScreen extends StatelessWidget {
                   letterSpacing: 0.8,
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 14),
 
               Text(
                 'تُمنح هذه الشهادة تقديراً للإنجاز والانضباط والاستمرار',
@@ -273,7 +273,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
 
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -295,7 +295,7 @@ class CertificatesScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 18),
 
               Text(
                 lang.currentLanguage == AppLanguage.arabic
@@ -311,7 +311,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
 
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -334,7 +334,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
 
               Text(
                 isUnlocked
@@ -379,7 +379,7 @@ class CertificatesScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 16),
 
               Text(
                 '${badge.daysRequired}',
@@ -401,17 +401,28 @@ class CertificatesScreen extends StatelessWidget {
                   color: const Color(0xFF6D4C41),
                 ),
               ),
-              const SizedBox(height: 32),
-              Text(
-                targetDateStr,
-                style: lang.getTextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w800,
-                  color: displayColor,
+              const SizedBox(height: 18),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                decoration: BoxDecoration(
+                  color: displayColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: displayColor.withOpacity(0.3),
+                  ),
+                ),
+                child: Text(
+                  targetDateStr,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    color: displayColor,
+                    letterSpacing: 1.5,
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
