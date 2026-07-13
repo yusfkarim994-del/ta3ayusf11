@@ -148,9 +148,41 @@ class CertificatesScreen extends StatelessWidget {
               color: isUnlocked ? const Color(0xFFD4AF37) : Colors.grey,
               width: 3,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFD4AF37).withOpacity(0.12),
+                blurRadius: 24,
+                spreadRadius: 2,
+              ),
+            ],
           ),
           child: Column(
             children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      color: const Color(0xFFD4AF37).withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  'منصة لا أبرح',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                    color: Color(0xFF6D4C41),
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
                 decoration: BoxDecoration(
@@ -221,13 +253,28 @@ class CertificatesScreen extends StatelessWidget {
               Text(
                 name,
                 textAlign: TextAlign.center,
-                style: lang.getTextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF3E2723),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xFF3E2723),
+                  letterSpacing: 0.8,
                 ),
               ),
               const SizedBox(height: 24),
+
+              Text(
+                'تُمنح هذه الشهادة تقديراً للإنجاز والانضباط والاستمرار',
+                textAlign: TextAlign.center,
+                style: lang.getTextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF8D6E63),
+                  height: 1.6,
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
@@ -240,10 +287,11 @@ class CertificatesScreen extends StatelessWidget {
                 child: Text(
                   userName,
                   textAlign: TextAlign.center,
-                  style: lang.getTextStyle(
-                    fontSize: 28,
+                  style: const TextStyle(
+                    fontSize: 34,
                     fontWeight: FontWeight.w900,
-                    color: const Color(0xFF5D4037),
+                    color: Color(0xFF5D4037),
+                    letterSpacing: 1.1,
                   ),
                 ),
               ),
