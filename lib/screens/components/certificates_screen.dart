@@ -325,6 +325,31 @@ class CertificatesScreen extends StatelessWidget {
                       ),
                     ],
 
+                    const SizedBox(height: 12),
+
+                    // Motivational message
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: isUnlocked ? Colors.white.withOpacity(0.55) : Colors.grey.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: isUnlocked ? displayColor.withOpacity(0.2) : Colors.grey.withOpacity(0.15),
+                        ),
+                      ),
+                      child: Text(
+                        _getMotivationalMessage(lang, isUnlocked, badge.daysRequired),
+                        textAlign: TextAlign.center,
+                        style: lang.getTextStyle(
+                          fontSize: 12,
+                          height: 1.7,
+                          fontWeight: FontWeight.w600,
+                          color: isUnlocked ? const Color(0xFF4E342E) : Colors.grey,
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 14),
 
                     // Decorative divider
@@ -646,6 +671,154 @@ class CertificatesScreen extends StatelessWidget {
       case AppLanguage.arabic: return '${badge.daysRequired} يوم من التعافي';
       case AppLanguage.english: return '${badge.daysRequired} Days of Recovery';
     }
+  }
+
+  String _getMotivationalMessage(LanguageService lang, bool isUnlocked, int daysRequired) {
+    if (!isUnlocked) {
+      switch (lang.currentLanguage) {
+        case AppLanguage.kurdish: return 'بەردەوام بە بۆ بەدەستهێنانی ئەم بڕوانامەیە';
+        case AppLanguage.arabic: return 'استمر للحصول على هذه الشهادة';
+        case AppLanguage.english: return 'Keep going to earn this certificate';
+      }
+    }
+    final messages = {
+      1: lang.currentLanguage == AppLanguage.arabic
+          ? 'البداية دائماً هي أصعب جزء في أي رحلة تغيير.\nلكن اختيارك للمقاومة اليوم يعني أنك بدأت تستعيد السيطرة على نفسك.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'دەستپێکردن هەمیشە سەختترین بەشە لە هەر گەشتێک.\nبەڵام هەڵبژاردنی تو بۆ بەرگری ئەمڕۆ واتایە دەستی پێکردت بە کۆنترۆڵکردنی خۆت.'
+              : 'Starting is always the hardest part.\nBut choosing to resist today means you are regaining control.',
+      7: lang.currentLanguage == AppLanguage.arabic
+          ? 'أسبوع كامل من الصبر والانتصار على الرغبات.\nعقلك وجسدك بدآ الآن بالشعور بالتحسن.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'هەفتەیەکی تەواو لە شوێندان و سەرکەوتن لەسەر خوازەکان.\nمێغ و جەستەکەت ئێستا دەستی پێکرد بە هەستکردن بە باشتر بوون.'
+              : 'A full week of patience and overcoming urges.\nYour mind and body are now starting to feel better.',
+      14: lang.currentLanguage == AppLanguage.arabic
+          ? 'أربعة عشر يوماً من الثبات تعني أنك تجاوزت مرحلة خطيرة.\nأصبحت ترى الأمور بوضوح أكبر.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 14 لە جێگڕان واتایە تۆ تێپەڕیتەوە بەردەوامەیەکی مەترسیدار.\nئێستا دەتەوێت شتەکان ببینیت بە ڕوونی زیاتر.'
+              : '14 days of steadiness means you passed a dangerous stage.\nYou now see things more clearly.',
+      30: lang.currentLanguage == AppLanguage.arabic
+          ? 'ثلاثون يوماً من الالتزام تعني أنك صنعت فرقاً حقيقياً في حياتك.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 30 لە پابەندبوون واتایە جیاوازییەکی ڕاستەقینەت کردووە لە ژیانت.'
+              : '30 days of commitment means you made a real difference in your life.',
+      40: lang.currentLanguage == AppLanguage.arabic
+          ? 'أربعون يوماً من الصبر صنعت في داخلك قوة لم تكن تشعر بها من قبل.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 40 لە شوێندان توانایەکی نوێت دروستکرد لە ناخەکەت.'
+              : '40 days of patience built a strength inside you that you never felt before.',
+      60: lang.currentLanguage == AppLanguage.arabic
+          ? 'ستون يوماً من المقاومة تعني أنك أصبحت أقرب إلى الحرية الحقيقية.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 60 لە بەرگری واتایە تۆ نزیکتریت بە ئازادیی ڕاستەقینە.'
+              : '60 days of resistance means you are closer to true freedom.',
+      75: lang.currentLanguage == AppLanguage.arabic
+          ? 'خمسة وسبعون يوماً من الالتزام ليست مجرد فترة زمنية بل قصة انتصار كاملة.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 75 لە پابەندبوون تەنها کات نییە بلکە چیرۆکی سەرکەوتنی تەواوە.'
+              : '75 days of commitment is not just a time period but a complete victory story.',
+      90: lang.currentLanguage == AppLanguage.arabic
+          ? 'الوصول إلى تسعين يوماً هو انتصار استثنائي لا يصل إليه إلا أصحاب الإرادة الحقيقية.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'گەیشتن بۆ ڕۆژی 90 سەرکەوتنێکی تایبەتە کە تەنها ڕەنەدەرانی ڕادەبەستێت.'
+              : 'Reaching 90 days is an exceptional victory only for those with real willpower.',
+      100: lang.currentLanguage == AppLanguage.arabic
+          ? 'مئة يوم من الصمود تعني أنك لم تعد الشخص نفسه الذي بدأ الرحلة.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 100 لە بەرپەرچبوون واتایە تۆ کەسی هەمان شێوە نییت کە گەشتەکەی دەستی پێکرد.'
+              : '100 days of endurance means you are no longer the same person who started.',
+      125: lang.currentLanguage == AppLanguage.arabic
+          ? 'وصولك إلى مئة وخمسة وعشرين يوماً دليل على أنك تجاوزت مرحلة الاعتماد القديمة.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'گەیشتن بۆ ڕۆژی 125 دڵیلی ئەوەیە تۆ تێپەڕیتەوە بەردەوامی کۆن.'
+              : 'Reaching 125 days proves you passed the old dependency stage.',
+      150: lang.currentLanguage == AppLanguage.arabic
+          ? 'مئة وخمسون يوماً من الثبات ليست مجرد إنجاز عابر بل أسلوب حياة جديد.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 150 لە جێگڕان تەنها دەستکەوتێکی ناواش نییە بلکە شێوازی نوێی ژیانە.'
+              : '150 days of steadiness is not just a passing achievement but a new lifestyle.',
+      175: lang.currentLanguage == AppLanguage.arabic
+          ? 'عند هذا المستوى تبدأ النتائج العميقة بالظهور في شخصيتك وحياتك اليومية.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'لەم ئاستە دەستی دەکەیت بە ئاشکراکردنی ئەنجامە گەورەکان لە کەسییەت و ژیانی ڕۆژانەکەت.'
+              : 'At this level, deep results start appearing in your personality and daily life.',
+      200: lang.currentLanguage == AppLanguage.arabic
+          ? 'مئتا يوم من الصبر والإرادة تعني أنك قطعت رحلة استثنائية بكل المقاييس.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 200 لە شوێندان و ڕادە واتایە تۆ گەشتێکی تایبەت قطعت بە هەموو پێوانەکان.'
+              : '200 days of patience and willpower means you traveled an exceptional journey.',
+      225: lang.currentLanguage == AppLanguage.arabic
+          ? 'كل يوم من هذه الرحلة الطويلة أضاف قوة جديدة إلى روحك وشخصيتك.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'هەر ڕۆژێک لەم گەشتە درێژە توانایەکی نوێ زیادکرد بۆ روان و کەسییەتکەت.'
+              : 'Every day of this long journey added new strength to your soul and personality.',
+      250: lang.currentLanguage == AppLanguage.arabic
+          ? 'ربع ألف يوم من الالتزام يعني أنك تجاوزت حدود العادة القديمة بالكامل تقريباً.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 250 لە پابەندبوون واتایە تۆ تێپەڕیتەوە هەموو سنوورەکانی ڕەوشتی کۆن تەواو.'
+              : '250 days of commitment means you almost completely surpassed old habits.',
+      275: lang.currentLanguage == AppLanguage.arabic
+          ? 'في هذه المرحلة لم تعد المقاومة مجرد واجب بل أصبحت جزءاً من هويتك الجديدة.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'لەم قۆناغە تەنها بەرگری ئەرک نییە بلکە بەشێکی هەیەتی نوێت بووە.'
+              : 'At this stage, resistance is no longer a duty but part of your new identity.',
+      300: lang.currentLanguage == AppLanguage.arabic
+          ? 'ثلاثمئة يوم من الثبات تعني أنك صنعت قصة نجاح نادرة يصعب تكرارها.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 300 لە جێگڕان واتایە چیرۆکی سەرکەوتنێکی نایابت دروستکردووە.'
+              : '300 days of steadiness means you created a rare success story.',
+      350: lang.currentLanguage == AppLanguage.arabic
+          ? 'كل ما وصلت إليه اليوم هو نتيجة مئات القرارات الصحيحة التي اتخذتها بصبر.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'هەموو ئەوەی ئێستا گەیشتوویت ئەنجامی سەدان بڕیاری ڕاستن کە بە شوێندان هەڵبژیاردوون.'
+              : 'Everything you reached today is the result of hundreds of right decisions.',
+      400: lang.currentLanguage == AppLanguage.arabic
+          ? 'أربعمئة يوم من الالتزام تعني أنك أصبحت شخصاً جديداً فعلاً.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 400 لە پابەندبوون واتایە تۆ بە راستی کەسی نوێ بوویت.'
+              : '400 days of commitment means you truly became a new person.',
+      450: lang.currentLanguage == AppLanguage.arabic
+          ? 'مع كل يوم إضافي تثبت أن النجاح الحقيقي يحتاج إلى صبر طويل ونفس قوي.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'بە هەر ڕۆژێکی زیاتر دەپرۆڤەیت ئەوەی سەرکەوتنی ڕاستەقینە پێویستی بە شوێندانی درێژ و دڵی بەهێز هەیە.'
+              : 'With every extra day, you prove that real success needs long patience and strong will.',
+      500: lang.currentLanguage == AppLanguage.arabic
+          ? 'خمسمئة يوم من الصمود ليست مجرد رحلة تعافٍ بل رحلة إعادة بناء كاملة للنفس.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 500 لە بەرپەرچبوون تەنها گەشتی چاکبوونەوە نییە بلکە گەشتی دروستکردنەوەی تەواوی دڵ.'
+              : '500 days of endurance is not just a recovery journey but a complete rebuilding of the soul.',
+      600: lang.currentLanguage == AppLanguage.arabic
+          ? 'ست مئة يوم من الثبات تعني أنك وصلت إلى مستوى نادر من التحكم والوعي الذاتي.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 600 لە جێگڕان واتایە گەیشتیت بۆ ئاستێکی نایاب لە کۆنترۆڵ و ئاگایی خۆت.'
+              : '600 days of steadiness means you reached a rare level of self-control.',
+      700: lang.currentLanguage == AppLanguage.arabic
+          ? 'سبعمئة يوم من الالتزام تكشف عن شخصية صلبة لا تنكسر بسهولة.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 700 لە پابەندبوون کەسییەکی بەهێز ئاشکرا دەکات کە بە ئاسانی ناکەرێت.'
+              : '700 days of commitment reveals a strong personality that cannot be easily broken.',
+      800: lang.currentLanguage == AppLanguage.arabic
+          ? 'ثمانمئة يوم من النجاح المستمر تعني أنك أصبحت قدوة حقيقية في الصبر والانضباط.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 800 لە سەرکەوتنی بەردەوام واتایە تۆ بوویت نموونەیەکی ڕاستەقینەی شوێندان و ڕێکخستن.'
+              : '800 days of continuous success means you became a real role model.',
+      900: lang.currentLanguage == AppLanguage.arabic
+          ? 'تسعمئة يوم من الثبات تعني أنك بنيت حياة جديدة بالكامل بعيداً عن الماضي.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 900 لە جێگڕان واتایە ژیانێکی نوێی تەواو دروستکردووە بە دووری لە ڕابردوو.'
+              : '900 days of steadiness means you built a completely new life away from the past.',
+      1000: lang.currentLanguage == AppLanguage.arabic
+          ? 'ألف يوم من الإرادة والصبر والانتصار تعني أنك وصلت إلى مرحلة عظيمة جداً.'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'ڕۆژی 1000 لە ڕادە و شوێندان و سەرکەوتن واتایە گەیشتیت بۆ قۆناغێکی زۆر گەورە.'
+              : '1000 days of willpower, patience and victory means you reached a very great stage.',
+    };
+    return messages[daysRequired] ??
+        (lang.currentLanguage == AppLanguage.arabic
+            ? 'كل شهادة هنا تمثل مرحلة مختلفة من قوتك ونضجك الداخلي.'
+            : lang.currentLanguage == AppLanguage.kurdish
+                ? 'هەر بڕوانامەیەک لێرە نموونەیەکی جیاواکی توانا و بالغانی ناوخۆکەت ئەمێنێت.'
+                : 'Each certificate here represents a different stage of your strength and maturity.');
   }
 
   String _getPlatformText(LanguageService lang) {
