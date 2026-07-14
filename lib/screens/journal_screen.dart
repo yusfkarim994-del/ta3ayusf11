@@ -157,9 +157,9 @@ class _JournalScreenState extends State<JournalScreen>
                       const Color(0xFF081216),
                     ]
                   : [
+                      Colors.white,
                       const Color(0xFFF8FDF9),
-                      const Color(0xFFF1F9F6),
-                      const Color(0xFFF5FAFE),
+                      const Color(0xFFF1F5F9),
                     ],
             ),
           ),
@@ -945,23 +945,25 @@ class _JournalScreenState extends State<JournalScreen>
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF102028) : Colors.white,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isDark
-                ? entry.mood.color.withOpacity(0.15)
-                : entry.mood.color.withOpacity(0.2),
+                ? Colors.white.withOpacity(0.06)
+                : const Color(0xFFE2E8F0),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: entry.mood.color.withOpacity(isDark ? 0.08 : 0.06),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
+              color: isDark
+                  ? Colors.black.withOpacity(0.12)
+                  : entry.mood.color.withOpacity(0.06),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(20),
           child: Stack(
             children: [
               // Top accent line
@@ -977,7 +979,7 @@ class _JournalScreenState extends State<JournalScreen>
                       end: Alignment.centerRight,
                       colors: [
                         entry.mood.color,
-                        entry.mood.color.withOpacity(0.4),
+                        entry.mood.color.withOpacity(0.3),
                       ],
                     ),
                   ),
@@ -1027,9 +1029,11 @@ class _JournalScreenState extends State<JournalScreen>
                               color: isDark ? Colors.white38 : const Color(0xFF94A3B8),
                             ),
                           ),
+                          color: isDark ? const Color(0xFF102028) : Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(16),
                           ),
+                          elevation: 8,
                           itemBuilder: (context) => [
                             PopupMenuItem(
                               value: 'edit',
@@ -1037,7 +1041,7 @@ class _JournalScreenState extends State<JournalScreen>
                                 children: [
                                   Icon(Icons.edit_rounded,
                                       size: 18,
-                                      color: isDark ? Colors.white70 : Colors.black54),
+                                      color: isDark ? Colors.white70 : const Color(0xFF059669)),
                                   const SizedBox(width: 10),
                                   Text(
                                     lang.currentLanguage == AppLanguage.arabic
@@ -1047,7 +1051,8 @@ class _JournalScreenState extends State<JournalScreen>
                                             ? 'دەستکاری'
                                             : 'Edit',
                                     style: TextStyle(
-                                      color: isDark ? Colors.white70 : Colors.black87,
+                                      color: isDark ? Colors.white : const Color(0xFF1E293B),
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
@@ -1058,7 +1063,7 @@ class _JournalScreenState extends State<JournalScreen>
                               child: Row(
                                 children: [
                                   const Icon(Icons.delete_rounded,
-                                      size: 18, color: Colors.red),
+                                      size: 18, color: Color(0xFFEF4444)),
                                   const SizedBox(width: 10),
                                   Text(
                                     lang.currentLanguage == AppLanguage.arabic
@@ -1067,7 +1072,10 @@ class _JournalScreenState extends State<JournalScreen>
                                                 AppLanguage.kurdish
                                             ? 'سڕینەوە'
                                             : 'Delete',
-                                    style: const TextStyle(color: Colors.red),
+                                    style: const TextStyle(
+                                      color: Color(0xFFEF4444),
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -1176,7 +1184,7 @@ class _JournalScreenState extends State<JournalScreen>
               end: Alignment.bottomCenter,
               colors: isDark
                   ? [const Color(0xFF071A22), const Color(0xFF0E232D)]
-                  : [Colors.white, const Color(0xFFF0FDF9)],
+                  : [Colors.white, const Color(0xFFF8FDF9)],
             ),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           ),
