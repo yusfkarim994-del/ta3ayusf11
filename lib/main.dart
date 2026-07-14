@@ -34,7 +34,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    
+
     // Prevent any unhandled async errors from crashing the app (especially offline timeouts)
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);
@@ -49,27 +49,33 @@ void main() async {
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
-      ).timeout(const Duration(seconds: 10), onTimeout: () {
+      ).timeout(const Duration(seconds: 5), onTimeout: () {
         debugPrint('Firebase init timeout on web');
         throw Exception('Firebase init timeout');
       });
-      
+
       if (!kIsWeb) {
         try {
-          FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-          
+          FirebaseMessaging.onBackgroundMessage(
+              _firebaseMessagingBackgroundHandler);
+
           // Check for internet before invoking FCM Native SDKs
           bool hasInternet = false;
           try {
-            final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 2));
+            final result = await InternetAddress.lookup('google.com')
+                .timeout(const Duration(seconds: 2));
             if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
               hasInternet = true;
             }
           } catch (_) {}
-          
+
           if (hasInternet) {
-            FirebaseMessaging.instance.requestPermission().catchError((e) => debugPrint('FCM Perm Error: $e'));
-            FirebaseMessaging.instance.subscribeToTopic('all').catchError((e) => debugPrint('FCM Topic Error: $e'));
+            FirebaseMessaging.instance
+                .requestPermission()
+                .catchError((e) => debugPrint('FCM Perm Error: $e'));
+            FirebaseMessaging.instance
+                .subscribeToTopic('all')
+                .catchError((e) => debugPrint('FCM Topic Error: $e'));
           }
         } catch (e) {
           debugPrint('Firebase messaging setup error: $e');
@@ -78,38 +84,38 @@ void main() async {
     } catch (e) {
       debugPrint('Firebase setup error (web may continue): $e');
     }
-    
+
     final languageService = LanguageService();
-    await languageService.loadLanguage();
-    
+    await languageService.loadLanguage().timeout(
+          const Duration(seconds: 3),
+          onTimeout: () => debugPrint('Language load timeout; using defaults'),
+        );
+
     final journalService = JournalService();
-    journalService.loadEntries().catchError((e) => debugPrint('Journal Error: $e'));
-    
+    journalService
+        .loadEntries()
+        .catchError((e) => debugPrint('Journal Error: $e'));
+
     final habitsService = HabitsService();
     habitsService.loadHabits().catchError((e) => debugPrint('Habit Error: $e'));
-    
+
     final trackingService = TrackingService();
-    trackingService.loadRecords().catchError((e) => debugPrint('Tracking Error: $e'));
-    
+    trackingService
+        .loadRecords()
+        .catchError((e) => debugPrint('Tracking Error: $e'));
+
     final libraryService = LibraryService();
-    libraryService.loadData().catchError((e) => debugPrint('Library Error: $e'));
-    
+    libraryService
+        .loadData()
+        .catchError((e) => debugPrint('Library Error: $e'));
+
     final accountabilityService = AccountabilityService();
-    
+
     final appLockService = AppLockService();
-    await appLockService.initialize();
-    
+
     final appDisguiseService = AppDisguiseService();
-    await appDisguiseService.initialize();
-    
+
     // Initialize notifications (shows system dialog on Android 13+)
-    try {
-      await NotificationService().init();
-      // Permission request moved to HomeScreen
-    } catch (e) {
-      debugPrint('Notification setup error: $e');
-    }
-    
     runApp(
       MultiProvider(
         providers: [
@@ -126,6 +132,18 @@ void main() async {
         child: const MyApp(),
       ),
     );
+
+    // These services are not needed to paint the first frame. Initialize them
+    // after runApp so a slow browser plugin cannot leave a black screen.
+    unawaited(appLockService.initialize().catchError((e) {
+      debugPrint('App lock init error: $e');
+    }));
+    unawaited(appDisguiseService.initialize().catchError((e) {
+      debugPrint('App disguise init error: $e');
+    }));
+    unawaited(NotificationService().init().catchError((e) {
+      debugPrint('Notification setup error: $e');
+    }));
   }, (error, stack) {
     debugPrint('runZonedGuarded Caught Error: $error');
   });
@@ -215,4 +233,3 @@ class _AuthWrapperState extends State<AuthWrapper> {
     return const LoginScreen();
   }
 }
-

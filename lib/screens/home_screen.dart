@@ -759,7 +759,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       ],
                                                     ),
                                               child: Image.asset(
-                                                'assets/images/badge_level_${badge.level}.png',
+                                                badge.artwork == null
+                                                    ? 'assets/images/badge_level_${badge.level}.png'
+                                                    : 'assets/images/${badge.artwork}',
                                                 width: 28,
                                                 height: 28,
                                                 fit: BoxFit.contain,
@@ -3268,7 +3270,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     offset: const Offset(0, 4),
                                   ),
                                   BoxShadow(
-                                    color: const Color(0xFF0D9488).withOpacity(0.06),
+                                    color: const Color(0xFF0D9488)
+                                        .withOpacity(0.06),
                                     blurRadius: 20,
                                     offset: const Offset(0, 2),
                                   ),
@@ -3670,7 +3673,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               MaterialPageRoute(
                                 builder: (context) => const WebViewScreen(
                                   title: 'مجتمع لا أبرح',
-                                  url: 'https://group-chat-kurdish-8vxh.arcada.app/',
+                                  url:
+                                      'https://group-chat-kurdish-8vxh.arcada.app/',
                                 ),
                               ),
                             ),
@@ -5093,9 +5097,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Color color,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 12, left: 2, right: 2),
+      padding: const EdgeInsets.only(top: 24, bottom: 10, left: 2, right: 2),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
@@ -5110,7 +5114,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     color.withOpacity(0.02),
                   ],
           ),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: color.withOpacity(isDark ? 0.2 : 0.15),
             width: 1,
@@ -5128,13 +5132,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   colors: [color, color.withOpacity(0.6)],
                 ),
                 borderRadius: BorderRadius.circular(3),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.withOpacity(0.3),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                boxShadow: const [],
               ),
             ),
             const SizedBox(width: 12),
@@ -5157,8 +5155,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 12,
+                Icons.arrow_forward_rounded,
+                size: 16,
                 color: color.withOpacity(isDark ? 0.8 : 0.7),
               ),
             ),
@@ -5443,12 +5441,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.all(14),
                   child: Column(
-                    crossAxisAlignment:
-                        isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    crossAxisAlignment: isRTL
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment:
-                            isRTL ? MainAxisAlignment.end : MainAxisAlignment.start,
+                        mainAxisAlignment: isRTL
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
                         children: [
                           Container(
                             width: 56,
@@ -5469,12 +5469,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ),
                               borderRadius: BorderRadius.circular(18),
                               border: Border.all(
-                                color: accentColor.withOpacity(isDark ? 0.2 : 0.15),
+                                color: accentColor
+                                    .withOpacity(isDark ? 0.2 : 0.15),
                                 width: 1,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: accentColor.withOpacity(isDark ? 0.1 : 0.06),
+                                  color: accentColor
+                                      .withOpacity(isDark ? 0.1 : 0.06),
                                   blurRadius: 8,
                                   offset: const Offset(0, 3),
                                 ),
@@ -5482,7 +5484,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(7),
-                              child: Image.asset(iconAsset, fit: BoxFit.contain),
+                              child:
+                                  Image.asset(iconAsset, fit: BoxFit.contain),
                             ),
                           ),
                         ],
@@ -5507,7 +5510,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         subtitle,
                         style: lang.getTextStyle(
                           fontSize: 11.5,
-                          color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                          color:
+                              isDark ? Colors.white54 : const Color(0xFF64748B),
                           height: 1.2,
                         ),
                         textAlign: isRTL ? TextAlign.right : TextAlign.left,

@@ -1,342 +1,306 @@
 import 'package:flutter/material.dart';
-import '../../services/language_service.dart';
 import '../../services/badges_service.dart';
+import '../../services/language_service.dart';
 
-/// Badges screen showing all available badges and their unlock status
 class BadgesScreen extends StatelessWidget {
   final int userDays;
 
-  const BadgesScreen({
-    super.key,
-    required this.userDays,
-  });
+  const BadgesScreen({super.key, required this.userDays});
 
   @override
   Widget build(BuildContext context) {
     final lang = LanguageService();
     final isDark = lang.isDarkMode;
-    final allBadges = BadgesService.allBadges;
-    final earnedBadges = BadgesService.getEarnedBadges(userDays);
+    final all = BadgesService.allBadges;
+    final earned = BadgesService.getEarnedBadges(userDays);
+    final next = BadgesService.getNextBadge(userDays);
+    final highest = BadgesService.getHighestBadge(userDays);
+    final background =
+        isDark ? const Color(0xFF101C2B) : const Color(0xFFF6FAF9);
+    final surface = isDark ? const Color(0xFF17283A) : Colors.white;
+    final primary = const Color(0xFF0D9488);
 
-    return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0a1628) : Colors.white,
-      appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF1a2a4a) : Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white : Colors.black87),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [Color(0xFFFFD700), Color(0xFFFF8C00)]),
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset('assets/images/icon_popup_badges.png', width: 28, height: 28, fit: BoxFit.contain),
+    return Directionality(
+      textDirection: lang.textDirection,
+      child: Scaffold(
+        backgroundColor: background,
+        appBar: AppBar(
+          backgroundColor: background,
+          title: Text(_title(lang),
+              style:
+                  lang.getTextStyle(fontSize: 21, fontWeight: FontWeight.w800)),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () => Navigator.pop(context)),
+          actions: [
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 16),
+              child: Center(
+                  child: Text('${earned.length}/${all.length}',
+                      style: lang.getTextStyle(
+                          color: primary, fontWeight: FontWeight.w800))),
             ),
-            const SizedBox(width: 12),
-            Text(
-              _getTitle(lang),
-              style: lang.getTextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
+          ],
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: surface,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: primary.withOpacity(.18)),
+                  ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  color: primary.withOpacity(.12),
+                                  shape: BoxShape.circle),
+                              child: const Icon(Icons.workspace_premium_rounded,
+                                  color: primary, size: 28)),
+                          const SizedBox(width: 12),
+                          Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                Text('${earned.length} ${_earnedLabel(lang)}',
+                                    style: lang.getTextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800)),
+                                Text('${userDays} ${_daysLabel(lang)}',
+                                    style: lang.getTextStyle(
+                                        fontSize: 13,
+                                        color: isDark
+                                            ? Colors.white60
+                                            : const Color(0xFF64748B))),
+                              ])),
+                          if (highest != null) _badgeArtwork(highest, 48),
+                        ]),
+                        if (next != null) ...[
+                          const SizedBox(height: 18),
+                          Text('${_nextLabel(lang)}: ${_name(next, lang)}',
+                              style: lang.getTextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: primary)),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: LinearProgressIndicator(
+                                  value: (userDays / next.daysRequired)
+                                      .clamp(0.0, 1.0),
+                                  minHeight: 8,
+                                  backgroundColor: primary.withOpacity(.12),
+                                  valueColor:
+                                      const AlwaysStoppedAnimation(primary))),
+                          const SizedBox(height: 6),
+                          Text(
+                              '${next.daysRequired - userDays} ${_remainingLabel(lang)}',
+                              style: lang.getTextStyle(
+                                  fontSize: 12,
+                                  color: isDark
+                                      ? Colors.white54
+                                      : const Color(0xFF64748B))),
+                        ],
+                      ]),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 28),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                    (context, index) =>
+                        _badgeCard(all[index], lang, isDark, surface),
+                    childCount: all.length),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount:
+                        MediaQuery.sizeOf(context).width < 700 ? 1 : 2,
+                    mainAxisExtent:
+                        MediaQuery.sizeOf(context).width < 700 ? 390 : 350,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12),
               ),
             ),
           ],
         ),
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: const Color(0xFF4CAF50).withOpacity(0.2),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              '${earnedBadges.length}/${allBadges.length}',
-              style: lang.getTextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF4CAF50),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.85,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: allBadges.length,
-        itemBuilder: (context, index) => _buildBadgeCard(allBadges[index], lang, isDark),
       ),
     );
   }
 
-  String _getTitle(LanguageService lang) {
-    switch (lang.currentLanguage) {
-      case AppLanguage.kurdish:
-        return 'ئۆسمەکان';
-      case AppLanguage.arabic:
-        return 'الأوسمة';
-      case AppLanguage.english:
-        return 'Badges';
-    }
-  }
-
-  String _getDaysText(LanguageService lang) {
-    switch (lang.currentLanguage) {
-      case AppLanguage.kurdish:
-        return 'ڕۆژ';
-      case AppLanguage.arabic:
-        return 'يوم';
-      case AppLanguage.english:
-        return 'days';
-    }
-  }
-
-  Widget _buildBadgeCard(AchievementBadge badge, LanguageService lang, bool isDark) {
-    final isUnlocked = userDays >= badge.daysRequired;
-    final name = _getBadgeName(badge, lang);
-    final displayColor = isUnlocked ? badge.color : Colors.grey;
-    final progress = badge.daysRequired == 0
-        ? 1.0
-        : (userDays / badge.daysRequired).clamp(0.0, 1.0);
-    final remainingDays = (badge.daysRequired - userDays).clamp(0, badge.daysRequired);
-    final unlockDate = DateTime.now().add(Duration(days: remainingDays));
-    final unlockDateText = '${unlockDate.day.toString().padLeft(2, '0')}/${unlockDate.month.toString().padLeft(2, '0')}/${unlockDate.year.toString()}';
-
+  Widget _badgeCard(AchievementBadge badge, LanguageService lang, bool isDark,
+      Color surface) {
+    final unlocked = userDays >= badge.daysRequired;
+    final progress = (userDays / badge.daysRequired).clamp(0.0, 1.0);
+    final color = unlocked
+        ? badge.color
+        : (isDark ? Colors.white38 : const Color(0xFF94A3B8));
     return Opacity(
-      opacity: isUnlocked ? 1.0 : 0.4,
+      opacity: unlocked ? 1 : .58,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              displayColor.withOpacity(0.28),
-              displayColor.withOpacity(0.10),
-              Colors.white.withOpacity(isDark ? 0.03 : 0.5),
-            ],
+            color: surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withOpacity(.28))),
+        child: Column(children: [
+          Align(
+              alignment: AlignmentDirectional.topEnd,
+              child: Icon(
+                  unlocked
+                      ? Icons.check_circle_rounded
+                      : Icons.lock_outline_rounded,
+                  color: color,
+                  size: 18)),
+          const SizedBox(height: 2),
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) => _badgeArtwork(
+                badge,
+                constraints.maxWidth,
+              ),
+            ),
           ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: displayColor.withOpacity(0.5), width: 2),
-          boxShadow: isUnlocked
-              ? [BoxShadow(color: displayColor.withOpacity(0.2), blurRadius: 15, offset: const Offset(0, 5))]
-              : [],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [displayColor, displayColor.withOpacity(0.7)],
-                  ),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Text(
-                  isUnlocked ? 'مفتوح' : 'مغلق',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 9,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1,
-                  ),
-                ),
-              ),
-            ),
-
-            Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
-                    boxShadow: isUnlocked
-                        ? [BoxShadow(color: displayColor.withOpacity(0.3), blurRadius: 12, spreadRadius: 1)]
-                        : [],
-                  ),
-                  child: Image.asset(
-                    'assets/images/badge_level_${badge.level}.png',
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                if (!isUnlocked)
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
-                      child: const Icon(Icons.lock, color: Colors.white, size: 14),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 54,
-                  height: 54,
-                  child: CircularProgressIndicator(
-                    value: progress,
-                    strokeWidth: 5,
-                    backgroundColor: Colors.grey.withOpacity(0.2),
-                    valueColor: AlwaysStoppedAnimation(displayColor),
-                  ),
-                ),
-                Text(
-                  '${(progress * 100).floor()}%',
-                  style: lang.getTextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w900,
-                    color: displayColor,
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 6),
-
-            Text(
-              name,
-              style: lang.getTextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: isUnlocked ? (isDark ? Colors.white : Colors.black87) : Colors.grey,
-              ),
+          const SizedBox(height: 8),
+          Text(_name(badge, lang),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: displayColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                '${badge.daysRequired} ${_getDaysText(lang)}',
-                style: lang.getTextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: displayColor),
-              ),
-            ),
-
-            const SizedBox(height: 6),
-
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(isDark ? 0.08 : 0.65),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.18),
-                ),
-              ),
-              child: Text(
-                isUnlocked
-                    ? 'وسام يُجسد قوة الإرادة والانتصار المستمر على النفس.'
-                    : 'استمر في التقدم، فهذا الوسام ينتظر لحظة انتصارك القادمة.',
-                textAlign: TextAlign.center,
-                style: lang.getTextStyle(
-                  fontSize: 11,
-                  height: 1.5,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            Text(
-              isUnlocked
-                  ? (lang.currentLanguage == AppLanguage.arabic
-                      ? 'أنت تتقدم بقوة وثبات'
-                      : lang.currentLanguage == AppLanguage.kurdish
-                          ? 'بەهێزی و جێگیری بەردەوام بە'
-                          : 'You are progressing with strength')
-                  : (lang.currentLanguage == AppLanguage.arabic
-                      ? '$remainingDays يوم متبقي'
-                      : lang.currentLanguage == AppLanguage.kurdish
-                          ? '$remainingDays ڕۆژ ماوە'
-                          : '$remainingDays days left'),
-              textAlign: TextAlign.center,
+              style:
+                  lang.getTextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
+          const SizedBox(height: 4),
+          Text('${badge.daysRequired} ${_daysLabel(lang)}',
               style: lang.getTextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: isDark ? Colors.white70 : Colors.black54,
-              ),
-            ),
-
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: displayColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: displayColor.withOpacity(0.3),
-                ),
-              ),
-              child: Text(
-                unlockDateText,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w900,
-                  color: displayColor,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 6),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                3,
-                (index) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
-                  child: Icon(
-                    Icons.auto_awesome,
-                    color: displayColor.withOpacity(0.75),
-                    size: 12,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+                  fontSize: 11, color: color, fontWeight: FontWeight.w700)),
+          const Spacer(),
+          ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 6,
+                  backgroundColor: color.withOpacity(.12),
+                  valueColor: AlwaysStoppedAnimation(color))),
+          const SizedBox(height: 5),
+          Text(
+              unlocked
+                  ? _unlockedLabel(lang)
+                  : '${badge.daysRequired - userDays} ${_remainingLabel(lang)}',
+              style: lang.getTextStyle(
+                  fontSize: 10,
+                  color: isDark ? Colors.white54 : const Color(0xFF64748B))),
+        ]),
       ),
     );
   }
 
-  String _getBadgeName(AchievementBadge badge, LanguageService lang) {
-    switch (lang.currentLanguage) {
-      case AppLanguage.kurdish:
-        return badge.nameKu;
-      case AppLanguage.arabic:
-        return badge.nameAr;
-      case AppLanguage.english:
-        return badge.nameEn;
+  String _name(AchievementBadge badge, LanguageService lang) =>
+      lang.currentLanguage == AppLanguage.kurdish
+          ? badge.nameKu
+          : lang.currentLanguage == AppLanguage.arabic
+              ? badge.nameAr
+              : badge.nameEn;
+
+  // Each milestone gets its own emblem, icon, palette and ornamental pattern.
+  Widget _badgeArtwork(AchievementBadge badge, double size) {
+    if (badge.artwork != null) {
+      return Image.asset(
+        'assets/images/${badge.artwork!}',
+        fit: BoxFit.contain,
+        width: size,
+        height: size,
+      );
     }
+    final color = badge.color;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Transform.rotate(
+            angle: 0.785398,
+            child: Container(
+              width: size * .82,
+              height: size * .82,
+              decoration: BoxDecoration(
+                color: color.withOpacity(.10),
+                border: Border.all(color: color.withOpacity(.72), width: 1.5),
+                borderRadius: BorderRadius.circular(size * .18),
+              ),
+            ),
+          ),
+          Container(
+            width: size * .78,
+            height: size * .78,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                  colors: [color.withOpacity(.32), color.withOpacity(.08)]),
+              border: Border.all(color: color, width: 2),
+              boxShadow: [
+                BoxShadow(color: color.withOpacity(.28), blurRadius: size * .22)
+              ],
+            ),
+          ),
+          Icon(badge.icon, color: color, size: size * .43),
+          Positioned(
+              top: 1,
+              child: Icon(Icons.star_rounded, color: color, size: size * .18)),
+          Positioned(
+              bottom: 1,
+              left: size * .06,
+              child: Icon(Icons.auto_awesome,
+                  color: color.withOpacity(.8), size: size * .15)),
+          Positioned(
+              bottom: 1,
+              right: size * .06,
+              child: Icon(Icons.auto_awesome,
+                  color: color.withOpacity(.8), size: size * .15)),
+        ],
+      ),
+    );
   }
+
+  String _title(LanguageService l) => l.currentLanguage == AppLanguage.kurdish
+      ? 'ئۆسمەکان'
+      : l.currentLanguage == AppLanguage.arabic
+          ? 'الأوسمة'
+          : 'Badges';
+  String _earnedLabel(LanguageService l) =>
+      l.currentLanguage == AppLanguage.kurdish
+          ? 'ئۆسمەی بەدەستهێنراو'
+          : l.currentLanguage == AppLanguage.arabic
+              ? 'وسام مكتسب'
+              : 'badges earned';
+  String _nextLabel(LanguageService l) =>
+      l.currentLanguage == AppLanguage.kurdish
+          ? 'ئامانجی داهاتوو'
+          : l.currentLanguage == AppLanguage.arabic
+              ? 'الهدف القادم'
+              : 'Next milestone';
+  String _daysLabel(LanguageService l) =>
+      l.currentLanguage == AppLanguage.kurdish
+          ? 'ڕۆژ'
+          : l.currentLanguage == AppLanguage.arabic
+              ? 'يوم'
+              : 'days';
+  String _remainingLabel(LanguageService l) =>
+      l.currentLanguage == AppLanguage.kurdish
+          ? 'ڕۆژ ماوە'
+          : l.currentLanguage == AppLanguage.arabic
+              ? 'يوم متبقي'
+              : 'days left';
+  String _unlockedLabel(LanguageService l) =>
+      l.currentLanguage == AppLanguage.kurdish
+          ? 'کراوەتەوە'
+          : l.currentLanguage == AppLanguage.arabic
+              ? 'مفتوح'
+              : 'Unlocked';
 }

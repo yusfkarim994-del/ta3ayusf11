@@ -28,12 +28,15 @@ class CertificatesScreen extends StatelessWidget {
     final earnedBadges = BadgesService.getEarnedBadges(userDays);
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0a1628) : const Color(0xFFF5F5DC),
+      backgroundColor:
+          isDark ? const Color(0xFF101C2B) : const Color(0xFFF6FAF9),
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF1a2a4a) : const Color(0xFFF5F5DC),
+        backgroundColor:
+            isDark ? const Color(0xFF101C2B) : const Color(0xFFF6FAF9),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back_ios_new,
+              color: isDark ? Colors.white : Colors.black87),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -41,10 +44,12 @@ class CertificatesScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: const BoxDecoration(
-                gradient: LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)]),
+                gradient: LinearGradient(
+                    colors: [Color(0xFF14B8A6), Color(0xFF4CAF50)]),
                 shape: BoxShape.circle,
               ),
-              child: Image.asset('assets/images/graduation_cap.png', width: 28, height: 28, fit: BoxFit.contain),
+              child: Image.asset('assets/images/graduation_cap.png',
+                  width: 28, height: 28, fit: BoxFit.contain),
             ),
             const SizedBox(width: 12),
             Text(
@@ -62,7 +67,8 @@ class CertificatesScreen extends StatelessWidget {
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF059669), Color(0xFF10B981)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF059669), Color(0xFF10B981)]),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
@@ -79,24 +85,31 @@ class CertificatesScreen extends StatelessWidget {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         itemCount: allBadges.length,
-        itemBuilder: (context, index) => _buildCertificate(allBadges[index], lang, isDark),
+        itemBuilder: (context, index) =>
+            _buildCertificate(allBadges[index], lang, isDark),
       ),
     );
   }
 
   String _getTitle(LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return 'بڕوانامەکان';
-      case AppLanguage.arabic: return 'الشهادات';
-      case AppLanguage.english: return 'Certificates';
+      case AppLanguage.kurdish:
+        return 'بڕوانامەکان';
+      case AppLanguage.arabic:
+        return 'الشهادات';
+      case AppLanguage.english:
+        return 'Certificates';
     }
   }
 
-  Widget _buildCertificate(AchievementBadge badge, LanguageService lang, bool isDark) {
+  Widget _buildCertificate(
+      AchievementBadge badge, LanguageService lang, bool isDark) {
     final isUnlocked = userDays >= badge.daysRequired;
     final name = _getBadgeName(badge, lang);
     final displayColor = isUnlocked ? badge.color : Colors.grey;
-    final progress = badge.daysRequired == 0 ? 1.0 : (userDays / badge.daysRequired).clamp(0.0, 1.0);
+    final progress = badge.daysRequired == 0
+        ? 1.0
+        : (userDays / badge.daysRequired).clamp(0.0, 1.0);
     final remainingDays = (badge.daysRequired - userDays).clamp(0, 5000);
 
     final certTitle = _getCertTitle(lang);
@@ -109,26 +122,20 @@ class CertificatesScreen extends StatelessWidget {
     final targetDate = isUnlocked
         ? now.subtract(Duration(days: userDays - badge.daysRequired))
         : now.add(Duration(days: remainingDays));
-    final targetDateStr = '${targetDate.day.toString().padLeft(2, '0')}/${targetDate.month.toString().padLeft(2, '0')}/${targetDate.year}';
+    final targetDateStr =
+        '${targetDate.day.toString().padLeft(2, '0')}/${targetDate.month.toString().padLeft(2, '0')}/${targetDate.year}';
 
     return Opacity(
       opacity: isUnlocked ? 1.0 : 0.45,
       child: Container(
         margin: const EdgeInsets.only(bottom: 24),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: displayColor.withOpacity(0.2),
-              blurRadius: 24,
-              spreadRadius: 2,
-              offset: const Offset(0, 10),
-            ),
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
+                color: Colors.black.withOpacity(isDark ? .18 : .06),
+                blurRadius: 14,
+                offset: const Offset(0, 6))
           ],
         ),
         child: Container(
@@ -137,39 +144,18 @@ class CertificatesScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isUnlocked
-                  ? [const Color(0xFFFFFCF2), const Color(0xFFF5E6C8), const Color(0xFFFFF8E1)]
+                  ? [
+                      const Color(0xFFFFFCF2),
+                      const Color(0xFFF5E6C8),
+                      const Color(0xFFFFF8E1)
+                    ]
                   : [Colors.grey.shade200, Colors.grey.shade300],
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: Stack(
             children: [
-              // Outer decorative border
-              Positioned.fill(
-                child: Container(
-                  margin: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isUnlocked ? gold.withOpacity(0.6) : Colors.grey.withOpacity(0.3),
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
-              // Inner decorative border
-              Positioned.fill(
-                child: Container(
-                  margin: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: isUnlocked ? gold.withOpacity(0.3) : Colors.grey.withOpacity(0.2),
-                      width: 1,
-                    ),
-                  ),
-                ),
-              ),
+              // Keep the certificate clean around its text and artwork.
               // Corner ornaments
               ..._buildCornerStars(isUnlocked),
               // Main content
@@ -200,21 +186,23 @@ class CertificatesScreen extends StatelessWidget {
                     Container(
                       width: 120,
                       height: 1,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.transparent, gold, Colors.transparent],
-                        ),
-                      ),
+                      color: isUnlocked
+                          ? gold.withOpacity(.35)
+                          : Colors.grey.withOpacity(.2),
                     ),
 
                     const SizedBox(height: 8),
 
                     // Certificate badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 6),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [displayColor, displayColor.withOpacity(0.75)],
+                          colors: [
+                            displayColor,
+                            displayColor.withOpacity(0.75)
+                          ],
                         ),
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -258,16 +246,13 @@ class CertificatesScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                        Icon(
-                          Icons.workspace_premium_rounded,
-                          color: isUnlocked ? gold : Colors.grey,
-                          size: isUnlocked ? 60 : 50,
-                        ),
+                        _buildBadgeArtwork(badge, isUnlocked ? 82 : 70),
                         if (!isUnlocked)
                           const Positioned(
                             right: 0,
                             top: 0,
-                            child: Icon(Icons.lock, color: Colors.grey, size: 20),
+                            child:
+                                Icon(Icons.lock, color: Colors.grey, size: 20),
                           ),
                       ],
                     ),
@@ -307,7 +292,8 @@ class CertificatesScreen extends StatelessWidget {
                     if (motivationQuote.isNotEmpty) ...[
                       const SizedBox(height: 10),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
                           color: gold.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(10),
@@ -332,20 +318,27 @@ class CertificatesScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: isUnlocked ? Colors.white.withOpacity(0.55) : Colors.grey.withOpacity(0.1),
+                        color: isUnlocked
+                            ? Colors.white.withOpacity(0.55)
+                            : Colors.grey.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
-                          color: isUnlocked ? displayColor.withOpacity(0.2) : Colors.grey.withOpacity(0.15),
+                          color: isUnlocked
+                              ? displayColor.withOpacity(0.2)
+                              : Colors.grey.withOpacity(0.15),
                         ),
                       ),
                       child: Text(
-                        _getMotivationalMessage(lang, isUnlocked, badge.daysRequired),
+                        _getMotivationalMessage(
+                            lang, isUnlocked, badge.daysRequired),
                         textAlign: TextAlign.center,
                         style: lang.getTextStyle(
                           fontSize: 12,
                           height: 1.7,
                           fontWeight: FontWeight.w600,
-                          color: isUnlocked ? const Color(0xFF4E342E) : Colors.grey,
+                          color: isUnlocked
+                              ? const Color(0xFF4E342E)
+                              : Colors.grey,
                         ),
                       ),
                     ),
@@ -355,12 +348,17 @@ class CertificatesScreen extends StatelessWidget {
                     // Decorative divider
                     Row(
                       children: [
-                        Expanded(child: Container(height: 1, color: gold.withOpacity(0.3))),
+                        Expanded(
+                            child: Container(
+                                height: 1, color: gold.withOpacity(0.3))),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Icon(Icons.star, size: 10, color: gold.withOpacity(0.6)),
+                          child: Icon(Icons.star,
+                              size: 10, color: gold.withOpacity(0.6)),
                         ),
-                        Expanded(child: Container(height: 1, color: gold.withOpacity(0.3))),
+                        Expanded(
+                            child: Container(
+                                height: 1, color: gold.withOpacity(0.3))),
                       ],
                     ),
 
@@ -383,7 +381,8 @@ class CertificatesScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(color: gold.withOpacity(0.5), width: 2),
+                          bottom: BorderSide(
+                              color: gold.withOpacity(0.5), width: 2),
                         ),
                       ),
                       child: Text(
@@ -406,11 +405,13 @@ class CertificatesScreen extends StatelessWidget {
 
                     // Days text
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 6),
                       decoration: BoxDecoration(
                         color: displayColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: displayColor.withOpacity(0.3)),
+                        border:
+                            Border.all(color: displayColor.withOpacity(0.3)),
                       ),
                       child: Text(
                         daysText,
@@ -471,11 +472,13 @@ class CertificatesScreen extends StatelessWidget {
 
                     // Date
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 6),
                       decoration: BoxDecoration(
                         color: displayColor.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: displayColor.withOpacity(0.2)),
+                        border:
+                            Border.all(color: displayColor.withOpacity(0.2)),
                       ),
                       child: Text(
                         targetDateStr,
@@ -506,7 +509,9 @@ class CertificatesScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: lang.getTextStyle(
                         fontSize: 10,
-                        color: isUnlocked ? lightBrown.withOpacity(0.6) : Colors.grey.withOpacity(0.5),
+                        color: isUnlocked
+                            ? lightBrown.withOpacity(0.6)
+                            : Colors.grey.withOpacity(0.5),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -523,14 +528,18 @@ class CertificatesScreen extends StatelessWidget {
   Widget _buildStarRow(bool isUnlocked) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (i) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2),
-        child: Icon(
-          Icons.star_rounded,
-          color: isUnlocked ? gold.withOpacity(0.8) : Colors.grey.withOpacity(0.4),
-          size: 16,
-        ),
-      )),
+      children: List.generate(
+          5,
+          (i) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Icon(
+                  Icons.star_rounded,
+                  color: isUnlocked
+                      ? gold.withOpacity(0.8)
+                      : Colors.grey.withOpacity(0.4),
+                  size: 16,
+                ),
+              )),
     );
   }
 
@@ -583,7 +592,8 @@ class CertificatesScreen extends StatelessWidget {
         Container(
           width: 60,
           height: 1,
-          color: isUnlocked ? gold.withOpacity(0.4) : Colors.grey.withOpacity(0.3),
+          color:
+              isUnlocked ? gold.withOpacity(0.4) : Colors.grey.withOpacity(0.3),
         ),
         const SizedBox(height: 8),
         Text(
@@ -603,7 +613,9 @@ class CertificatesScreen extends StatelessWidget {
                   : 'General Management',
           style: lang.getTextStyle(
             fontSize: 10,
-            color: isUnlocked ? lightBrown.withOpacity(0.7) : Colors.grey.withOpacity(0.5),
+            color: isUnlocked
+                ? lightBrown.withOpacity(0.7)
+                : Colors.grey.withOpacity(0.5),
           ),
         ),
       ],
@@ -611,20 +623,32 @@ class CertificatesScreen extends StatelessWidget {
   }
 
   List<Widget> _buildCornerStars(bool isUnlocked) {
-    final color = isUnlocked ? gold.withOpacity(0.3) : Colors.grey.withOpacity(0.2);
+    final color =
+        isUnlocked ? gold.withOpacity(0.3) : Colors.grey.withOpacity(0.2);
     return [
-      Positioned(top: 16, left: 16, child: Icon(Icons.star, size: 18, color: color)),
-      Positioned(top: 16, right: 16, child: Icon(Icons.star, size: 18, color: color)),
-      Positioned(bottom: 16, left: 16, child: Icon(Icons.star, size: 18, color: color)),
-      Positioned(bottom: 16, right: 16, child: Icon(Icons.star, size: 18, color: color)),
+      Positioned(
+          top: 16, left: 16, child: Icon(Icons.star, size: 18, color: color)),
+      Positioned(
+          top: 16, right: 16, child: Icon(Icons.star, size: 18, color: color)),
+      Positioned(
+          bottom: 16,
+          left: 16,
+          child: Icon(Icons.star, size: 18, color: color)),
+      Positioned(
+          bottom: 16,
+          right: 16,
+          child: Icon(Icons.star, size: 18, color: color)),
     ];
   }
 
   String _getCertTitle(LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return 'بڕوانامەی سەرکەوتن';
-      case AppLanguage.arabic: return 'شهادة الإنجاز';
-      case AppLanguage.english: return 'Certificate of Achievement';
+      case AppLanguage.kurdish:
+        return 'بڕوانامەی سەرکەوتن';
+      case AppLanguage.arabic:
+        return 'شهادة الإنجاز';
+      case AppLanguage.english:
+        return 'Certificate of Achievement';
     }
   }
 
@@ -659,26 +683,36 @@ class CertificatesScreen extends StatelessWidget {
 
   String _getAwardedToText(LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return 'ئەم بڕوانامەی شانازییە دەدرێت بە:';
-      case AppLanguage.arabic: return 'تُمنح هذه الشهادة الفخرية إلى:';
-      case AppLanguage.english: return 'This honorary certificate is awarded to:';
+      case AppLanguage.kurdish:
+        return 'ئەم بڕوانامەی شانازییە دەدرێت بە:';
+      case AppLanguage.arabic:
+        return 'تُمنح هذه الشهادة الفخرية إلى:';
+      case AppLanguage.english:
+        return 'This honorary certificate is awarded to:';
     }
   }
 
   String _getDaysText(AchievementBadge badge, LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return '${badge.daysRequired} ڕۆژی چاکبوونەوە';
-      case AppLanguage.arabic: return '${badge.daysRequired} يوم من التعافي';
-      case AppLanguage.english: return '${badge.daysRequired} Days of Recovery';
+      case AppLanguage.kurdish:
+        return '${badge.daysRequired} ڕۆژی چاکبوونەوە';
+      case AppLanguage.arabic:
+        return '${badge.daysRequired} يوم من التعافي';
+      case AppLanguage.english:
+        return '${badge.daysRequired} Days of Recovery';
     }
   }
 
-  String _getMotivationalMessage(LanguageService lang, bool isUnlocked, int daysRequired) {
+  String _getMotivationalMessage(
+      LanguageService lang, bool isUnlocked, int daysRequired) {
     if (!isUnlocked) {
       switch (lang.currentLanguage) {
-        case AppLanguage.kurdish: return 'بەردەوام بە بۆ بەدەستهێنانی ئەم بڕوانامەیە';
-        case AppLanguage.arabic: return 'استمر للحصول على هذه الشهادة';
-        case AppLanguage.english: return 'Keep going to earn this certificate';
+        case AppLanguage.kurdish:
+          return 'بەردەوام بە بۆ بەدەستهێنانی ئەم بڕوانامەیە';
+        case AppLanguage.arabic:
+          return 'استمر للحصول على هذه الشهادة';
+        case AppLanguage.english:
+          return 'Keep going to earn this certificate';
       }
     }
     final messages = {
@@ -823,17 +857,74 @@ class CertificatesScreen extends StatelessWidget {
 
   String _getPlatformText(LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return 'ئەم بڕوانامەیە لەلایەن پلاتفۆرمی لا أبرح دراوە';
-      case AppLanguage.arabic: return 'هذه الشهادة صادرة من منصة لا أبرح';
-      case AppLanguage.english: return 'This certificate is issued by La Abrah Platform';
+      case AppLanguage.kurdish:
+        return 'ئەم بڕوانامەیە لەلایەن پلاتفۆرمی لا أبرح دراوە';
+      case AppLanguage.arabic:
+        return 'هذه الشهادة صادرة من منصة لا أبرح';
+      case AppLanguage.english:
+        return 'This certificate is issued by La Abrah Platform';
     }
+  }
+
+  Widget _buildBadgeArtwork(AchievementBadge badge, double size) {
+    if (badge.artwork != null) {
+      return Image.asset('assets/images/${badge.artwork!}',
+          width: size, height: size, fit: BoxFit.contain);
+    }
+    final color = badge.color;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(alignment: Alignment.center, children: [
+        Transform.rotate(
+          angle: .785398,
+          child: Container(
+            width: size * .78,
+            height: size * .78,
+            decoration: BoxDecoration(
+              border: Border.all(color: color.withOpacity(.8), width: 2),
+              borderRadius: BorderRadius.circular(size * .16),
+              color: color.withOpacity(.08),
+            ),
+          ),
+        ),
+        Container(
+          width: size * .72,
+          height: size * .72,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: RadialGradient(
+                colors: [color.withOpacity(.35), color.withOpacity(.08)]),
+            border: Border.all(color: color, width: 2.5),
+            boxShadow: [
+              BoxShadow(color: color.withOpacity(.28), blurRadius: 14)
+            ],
+          ),
+        ),
+        Icon(badge.icon, color: color, size: size * .38),
+        Positioned(
+            top: 0,
+            child: Icon(Icons.star_rounded, color: color, size: size * .16)),
+        Positioned(
+            bottom: 0,
+            left: 3,
+            child: Icon(Icons.auto_awesome, color: color, size: size * .14)),
+        Positioned(
+            bottom: 0,
+            right: 3,
+            child: Icon(Icons.auto_awesome, color: color, size: size * .14)),
+      ]),
+    );
   }
 
   String _getBadgeName(AchievementBadge badge, LanguageService lang) {
     switch (lang.currentLanguage) {
-      case AppLanguage.kurdish: return badge.nameKu;
-      case AppLanguage.arabic: return badge.nameAr;
-      case AppLanguage.english: return badge.nameEn;
+      case AppLanguage.kurdish:
+        return badge.nameKu;
+      case AppLanguage.arabic:
+        return badge.nameAr;
+      case AppLanguage.english:
+        return badge.nameEn;
     }
   }
 }
