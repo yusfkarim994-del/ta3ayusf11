@@ -3254,15 +3254,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ? const Color(0xFF1E293B)
                               : const Color(0xFFFFFFFF);
                           final btnShadow = isDark
-                              ? null
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ]
                               : [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.04),
-                                    blurRadius: 10,
+                                    color: Colors.black.withOpacity(0.06),
+                                    blurRadius: 14,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFF0D9488).withOpacity(0.06),
+                                    blurRadius: 20,
                                     offset: const Offset(0, 2),
                                   ),
                                 ];
-                          final btnRadius = BorderRadius.circular(14);
+                          final btnRadius = BorderRadius.circular(16);
 
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -5082,31 +5093,77 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Color color,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 18, bottom: 10, left: 2, right: 2),
-      child: Row(
-        children: [
-          Container(
-            width: 4,
-            height: 18,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(2),
-            ),
+      padding: const EdgeInsets.only(top: 20, bottom: 12, left: 2, right: 2),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: isDark
+                ? [
+                    color.withOpacity(0.15),
+                    color.withOpacity(0.05),
+                  ]
+                : [
+                    color.withOpacity(0.08),
+                    color.withOpacity(0.02),
+                  ],
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              title,
-              style: lang.getTextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-                color: isDark
-                    ? Colors.white.withOpacity(0.95)
-                    : const Color(0xFF1E293B),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: color.withOpacity(isDark ? 0.2 : 0.15),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 5,
+              height: 22,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [color, color.withOpacity(0.6)],
+                ),
+                borderRadius: BorderRadius.circular(3),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: lang.getTextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  color: isDark
+                      ? Colors.white.withOpacity(0.95)
+                      : const Color(0xFF1E293B),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: color.withOpacity(isDark ? 0.2 : 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 12,
+                color: color.withOpacity(isDark ? 0.8 : 0.7),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -5190,19 +5247,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     final cardContent = [
       Container(
-        width: 62,
-        height: 62,
+        width: 64,
+        height: 64,
         decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [
+                    accentColor.withOpacity(0.22),
+                    accentColor.withOpacity(0.08),
+                  ]
+                : [
+                    accentColor.withOpacity(0.14),
+                    accentColor.withOpacity(0.05),
+                  ],
+          ),
           borderRadius: BorderRadius.circular(20),
-          color: accentColor.withOpacity(isDark ? 0.16 : 0.09),
-          border: Border.all(color: accentColor.withOpacity(0.18), width: 1),
+          border: Border.all(
+            color: accentColor.withOpacity(isDark ? 0.25 : 0.18),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: accentColor.withOpacity(isDark ? 0.12 : 0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(7),
+          padding: const EdgeInsets.all(8),
           child: Image.asset(iconAsset, fit: BoxFit.contain),
         ),
       ),
-      const SizedBox(width: 13),
+      const SizedBox(width: 14),
       Expanded(
         child: Column(
           crossAxisAlignment:
@@ -5211,7 +5290,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             Text(
               title,
               style: lang.getTextStyle(
-                fontSize: 15,
+                fontSize: 15.5,
                 fontWeight: FontWeight.w700,
                 color: isDark
                     ? Colors.white.withOpacity(0.95)
@@ -5221,11 +5300,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 3),
+            const SizedBox(height: 4),
             Text(
               subtitle,
               style: lang.getTextStyle(
-                fontSize: 12,
+                fontSize: 12.5,
                 color: isDark ? Colors.white54 : const Color(0xFF64748B),
                 height: 1.4,
               ),
@@ -5237,10 +5316,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         ),
       ),
       const SizedBox(width: 10),
-      Icon(
-        isRTL ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
-        color: isDark ? Colors.white24 : const Color(0xFFCBD5E1),
-        size: 22,
+      Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: accentColor.withOpacity(isDark ? 0.12 : 0.08),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(
+          isRTL ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+          color: accentColor.withOpacity(isDark ? 0.6 : 0.5),
+          size: 20,
+        ),
       ),
     ];
 
@@ -5252,10 +5338,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           color: isDark ? const Color(0xFF15231F) : Colors.white,
           child: InkWell(
             onTap: onTap,
-            splashColor: accentColor.withOpacity(0.10),
-            highlightColor: accentColor.withOpacity(0.04),
+            splashColor: accentColor.withOpacity(0.12),
+            highlightColor: accentColor.withOpacity(0.05),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
@@ -5266,9 +5352,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: accentColor.withOpacity(isDark ? 0.06 : 0.05),
-                    blurRadius: 18,
+                    color: accentColor.withOpacity(isDark ? 0.08 : 0.06),
+                    blurRadius: 20,
                     offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withOpacity(isDark ? 0.08 : 0.03),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
@@ -5299,11 +5390,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(22),
-        splashColor: accentColor.withOpacity(0.10),
-        highlightColor: accentColor.withOpacity(0.04),
+        splashColor: accentColor.withOpacity(0.12),
+        highlightColor: accentColor.withOpacity(0.05),
         child: Container(
-          height: 132,
-          padding: const EdgeInsets.all(12),
+          height: 140,
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF15231F) : Colors.white,
             borderRadius: BorderRadius.circular(22),
@@ -5315,66 +5405,120 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             boxShadow: [
               BoxShadow(
-                color: accentColor.withOpacity(isDark ? 0.05 : 0.045),
-                blurRadius: 16,
+                color: accentColor.withOpacity(isDark ? 0.08 : 0.06),
+                blurRadius: 20,
                 offset: const Offset(0, 8),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.1 : 0.03),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: Column(
-            crossAxisAlignment:
-                isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment:
-                    isRTL ? MainAxisAlignment.end : MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 54,
-                    height: 54,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: Stack(
+              children: [
+                // Top gradient accent line
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 3,
+                  child: Container(
                     decoration: BoxDecoration(
-                      color: accentColor.withOpacity(isDark ? 0.16 : 0.09),
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                        color: accentColor.withOpacity(0.16),
-                        width: 1,
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          accentColor,
+                          accentColor.withOpacity(0.4),
+                        ],
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Image.asset(iconAsset, fit: BoxFit.contain),
-                    ),
                   ),
-                ],
-              ),
-              const Spacer(),
-              Text(
-                title,
-                style: lang.getTextStyle(
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w800,
-                  color: isDark
-                      ? Colors.white.withOpacity(0.95)
-                      : const Color(0xFF1E293B),
-                  height: 1.18,
                 ),
-                textAlign: isRTL ? TextAlign.right : TextAlign.left,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: lang.getTextStyle(
-                  fontSize: 11,
-                  color: isDark ? Colors.white54 : const Color(0xFF64748B),
-                  height: 1.2,
+                // Content
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Column(
+                    crossAxisAlignment:
+                        isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment:
+                            isRTL ? MainAxisAlignment.end : MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: isDark
+                                    ? [
+                                        accentColor.withOpacity(0.2),
+                                        accentColor.withOpacity(0.08),
+                                      ]
+                                    : [
+                                        accentColor.withOpacity(0.12),
+                                        accentColor.withOpacity(0.04),
+                                      ],
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                color: accentColor.withOpacity(isDark ? 0.2 : 0.15),
+                                width: 1,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: accentColor.withOpacity(isDark ? 0.1 : 0.06),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(7),
+                              child: Image.asset(iconAsset, fit: BoxFit.contain),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Text(
+                        title,
+                        style: lang.getTextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: isDark
+                              ? Colors.white.withOpacity(0.95)
+                              : const Color(0xFF1E293B),
+                          height: 1.2,
+                        ),
+                        textAlign: isRTL ? TextAlign.right : TextAlign.left,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: lang.getTextStyle(
+                          fontSize: 11.5,
+                          color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                          height: 1.2,
+                        ),
+                        textAlign: isRTL ? TextAlign.right : TextAlign.left,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
-                textAlign: isRTL ? TextAlign.right : TextAlign.left,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -5512,56 +5656,64 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       const Color(0xFFFFFDF5),
                     ],
             ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: islamicGold.withOpacity(0.6), width: 2),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: islamicGold.withOpacity(isDark ? 0.5 : 0.6),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
-                color: islamicGold.withOpacity(isDark ? 0.2 : 0.15),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
+                color: islamicGold.withOpacity(isDark ? 0.25 : 0.18),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
                 spreadRadius: -2,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.15 : 0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(21),
             child: Stack(
               children: [
-                // Simple corner decorations - using Icon instead of CustomPaint for performance
+                // Corner decorations
                 Positioned(
-                  top: 4,
-                  left: 4,
+                  top: 6,
+                  left: 6,
                   child: Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     size: 14,
-                    color: islamicGold.withOpacity(0.4),
+                    color: islamicGold.withOpacity(0.35),
                   ),
                 ),
                 Positioned(
-                  top: 4,
-                  right: 4,
+                  top: 6,
+                  right: 6,
                   child: Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     size: 14,
-                    color: islamicGold.withOpacity(0.4),
+                    color: islamicGold.withOpacity(0.35),
                   ),
                 ),
                 Positioned(
-                  bottom: 4,
-                  left: 4,
+                  bottom: 6,
+                  left: 6,
                   child: Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     size: 14,
-                    color: islamicGold.withOpacity(0.4),
+                    color: islamicGold.withOpacity(0.35),
                   ),
                 ),
                 Positioned(
-                  bottom: 4,
-                  right: 4,
+                  bottom: 6,
+                  right: 6,
                   child: Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     size: 14,
-                    color: islamicGold.withOpacity(0.4),
+                    color: islamicGold.withOpacity(0.35),
                   ),
                 ),
                 // Content

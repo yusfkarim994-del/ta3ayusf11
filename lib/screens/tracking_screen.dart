@@ -147,27 +147,30 @@ class _TrackingScreenState extends State<TrackingScreen>
             : 'A clear map of your progress';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0F766E).withOpacity(0.10),
-                  blurRadius: 18,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
-                color: isDark ? Colors.white : Colors.black87,
-                size: 20,
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                size: 22,
               ),
             ),
           ),
@@ -179,9 +182,9 @@ class _TrackingScreenState extends State<TrackingScreen>
                 Text(
                   title,
                   style: lang.getTextStyle(
-                    fontSize: 29,
+                    fontSize: 26,
                     fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF12312E),
+                    color: isDark ? Colors.white : const Color(0xFF064E3B),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -191,8 +194,8 @@ class _TrackingScreenState extends State<TrackingScreen>
                   overflow: TextOverflow.ellipsis,
                   style: lang.getTextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white60 : const Color(0xFF5B756F),
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white54 : const Color(0xFF059669),
                   ),
                 ),
               ],
@@ -384,33 +387,38 @@ class _TrackingScreenState extends State<TrackingScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: isDark
-              ? [color.withOpacity(0.22), Colors.white.withOpacity(0.05)]
-              : [Colors.white, color.withOpacity(0.08)],
+        color: isDark ? const Color(0xFF102028) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDark
+              ? color.withOpacity(0.15)
+              : color.withOpacity(0.18),
         ),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: color.withOpacity(0.28), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.12),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: color.withOpacity(isDark ? 0.08 : 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            width: 42,
-            height: 42,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.14),
-              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  color.withOpacity(isDark ? 0.25 : 0.15),
+                  color.withOpacity(isDark ? 0.1 : 0.06),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: color, size: 24),
+            child: Icon(icon, color: color, size: 22),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -421,7 +429,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                 Text(
                   count.toString(),
                   style: lang.getTextStyle(
-                    fontSize: 24,
+                    fontSize: 22,
                     fontWeight: FontWeight.w900,
                     color: color,
                   ),
@@ -431,7 +439,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                   style: lang.getTextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white70 : const Color(0xFF526D68),
+                    color: isDark ? Colors.white54 : const Color(0xFF64748B),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -510,17 +518,20 @@ class _TrackingScreenState extends State<TrackingScreen>
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: isDark
-                ? Colors.white.withOpacity(0.07)
+                ? const Color(0xFF102028)
                 : Colors.white.withOpacity(0.95),
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(26),
             border: Border.all(
-                color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+              color: isDark
+                  ? Colors.white.withOpacity(0.06)
+                  : const Color(0xFFD1FAE5),
+            ),
             boxShadow: [
               BoxShadow(
                 color:
-                    const Color(0xFF0F766E).withOpacity(isDark ? 0.08 : 0.10),
-                blurRadius: 24,
-                offset: const Offset(0, 12),
+                    const Color(0xFF059669).withOpacity(isDark ? 0.06 : 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
             ],
           ),

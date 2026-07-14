@@ -32,7 +32,6 @@ class _JournalScreenState extends State<JournalScreen>
     );
     _animationController.forward();
 
-    // Load journal entries
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<JournalService>(context, listen: false).loadEntries();
     });
@@ -97,7 +96,6 @@ class _JournalScreenState extends State<JournalScreen>
     final lang = Provider.of<LanguageService>(context);
     final isDark = lang.isDarkMode;
 
-    // Localized strings
     String title,
         writeHint,
         saveText,
@@ -150,18 +148,18 @@ class _JournalScreenState extends State<JournalScreen>
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: isDark
                   ? [
                       const Color(0xFF071A22),
-                      const Color(0xFF102B35),
-                      const Color(0xFF081216)
+                      const Color(0xFF0E232D),
+                      const Color(0xFF081216),
                     ]
                   : [
-                      const Color(0xFFFFFBF4),
-                      const Color(0xFFF2FFFC),
-                      const Color(0xFFEAF5FF)
+                      const Color(0xFFF8FDF9),
+                      const Color(0xFFF1F9F6),
+                      const Color(0xFFF5FAFE),
                     ],
             ),
           ),
@@ -197,27 +195,30 @@ class _JournalScreenState extends State<JournalScreen>
             : 'A calm space for your thoughts';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          // Back button
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0F766E).withOpacity(0.10),
-                  blurRadius: 18,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
-                color: isDark ? Colors.white : Colors.black87,
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                size: 22,
               ),
             ),
           ),
@@ -229,9 +230,9 @@ class _JournalScreenState extends State<JournalScreen>
                 Text(
                   title,
                   style: lang.getTextStyle(
-                    fontSize: 29,
+                    fontSize: 26,
                     fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF172A2F),
+                    color: isDark ? Colors.white : const Color(0xFF064E3B),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -241,28 +242,35 @@ class _JournalScreenState extends State<JournalScreen>
                   overflow: TextOverflow.ellipsis,
                   style: lang.getTextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white60 : const Color(0xFF607478),
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white54 : const Color(0xFF059669),
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.10) : Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFF0D9488).withOpacity(0.12),
-                  blurRadius: 18,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () => _showMoodStats(lang, isDark),
-              icon: const Icon(Icons.insights_rounded, color: Colors.teal),
+          GestureDetector(
+            onTap: () => _showMoodStats(lang, isDark),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: const Color(0xFF059669).withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                Icons.insights_rounded,
+                color: const Color(0xFF059669),
+                size: 22,
+              ),
             ),
           ),
         ],
@@ -278,12 +286,12 @@ class _JournalScreenState extends State<JournalScreen>
         final total = entries.length;
         final latestMood =
             entries.isNotEmpty ? entries.first.mood : JournalMood.neutral;
-        final title = lang.currentLanguage == AppLanguage.arabic
+        final heroTitle = lang.currentLanguage == AppLanguage.arabic
             ? 'اكتب لتفهم نفسك لا لتحاكمها'
             : lang.currentLanguage == AppLanguage.kurdish
                 ? 'بنووسە بۆ تێگەیشتن لە خۆت، نەک دادگاییکردن'
                 : 'Write to understand yourself';
-        final subtitle = total == 0
+        final heroSubtitle = total == 0
             ? (lang.currentLanguage == AppLanguage.arabic
                 ? 'ابدأ بأول سطر اليوم'
                 : lang.currentLanguage == AppLanguage.kurdish
@@ -299,35 +307,39 @@ class _JournalScreenState extends State<JournalScreen>
           margin: const EdgeInsets.fromLTRB(20, 4, 20, 14),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(26),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isDark
-                  ? [const Color(0xFF0F766E), const Color(0xFF1E293B)]
-                  : [const Color(0xFF0D9488), const Color(0xFF38BDF8)],
+                  ? [const Color(0xFF0F766E).withOpacity(0.85), const Color(0xFF1E293B)]
+                  : [
+                      const Color(0xFF059669),
+                      const Color(0xFF10B981),
+                    ],
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0D9488).withOpacity(0.25),
+                color: const Color(0xFF059669).withOpacity(0.3),
                 blurRadius: 28,
-                offset: const Offset(0, 16),
+                offset: const Offset(0, 14),
               ),
             ],
           ),
           child: Row(
             children: [
               Container(
-                width: 68,
-                height: 68,
+                width: 62,
+                height: 62,
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.18),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.white.withOpacity(0.24)),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
                 ),
                 child: Center(
-                    child: Text(latestMood.emoji,
-                        style: const TextStyle(fontSize: 34))),
+                  child: Text(latestMood.emoji,
+                      style: const TextStyle(fontSize: 32)),
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -335,29 +347,29 @@ class _JournalScreenState extends State<JournalScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      todayText,
+                      todayText.toUpperCase(),
                       style: lang.getTextStyle(
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: FontWeight.w800,
-                        color: Colors.white.withOpacity(0.75),
-                      ),
+                        color: Colors.white.withOpacity(0.65),
+                      ).copyWith(letterSpacing: 1.2),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      title,
+                      heroTitle,
                       style: lang.getTextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 5),
                     Text(
-                      subtitle,
+                      heroSubtitle,
                       style: lang.getTextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white.withOpacity(0.78),
+                        color: Colors.white.withOpacity(0.75),
                       ),
                     ),
                   ],
@@ -380,11 +392,11 @@ class _JournalScreenState extends State<JournalScreen>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
-          colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
+          colors: [Color(0xFF059669), Color(0xFF10B981)],
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0D9488).withOpacity(0.4),
+            color: const Color(0xFF059669).withOpacity(0.4),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -394,11 +406,14 @@ class _JournalScreenState extends State<JournalScreen>
         onPressed: _startWriting,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        icon: const Icon(Icons.edit_rounded, color: Colors.white),
+        icon: const Icon(Icons.edit_rounded, color: Colors.white, size: 22),
         label: Text(
           label,
           style: lang.getTextStyle(
-              color: Colors.white, fontWeight: FontWeight.w800),
+            color: Colors.white,
+            fontWeight: FontWeight.w800,
+            fontSize: 15,
+          ),
         ),
       ),
     );
@@ -411,76 +426,71 @@ class _JournalScreenState extends State<JournalScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Mood selector
           _buildMoodSelector(lang, isDark, languageCode),
           const SizedBox(height: 24),
           // Writing area
           Container(
             decoration: BoxDecoration(
               color: isDark
-                  ? Colors.white.withOpacity(0.07)
-                  : Colors.white.withOpacity(0.94),
-              borderRadius: BorderRadius.circular(30),
+                  ? Colors.white.withOpacity(0.06)
+                  : Colors.white.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(26),
               border: Border.all(
-                color: _selectedMood.color.withOpacity(0.3),
-                width: 2,
+                color: _selectedMood.color.withOpacity(isDark ? 0.25 : 0.2),
+                width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: _selectedMood.color.withOpacity(0.1),
-                  blurRadius: 34,
-                  offset: const Offset(0, 16),
+                  color: _selectedMood.color.withOpacity(isDark ? 0.08 : 0.06),
+                  blurRadius: 24,
+                  offset: const Offset(0, 12),
                 ),
               ],
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(28),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  constraints: const BoxConstraints(minHeight: 340),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 18,
-                        right: lang.isRTL ? null : 18,
-                        left: lang.isRTL ? 18 : null,
-                        child: Icon(Icons.format_quote_rounded,
-                            size: 44,
-                            color: _selectedMood.color.withOpacity(0.14)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(22),
-                        child: TextField(
-                          controller: _contentController,
-                          maxLines: null,
-                          minLines: 12,
-                          style: lang.getTextStyle(
-                            fontSize: 16,
-                            height: 1.9,
-                            color:
-                                isDark ? Colors.white : const Color(0xFF263238),
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: isDark
-                                ? const Color(0xFF122129).withOpacity(0.70)
-                                : const Color(0xFFF8FAFC),
-                            hintText: writeHint,
-                            hintStyle: lang.getTextStyle(
-                              fontSize: 14,
-                              color: isDark
-                                  ? Colors.white38
-                                  : const Color(0xFF78909C),
-                            ),
-                            contentPadding: const EdgeInsets.all(20),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
+              borderRadius: BorderRadius.circular(25),
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: 16,
+                    right: lang.isRTL ? null : 18,
+                    left: lang.isRTL ? 18 : null,
+                    child: Icon(
+                      Icons.format_quote_rounded,
+                      size: 40,
+                      color: _selectedMood.color.withOpacity(0.1),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: TextField(
+                      controller: _contentController,
+                      maxLines: null,
+                      minLines: 12,
+                      style: lang.getTextStyle(
+                        fontSize: 16,
+                        height: 1.85,
+                        color:
+                            isDark ? Colors.white : const Color(0xFF1E293B),
+                      ),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: isDark
+                            ? const Color(0xFF0D1B21).withOpacity(0.6)
+                            : const Color(0xFFF8FAFC),
+                        hintText: writeHint,
+                        hintStyle: lang.getTextStyle(
+                          fontSize: 14,
+                          color: isDark
+                              ? Colors.white30
+                              : const Color(0xFF94A3B8),
+                        ),
+                        contentPadding: const EdgeInsets.all(18),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -489,57 +499,60 @@ class _JournalScreenState extends State<JournalScreen>
           Row(
             children: [
               Expanded(
-                child: TextButton(
-                  onPressed: _cancelWriting,
-                  style: TextButton.styleFrom(
+                child: GestureDetector(
+                  onTap: _cancelWriting,
+                  child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withOpacity(0.06)
+                          : const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    cancelText,
-                    style: lang.getTextStyle(
-                      fontSize: 16,
-                      color: isDark ? Colors.white60 : Colors.black54,
+                    child: Center(
+                      child: Text(
+                        cancelText,
+                        style: lang.getTextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white60 : const Color(0xFF64748B),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: [
-                        _selectedMood.color,
-                        _selectedMood.color.withOpacity(0.7)
+                child: GestureDetector(
+                  onTap: _saveEntry,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          _selectedMood.color,
+                          _selectedMood.color.withOpacity(0.75),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _selectedMood.color.withOpacity(0.3),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
                       ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: _selectedMood.color.withOpacity(0.3),
-                        blurRadius: 18,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: _saveEntry,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.save_rounded, color: Colors.white),
+                        const Icon(Icons.save_rounded,
+                            color: Colors.white, size: 22),
                         const SizedBox(width: 8),
                         Text(
                           saveText,
@@ -573,14 +586,14 @@ class _JournalScreenState extends State<JournalScreen>
                   ? 'ئێستا چۆن هەستت پێ دەکەیت؟'
                   : 'How are you feeling?',
           style: lang.getTextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w900,
-            color: isDark ? Colors.white : const Color(0xFF172A2F),
+            fontSize: 17,
+            fontWeight: FontWeight.w800,
+            color: isDark ? Colors.white : const Color(0xFF064E3B),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
         SizedBox(
-          height: 100,
+          height: 96,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: JournalMood.values.length,
@@ -590,35 +603,41 @@ class _JournalScreenState extends State<JournalScreen>
               return GestureDetector(
                 onTap: () => setState(() => _selectedMood = mood),
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  margin: const EdgeInsets.only(right: 12),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  margin: const EdgeInsets.only(right: 10),
+                  width: isSelected ? 82 : 72,
                   decoration: BoxDecoration(
                     gradient: isSelected
-                        ? LinearGradient(colors: [
-                            mood.color.withOpacity(0.24),
-                            mood.color.withOpacity(0.08)
-                          ])
+                        ? LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              mood.color.withOpacity(0.2),
+                              mood.color.withOpacity(0.08),
+                            ],
+                          )
                         : null,
                     color: isSelected
                         ? null
                         : isDark
-                            ? Colors.white.withOpacity(0.07)
-                            : Colors.white.withOpacity(0.94),
-                    borderRadius: BorderRadius.circular(24),
+                            ? Colors.white.withOpacity(0.06)
+                            : Colors.white,
+                    borderRadius: BorderRadius.circular(22),
                     border: Border.all(
                       color: isSelected
                           ? mood.color
-                          : (isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
-                      width: 2,
+                          : (isDark
+                              ? Colors.white.withOpacity(0.08)
+                              : const Color(0xFFE2E8F0)),
+                      width: isSelected ? 2 : 1,
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: mood.color.withOpacity(0.3),
-                              blurRadius: 16,
-                              offset: const Offset(0, 8),
+                              color: mood.color.withOpacity(0.25),
+                              blurRadius: 14,
+                              offset: const Offset(0, 6),
                             ),
                           ]
                         : null,
@@ -628,18 +647,20 @@ class _JournalScreenState extends State<JournalScreen>
                     children: [
                       Text(
                         mood.emoji,
-                        style: TextStyle(fontSize: isSelected ? 32 : 28),
+                        style: TextStyle(
+                          fontSize: isSelected ? 30 : 26,
+                        ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 5),
                       Text(
                         mood.getName(languageCode),
                         style: lang.getTextStyle(
-                          fontSize: 11,
+                          fontSize: 10.5,
                           fontWeight:
-                              isSelected ? FontWeight.w900 : FontWeight.w700,
+                              isSelected ? FontWeight.w800 : FontWeight.w600,
                           color: isSelected
                               ? mood.color
-                              : (isDark ? Colors.white60 : Colors.black54),
+                              : (isDark ? Colors.white54 : const Color(0xFF94A3B8)),
                         ),
                       ),
                     ],
@@ -665,31 +686,36 @@ class _JournalScreenState extends State<JournalScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(34),
+                  padding: const EdgeInsets.all(30),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: isDark
                           ? [
-                              Colors.white.withOpacity(0.11),
-                              Colors.white.withOpacity(0.03)
+                              Colors.white.withOpacity(0.08),
+                              Colors.white.withOpacity(0.03),
                             ]
-                          : [Colors.white, const Color(0xFFE0F7FA)],
+                          : [
+                              Colors.white,
+                              const Color(0xFFECFDF5),
+                            ],
                     ),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF0D9488).withOpacity(0.16),
-                        blurRadius: 34,
-                        offset: const Offset(0, 16),
+                        color: const Color(0xFF059669).withOpacity(0.12),
+                        blurRadius: 30,
+                        offset: const Offset(0, 14),
                       ),
                     ],
                   ),
                   child: Icon(
                     Icons.menu_book_rounded,
-                    size: 60,
-                    color: isDark ? Colors.white38 : const Color(0xFF0D9488),
+                    size: 56,
+                    color: isDark
+                        ? Colors.white30
+                        : const Color(0xFF059669),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -698,8 +724,8 @@ class _JournalScreenState extends State<JournalScreen>
                   textAlign: TextAlign.center,
                   style: lang.getTextStyle(
                     fontSize: 14,
-                    color: isDark ? Colors.white54 : Colors.black45,
-                    height: 1.6,
+                    color: isDark ? Colors.white.withOpacity(0.5) : const Color(0xFF94A3B8),
+                    height: 1.7,
                   ),
                 ),
               ],
@@ -767,34 +793,50 @@ class _JournalScreenState extends State<JournalScreen>
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withOpacity(0.07)
-            : Colors.white.withOpacity(0.94),
-        borderRadius: BorderRadius.circular(26),
+            ? Colors.white.withOpacity(0.06)
+            : Colors.white.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
-            color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+          color: isDark
+              ? Colors.white.withOpacity(0.07)
+              : const Color(0xFFD1FAE5),
+        ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F766E).withOpacity(isDark ? 0.08 : 0.10),
-            blurRadius: 22,
-            offset: const Offset(0, 10),
+            color: const Color(0xFF059669).withOpacity(isDark ? 0.06 : 0.08),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            width: 54,
-            height: 54,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFF0D9488), Color(0xFF38BDF8)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF059669), Color(0xFF10B981)],
               ),
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF059669).withOpacity(0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            child: const Icon(Icons.local_library_rounded, color: Colors.white),
+            child: const Icon(
+              Icons.local_library_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -804,18 +846,18 @@ class _JournalScreenState extends State<JournalScreen>
                 Text(
                   title,
                   style: lang.getTextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF172A2F),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: isDark ? Colors.white : const Color(0xFF064E3B),
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
                 Text(
                   subtitle,
                   style: lang.getTextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white60 : const Color(0xFF607478),
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white54 : const Color(0xFF059669),
                   ),
                 ),
               ],
@@ -838,32 +880,50 @@ class _JournalScreenState extends State<JournalScreen>
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withOpacity(0.07)
-            : Colors.white.withOpacity(0.92),
-        borderRadius: BorderRadius.circular(22),
+            ? Colors.white.withOpacity(0.06)
+            : Colors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-            color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+          color: isDark
+              ? Colors.white.withOpacity(0.07)
+              : const Color(0xFFD1FAE5),
+        ),
       ),
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
+            width: 42,
+            height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFF38BDF8).withOpacity(0.15),
-              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? [
+                        const Color(0xFF0EA5E9).withOpacity(0.2),
+                        const Color(0xFF0EA5E9).withOpacity(0.08),
+                      ]
+                    : [
+                        const Color(0xFF0EA5E9).withOpacity(0.12),
+                        const Color(0xFF0EA5E9).withOpacity(0.05),
+                      ],
+              ),
+              borderRadius: BorderRadius.circular(14),
             ),
-            child:
-                const Icon(Icons.lightbulb_rounded, color: Color(0xFF0284C7)),
+            child: const Icon(
+              Icons.lightbulb_rounded,
+              color: Color(0xFF0EA5E9),
+              size: 22,
+            ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           Expanded(
             child: Text(
               text,
               style: lang.getTextStyle(
                 fontSize: 13,
-                fontWeight: FontWeight.w800,
-                color: isDark ? Colors.white70 : const Color(0xFF31524D),
+                fontWeight: FontWeight.w700,
+                color: isDark ? Colors.white70 : const Color(0xFF0F766E),
               ),
             ),
           ),
@@ -884,180 +944,215 @@ class _JournalScreenState extends State<JournalScreen>
           _showFullEntry(lang, isDark, entry, languageCode, journalService),
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark
-                ? [
-                    entry.mood.color.withOpacity(0.18),
-                    Colors.white.withOpacity(0.06)
-                  ]
-                : [Colors.white, entry.mood.color.withOpacity(0.10)],
-          ),
-          borderRadius: BorderRadius.circular(24),
+          color: isDark ? const Color(0xFF102028) : Colors.white,
+          borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: entry.mood.color.withOpacity(0.28),
-            width: 1.5,
+            color: isDark
+                ? entry.mood.color.withOpacity(0.15)
+                : entry.mood.color.withOpacity(0.2),
+            width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: entry.mood.color.withOpacity(0.12),
-              blurRadius: 24,
-              offset: const Offset(0, 12),
+              color: entry.mood.color.withOpacity(isDark ? 0.08 : 0.06),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: entry.mood.color.withOpacity(0.16),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Center(
-                          child: Text(entry.mood.emoji,
-                              style: const TextStyle(fontSize: 23)),
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        width: 8,
-                        height: 52,
-                        decoration: BoxDecoration(
-                          color: entry.mood.color,
-                          borderRadius: BorderRadius.circular(999),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    journalService.formatDate(entry.createdAt, languageCode),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: lang.getTextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w900,
-                      color: entry.mood.color,
+          borderRadius: BorderRadius.circular(22),
+          child: Stack(
+            children: [
+              // Top accent line
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        entry.mood.color,
+                        entry.mood.color.withOpacity(0.4),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    entry.mood.getName(languageCode),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: lang.getTextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                      color: isDark ? Colors.white70 : const Color(0xFF526D68),
+                ),
+              ),
+              // Content
+              Padding(
+                padding: const EdgeInsets.fromLTRB(14, 16, 14, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                entry.mood.color.withOpacity(0.18),
+                                entry.mood.color.withOpacity(0.08),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Center(
+                            child: Text(entry.mood.emoji,
+                                style: const TextStyle(fontSize: 22)),
+                          ),
+                        ),
+                        const Spacer(),
+                        PopupMenuButton<String>(
+                          padding: EdgeInsets.zero,
+                          icon: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Colors.white.withOpacity(0.06)
+                                  : const Color(0xFFF1F5F9),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(
+                              Icons.more_horiz_rounded,
+                              size: 18,
+                              color: isDark ? Colors.white38 : const Color(0xFF94A3B8),
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit_rounded,
+                                      size: 18,
+                                      color: isDark ? Colors.white70 : Colors.black54),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    lang.currentLanguage == AppLanguage.arabic
+                                        ? 'تعديل'
+                                        : lang.currentLanguage ==
+                                                AppLanguage.kurdish
+                                            ? 'دەستکاری'
+                                            : 'Edit',
+                                    style: TextStyle(
+                                      color: isDark ? Colors.white70 : Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.delete_rounded,
+                                      size: 18, color: Colors.red),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    lang.currentLanguage == AppLanguage.arabic
+                                        ? 'حذف'
+                                        : lang.currentLanguage ==
+                                                AppLanguage.kurdish
+                                            ? 'سڕینەوە'
+                                            : 'Delete',
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                          onSelected: (value) {
+                            if (value == 'edit') {
+                              _startEditing(entry);
+                            } else if (value == 'delete') {
+                              _showDeleteConfirmation(
+                                  entry.id, deleteConfirmText, lang, isDark);
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 14),
-                  Expanded(
-                    child: Text(
-                      entry.content,
-                      maxLines: 7,
+                    const SizedBox(height: 12),
+                    Text(
+                      journalService.formatDate(entry.createdAt, languageCode),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: lang.getTextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: entry.mood.color.withOpacity(0.8),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      entry.mood.getName(languageCode),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: lang.getTextStyle(
                         fontSize: 13,
-                        height: 1.55,
-                        fontWeight: FontWeight.w600,
-                        color: isDark
-                            ? Colors.white.withOpacity(0.84)
-                            : const Color(0xFF263238),
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white70 : const Color(0xFF475569),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(Icons.menu_book_rounded,
-                          size: 16, color: entry.mood.color),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          lang.currentLanguage == AppLanguage.arabic
-                              ? 'افتح اليومية'
-                              : lang.currentLanguage == AppLanguage.kurdish
-                                  ? 'ڕۆژنامەکە بکەرەوە'
-                                  : 'Open entry',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: lang.getTextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w900,
-                            color: entry.mood.color,
-                          ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: Text(
+                        entry.content,
+                        maxLines: 7,
+                        overflow: TextOverflow.ellipsis,
+                        style: lang.getTextStyle(
+                          fontSize: 13,
+                          height: 1.5,
+                          fontWeight: FontWeight.w500,
+                          color: isDark
+                              ? Colors.white.withOpacity(0.75)
+                              : const Color(0xFF334155),
                         ),
                       ),
-                      PopupMenuButton<String>(
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: isDark ? Colors.white38 : Colors.black38,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 13,
+                          color: entry.mood.color.withOpacity(0.7),
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: Row(
-                              children: [
-                                const Icon(Icons.edit_rounded, size: 20),
-                                const SizedBox(width: 8),
-                                Text(lang.currentLanguage == AppLanguage.arabic
-                                    ? 'تعديل'
-                                    : lang.currentLanguage ==
-                                            AppLanguage.kurdish
-                                        ? 'دەستکاری'
-                                        : 'Edit'),
-                              ],
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            lang.currentLanguage == AppLanguage.arabic
+                                ? 'افتح اليومية'
+                                : lang.currentLanguage == AppLanguage.kurdish
+                                    ? 'ڕۆژنامەکە بکەرەوە'
+                                    : 'Open entry',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: lang.getTextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w700,
+                              color: entry.mood.color.withOpacity(0.8),
                             ),
                           ),
-                          PopupMenuItem(
-                            value: 'delete',
-                            child: Row(
-                              children: [
-                                const Icon(Icons.delete_rounded,
-                                    size: 20, color: Colors.red),
-                                const SizedBox(width: 8),
-                                Text(
-                                  lang.currentLanguage == AppLanguage.arabic
-                                      ? 'حذف'
-                                      : lang.currentLanguage ==
-                                              AppLanguage.kurdish
-                                          ? 'سڕینەوە'
-                                          : 'Delete',
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                        onSelected: (value) {
-                          if (value == 'edit') {
-                            _startEditing(entry);
-                          } else if (value == 'delete') {
-                            _showDeleteConfirmation(
-                                entry.id, deleteConfirmText, lang, isDark);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -1077,25 +1172,26 @@ class _JournalScreenState extends State<JournalScreen>
         builder: (context, scrollController) => Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: isDark
-                  ? [const Color(0xFF071A22), const Color(0xFF102B35)]
-                  : [Colors.white, const Color(0xFFF2FFFC)],
+                  ? [const Color(0xFF071A22), const Color(0xFF0E232D)]
+                  : [Colors.white, const Color(0xFFF0FDF9)],
             ),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           ),
           child: Column(
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 12),
-                width: 48,
-                height: 5,
+                width: 44,
+                height: 4,
                 decoration: BoxDecoration(
                   color: isDark ? Colors.white24 : Colors.grey[300],
                   borderRadius: BorderRadius.circular(999),
                 ),
               ),
+              // Header card
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 18, 20, 14),
                 padding: const EdgeInsets.all(18),
@@ -1105,32 +1201,34 @@ class _JournalScreenState extends State<JournalScreen>
                     end: Alignment.bottomRight,
                     colors: [
                       entry.mood.color,
-                      entry.mood.color.withOpacity(0.68)
+                      entry.mood.color.withOpacity(0.7),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: entry.mood.color.withOpacity(0.24),
-                      blurRadius: 26,
-                      offset: const Offset(0, 14),
+                      color: entry.mood.color.withOpacity(0.3),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
                     ),
                   ],
                 ),
                 child: Row(
                   children: [
                     Container(
-                      width: 62,
-                      height: 62,
+                      width: 58,
+                      height: 58,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.20),
-                        borderRadius: BorderRadius.circular(22),
-                        border:
-                            Border.all(color: Colors.white.withOpacity(0.25)),
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.2),
+                        ),
                       ),
                       child: Center(
-                          child: Text(entry.mood.emoji,
-                              style: const TextStyle(fontSize: 32))),
+                        child: Text(entry.mood.emoji,
+                            style: const TextStyle(fontSize: 30)),
+                      ),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -1141,30 +1239,41 @@ class _JournalScreenState extends State<JournalScreen>
                             entry.mood.getName(languageCode),
                             style: lang.getTextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.w900,
+                              fontWeight: FontWeight.w800,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 4),
                           Text(
                             '${journalService.formatDate(entry.createdAt, languageCode)} • ${journalService.formatTime(entry.createdAt)}',
                             style: lang.getTextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white.withOpacity(0.78),
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white.withOpacity(0.75),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon:
-                          const Icon(Icons.close_rounded, color: Colors.white),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
+              // Content
               Expanded(
                 child: SingleChildScrollView(
                   controller: scrollController,
@@ -1174,23 +1283,24 @@ class _JournalScreenState extends State<JournalScreen>
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: isDark
-                          ? Colors.white.withOpacity(0.07)
-                          : Colors.white.withOpacity(0.96),
-                      borderRadius: BorderRadius.circular(30),
+                          ? Colors.white.withOpacity(0.06)
+                          : Colors.white.withOpacity(0.95),
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                          color: isDark
-                              ? Colors.white10
-                              : const Color(0xFFE0F2EF)),
+                        color: isDark
+                            ? Colors.white.withOpacity(0.07)
+                            : const Color(0xFFD1FAE5),
+                      ),
                     ),
                     child: Text(
                       entry.content,
                       style: lang.getTextStyle(
                         fontSize: 17,
-                        height: 1.95,
-                        fontWeight: FontWeight.w600,
+                        height: 1.9,
+                        fontWeight: FontWeight.w500,
                         color: isDark
-                            ? Colors.white.withOpacity(0.9)
-                            : const Color(0xFF263238),
+                            ? Colors.white.withOpacity(0.88)
+                            : const Color(0xFF1E293B),
                       ),
                     ),
                   ),
@@ -1208,8 +1318,8 @@ class _JournalScreenState extends State<JournalScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDark ? const Color(0xFF1A1A2E) : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: isDark ? const Color(0xFF102028) : Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
         title: Text(
           confirmText,
           style: lang.getTextStyle(
@@ -1227,7 +1337,9 @@ class _JournalScreenState extends State<JournalScreen>
                   : lang.currentLanguage == AppLanguage.kurdish
                       ? 'پاشگەزبوونەوە'
                       : 'Cancel',
-              style: TextStyle(color: isDark ? Colors.white60 : Colors.black54),
+              style: TextStyle(
+                color: isDark ? Colors.white60 : const Color(0xFF64748B),
+              ),
             ),
           ),
           ElevatedButton(
@@ -1236,9 +1348,10 @@ class _JournalScreenState extends State<JournalScreen>
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: const Color(0xFFEF4444),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(14),
+              ),
             ),
             child: Text(
               lang.currentLanguage == AppLanguage.arabic
@@ -1278,15 +1391,14 @@ class _JournalScreenState extends State<JournalScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isDark
-                ? [const Color(0xFF1A1A2E), const Color(0xFF16213E)]
-                : [Colors.white, const Color(0xFFF8F9FF)],
+                ? [const Color(0xFF102028), const Color(0xFF0E1F28)]
+                : [Colors.white, const Color(0xFFF0FDF9)],
           ),
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Handle
             Container(
               width: 40,
               height: 4,
@@ -1296,8 +1408,6 @@ class _JournalScreenState extends State<JournalScreen>
               ),
             ),
             const SizedBox(height: 20),
-
-            // Header with icon
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -1305,13 +1415,13 @@ class _JournalScreenState extends State<JournalScreen>
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF0D9488), Color(0xFF0F766E)],
+                      colors: [Color(0xFF059669), Color(0xFF10B981)],
                     ),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF0D9488).withOpacity(0.3),
-                        blurRadius: 15,
+                        color: const Color(0xFF059669).withOpacity(0.3),
+                        blurRadius: 14,
                         offset: const Offset(0, 5),
                       ),
                     ],
@@ -1335,8 +1445,6 @@ class _JournalScreenState extends State<JournalScreen>
               ],
             ),
             const SizedBox(height: 8),
-
-            // Total entries count
             Text(
               lang.currentLanguage == AppLanguage.arabic
                   ? 'مجموع: $totalEntries يومية'
@@ -1349,7 +1457,6 @@ class _JournalScreenState extends State<JournalScreen>
               ),
             ),
             const SizedBox(height: 24),
-
             if (stats.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
@@ -1386,8 +1493,7 @@ class _JournalScreenState extends State<JournalScreen>
 
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 16, bottom: 120),
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: isDark
                               ? Colors.white.withOpacity(0.05)
@@ -1395,15 +1501,16 @@ class _JournalScreenState extends State<JournalScreen>
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: count > 0
-                                ? mood.color.withOpacity(0.3)
-                                : Colors.transparent,
-                            width: 1,
+                                ? mood.color.withOpacity(0.25)
+                                : (isDark
+                                    ? Colors.white.withOpacity(0.06)
+                                    : const Color(0xFFE2E8F0)),
                           ),
                           boxShadow: count > 0
                               ? [
                                   BoxShadow(
-                                    color: mood.color.withOpacity(0.1),
-                                    blurRadius: 15,
+                                    color: mood.color.withOpacity(0.08),
+                                    blurRadius: 14,
                                     offset: const Offset(0, 5),
                                   ),
                                 ]
@@ -1411,21 +1518,23 @@ class _JournalScreenState extends State<JournalScreen>
                         ),
                         child: Row(
                           children: [
-                            // Emoji icon
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: mood.color.withOpacity(0.15),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    mood.color.withOpacity(0.18),
+                                    mood.color.withOpacity(0.06),
+                                  ],
+                                ),
                                 borderRadius: BorderRadius.circular(14),
                               ),
-                              child: Text(
-                                mood.emoji,
-                                style: const TextStyle(fontSize: 28),
-                              ),
+                              child: Text(mood.emoji,
+                                  style: const TextStyle(fontSize: 26)),
                             ),
                             const SizedBox(width: 16),
-
-                            // Name and progress bar
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1437,8 +1546,8 @@ class _JournalScreenState extends State<JournalScreen>
                                       Text(
                                         mood.getName(languageCode),
                                         style: lang.getTextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
                                           color: count > 0
                                               ? (isDark
                                                   ? Colors.white
@@ -1453,14 +1562,14 @@ class _JournalScreenState extends State<JournalScreen>
                                             horizontal: 10, vertical: 4),
                                         decoration: BoxDecoration(
                                           color: mood.color.withOpacity(
-                                              count > 0 ? 0.2 : 0.1),
+                                              count > 0 ? 0.18 : 0.08),
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
                                         child: Text(
                                           '$count',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.bold,
                                             color: count > 0
                                                 ? mood.color
@@ -1473,20 +1582,20 @@ class _JournalScreenState extends State<JournalScreen>
                                     ],
                                   ),
                                   const SizedBox(height: 10),
-                                  // Progress bar
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(6),
                                     child: LinearProgressIndicator(
                                       value: percentage,
                                       backgroundColor: isDark
-                                          ? Colors.white.withOpacity(0.1)
-                                          : Colors.grey.withOpacity(0.2),
-                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          ? Colors.white.withOpacity(0.08)
+                                          : const Color(0xFFE2E8F0),
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
                                         count > 0
                                             ? mood.color
                                             : Colors.grey.withOpacity(0.3),
                                       ),
-                                      minHeight: 8,
+                                      minHeight: 7,
                                     ),
                                   ),
                                   if (count > 0) ...[
@@ -1495,9 +1604,10 @@ class _JournalScreenState extends State<JournalScreen>
                                       '${(percentage * 100).toStringAsFixed(1)}%',
                                       style: TextStyle(
                                         fontSize: 11,
+                                        fontWeight: FontWeight.w600,
                                         color: isDark
                                             ? Colors.white38
-                                            : Colors.black38,
+                                            : const Color(0xFF94A3B8),
                                       ),
                                     ),
                                   ],

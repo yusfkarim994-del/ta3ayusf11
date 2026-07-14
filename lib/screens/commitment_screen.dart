@@ -305,31 +305,30 @@ class _CommitmentScreenState extends State<CommitmentScreen>
   Widget _buildModernHeader(
       LanguageService lang, bool isDark, String title, String subtitle) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Container(
-              width: 48,
-              height: 48,
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.10) : Colors.white,
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                    color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF0F766E).withOpacity(0.10),
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
               ),
               child: Icon(
-                lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
-                color: isDark ? Colors.white : const Color(0xFF12312E),
-                size: 20,
+                lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                size: 22,
               ),
             ),
           ),
@@ -341,9 +340,9 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                 Text(
                   title,
                   style: lang.getTextStyle(
-                    fontSize: 28,
+                    fontSize: 26,
                     fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF12312E),
+                    color: isDark ? Colors.white : const Color(0xFF064E3B),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -353,29 +352,29 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                   overflow: TextOverflow.ellipsis,
                   style: lang.getTextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white60 : const Color(0xFF5B756F),
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white54 : const Color(0xFF059669),
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            width: 48,
-            height: 48,
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                  colors: [Color(0xFF0D9488), Color(0xFFF59E0B)]),
+                colors: [Color(0xFF059669), Color(0xFFF59E0B)],
+              ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0D9488).withOpacity(0.22),
-                  blurRadius: 18,
-                  offset: const Offset(0, 8),
+                  color: const Color(0xFF059669).withOpacity(0.3),
+                  blurRadius: 14,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
-            child: const Icon(Icons.verified_user_rounded, color: Colors.white),
+            child: const Icon(Icons.verified_user_rounded, color: Colors.white, size: 22),
           ),
         ],
       ),

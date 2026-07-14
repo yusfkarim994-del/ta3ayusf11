@@ -15,6 +15,8 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
     with TickerProviderStateMixin {
   late AnimationController _glowController;
   late Animation<double> _glowAnimation;
+  late AnimationController _rippleController;
+  late Animation<double> _rippleAnimation;
 
   Timer? _timer;
   int _secondsRemaining = 60;
@@ -37,6 +39,15 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
 
     _glowAnimation = Tween<double>(begin: 0.3, end: 0.7).animate(
       CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
+    );
+
+    _rippleController = AnimationController(
+      duration: const Duration(milliseconds: 3000),
+      vsync: this,
+    )..repeat(reverse: false);
+
+    _rippleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _rippleController, curve: Curves.easeOut),
     );
   }
 
@@ -109,6 +120,7 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
   void dispose() {
     _timer?.cancel();
     _glowController.dispose();
+    _rippleController.dispose();
     super.dispose();
   }
 
@@ -172,23 +184,23 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
     switch (_currentPhase) {
       case 'inhale':
         phaseText = inhaleText;
-        phaseColor = const Color(0xFF4DB6AC); // Teal
-        phaseIcon = Icons.cloud;
+        phaseColor = const Color(0xFF4DB6AC);
+        phaseIcon = Icons.air_rounded;
         break;
       case 'hold':
         phaseText = holdText;
-        phaseColor = const Color(0xFFFFB74D); // Amber
-        phaseIcon = Icons.lens;
+        phaseColor = const Color(0xFFFFB74D);
+        phaseIcon = Icons.pause_circle_rounded;
         break;
       case 'exhale':
         phaseText = exhaleText;
-        phaseColor = const Color(0xFF81C784); // Green
-        phaseIcon = Icons.opacity;
+        phaseColor = const Color(0xFF81C784);
+        phaseIcon = Icons.waves_rounded;
         break;
       default:
         phaseText = readyText;
-        phaseColor = const Color(0xFF9575CD); // Purple
-        phaseIcon = Icons.local_florist;
+        phaseColor = const Color(0xFF9575CD);
+        phaseIcon = Icons.spa_rounded;
     }
 
     return Directionality(
@@ -205,12 +217,12 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                   ? [
                       const Color(0xFF071A22),
                       const Color(0xFF0B2530),
-                      const Color(0xFF081116)
+                      const Color(0xFF081116),
                     ]
                   : [
-                      const Color(0xFFF2FFFB),
-                      const Color(0xFFF8FBFF),
-                      const Color(0xFFFFF7EC)
+                      const Color(0xFFF0FDF9),
+                      const Color(0xFFF5FFFE),
+                      const Color(0xFFECFDF5),
                     ],
             ),
           ),
@@ -219,7 +231,7 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -231,15 +243,15 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isDark
-                                ? Colors.white.withOpacity(0.1)
+                                ? Colors.white.withOpacity(0.08)
                                 : Colors.white,
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(16),
                             boxShadow: isDark
                                 ? null
                                 : [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.05),
-                                      blurRadius: 10,
+                                      color: Colors.black.withOpacity(0.06),
+                                      blurRadius: 12,
                                       offset: const Offset(0, 4),
                                     ),
                                   ],
@@ -249,6 +261,7 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                                 ? Icons.arrow_forward_rounded
                                 : Icons.arrow_back_rounded,
                             color: isDark ? Colors.white70 : Colors.grey[700],
+                            size: 22,
                           ),
                         ),
                       ),
@@ -260,21 +273,22 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                             Text(
                               title,
                               style: lang.getTextStyle(
-                                fontSize: 28,
+                                fontSize: 26,
                                 fontWeight: FontWeight.w900,
                                 color: isDark
                                     ? Colors.white
-                                    : const Color(0xFF12312E),
+                                    : const Color(0xFF064E3B),
                               ),
                             ),
+                            const SizedBox(height: 2),
                             Text(
                               subtitle,
                               style: lang.getTextStyle(
                                 fontSize: 13,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                                 color: isDark
-                                    ? Colors.white60
-                                    : const Color(0xFF607478),
+                                    ? Colors.white54
+                                    : const Color(0xFF059669),
                               ),
                             ),
                           ],
@@ -284,15 +298,19 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                   ),
                 ),
 
+                // Hero Info Card
                 _buildBreathingHero(
                   lang,
                   isDark,
                   cycleText,
                   guidanceText,
                   phaseColor,
+                  inhaleText,
+                  holdText,
+                  exhaleText,
                 ),
 
-                // Main Circle
+                // Main Breathing Circle
                 Expanded(
                   child: Center(
                     child: AnimatedBuilder(
@@ -305,60 +323,90 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
-                              // Outer glow rings
+                              // Ripple rings when running
+                              if (_isRunning) ...[
+                                AnimatedBuilder(
+                                  animation: _rippleAnimation,
+                                  builder: (context, _) {
+                                    return Opacity(
+                                      opacity: (1 - _rippleAnimation.value) * 0.3,
+                                      child: Transform.scale(
+                                        scale: 0.8 + _rippleAnimation.value * 0.6,
+                                        child: Container(
+                                          width: 320,
+                                          height: 320,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: phaseColor.withOpacity(0.4),
+                                              width: 1.5,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+
+                              // Outer glow rings when idle
                               if (!_isRunning) ...[
                                 Container(
-                                  width: 290,
-                                  height: 290,
+                                  width: 300,
+                                  height: 300,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       color: phaseColor
                                           .withOpacity(glowOpacity * 0.3),
-                                      width: 2,
+                                      width: 1.5,
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  width: 320,
-                                  height: 320,
+                                  width: 330,
+                                  height: 330,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       color: phaseColor
-                                          .withOpacity(glowOpacity * 0.15),
+                                          .withOpacity(glowOpacity * 0.12),
                                       width: 1,
                                     ),
                                   ),
                                 ),
                               ],
 
+                              // Background glow
                               Container(
-                                width: 350,
-                                height: 350,
+                                width: 360,
+                                height: 360,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   gradient: RadialGradient(
                                     colors: [
-                                      phaseColor.withOpacity(0.08),
-                                      phaseColor.withOpacity(0.03),
+                                      phaseColor.withOpacity(0.1),
+                                      phaseColor.withOpacity(0.04),
                                       Colors.transparent,
                                     ],
                                   ),
                                 ),
                               ),
+
+                              // Track circle
                               Container(
-                                width: 292,
-                                height: 292,
+                                width: 280,
+                                height: 280,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: phaseColor.withOpacity(0.18),
-                                    width: 10,
+                                    color: phaseColor.withOpacity(0.2),
+                                    width: 8,
                                   ),
                                 ),
                               ),
 
+                              // Main breathing circle
                               TweenAnimationBuilder<double>(
                                 tween: Tween<double>(end: _breathScale),
                                 duration: Duration(
@@ -376,29 +424,29 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                                   );
                                 },
                                 child: Container(
-                                  width: 230,
-                                  height: 230,
+                                  width: 220,
+                                  height: 220,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: RadialGradient(
                                       colors: [
-                                        Colors.white.withOpacity(0.98),
-                                        phaseColor.withOpacity(0.92),
-                                        phaseColor.withOpacity(0.64),
-                                        phaseColor.withOpacity(0.34),
+                                        Colors.white.withOpacity(isDark ? 0.12 : 0.98),
+                                        phaseColor.withOpacity(isDark ? 0.85 : 0.88),
+                                        phaseColor.withOpacity(isDark ? 0.55 : 0.6),
+                                        phaseColor.withOpacity(isDark ? 0.25 : 0.3),
                                       ],
-                                      stops: const [0.0, 0.34, 0.72, 1.0],
+                                      stops: const [0.0, 0.3, 0.7, 1.0],
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: phaseColor.withOpacity(0.4),
+                                        color: phaseColor.withOpacity(0.35),
                                         blurRadius: 40,
-                                        spreadRadius: 8,
+                                        spreadRadius: 6,
                                       ),
                                       BoxShadow(
-                                        color: phaseColor.withOpacity(0.2),
-                                        blurRadius: 60,
-                                        spreadRadius: 10,
+                                        color: phaseColor.withOpacity(0.15),
+                                        blurRadius: 70,
+                                        spreadRadius: 12,
                                       ),
                                     ],
                                   ),
@@ -406,8 +454,9 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                          color: Colors.white.withOpacity(0.22),
-                                          width: 2),
+                                        color: Colors.white.withOpacity(0.2),
+                                        width: 2,
+                                      ),
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
@@ -415,16 +464,28 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                                       children: [
                                         Icon(
                                           phaseIcon,
-                                          size: 58,
+                                          size: 52,
                                           color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              color: Colors.black.withOpacity(0.2),
+                                              blurRadius: 8,
+                                            ),
+                                          ],
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
                                           phaseText,
                                           style: lang.getTextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.w900,
                                             color: Colors.white,
+                                            shadows: [
+                                              Shadow(
+                                                color: Colors.black.withOpacity(0.2),
+                                                blurRadius: 6,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         const SizedBox(height: 6),
@@ -433,10 +494,10 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                                               ? '$_phaseSecondsRemaining s'
                                               : cycleText,
                                           style: lang.getTextStyle(
-                                            fontSize: 12,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.w700,
-                                            color:
-                                                Colors.white.withOpacity(0.82),
+                                            color: Colors.white
+                                                .withOpacity(0.8),
                                           ),
                                         ),
                                       ],
@@ -452,103 +513,132 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                   ),
                 ),
 
-                // Instructions Card
+                // Phase Indicators Card
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
-                  padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 16),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? Colors.white.withOpacity(0.08)
-                        : Colors.white.withOpacity(0.96),
-                    borderRadius: BorderRadius.circular(30),
+                        ? Colors.white.withOpacity(0.06)
+                        : Colors.white.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                        color:
-                            isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+                      color: isDark
+                          ? Colors.white.withOpacity(0.08)
+                          : const Color(0xFFD1FAE5),
+                      width: 1,
+                    ),
                     boxShadow: isDark
                         ? null
                         : [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.04),
-                              blurRadius: 20,
-                              offset: const Offset(0, 5),
+                              blurRadius: 16,
+                              offset: const Offset(0, 6),
                             ),
                           ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildPhaseIndicator(inhaleText, '5s',
-                          const Color(0xFF4DB6AC), lang, isDark),
+                      _buildPhaseIndicator(
+                          inhaleText, '5s', const Color(0xFF4DB6AC), lang, isDark),
                       Container(
-                          width: 1,
-                          height: 40,
-                          color: isDark ? Colors.white12 : Colors.grey[200]),
-                      _buildPhaseIndicator(holdText, '7s',
-                          const Color(0xFFFFB74D), lang, isDark),
+                        width: 1,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              isDark ? Colors.white12 : Colors.grey[300]!,
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                      _buildPhaseIndicator(
+                          holdText, '7s', const Color(0xFFFFB74D), lang, isDark),
                       Container(
-                          width: 1,
-                          height: 40,
-                          color: isDark ? Colors.white12 : Colors.grey[200]),
-                      _buildPhaseIndicator(exhaleText, '8s',
-                          const Color(0xFF81C784), lang, isDark),
+                        width: 1,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              isDark ? Colors.white12 : Colors.grey[300]!,
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                      _buildPhaseIndicator(
+                          exhaleText, '8s', const Color(0xFF81C784), lang, isDark),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
 
                 // Start/Stop Button
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 32),
-                  child: GestureDetector(
-                    onTap: _isRunning ? _stopExercise : _startExercise,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 18),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: _isRunning
-                              ? [
-                                  const Color(0xFFEF5350),
-                                  const Color(0xFFE53935)
-                                ]
-                              : [
-                                  const Color(0xFF4DB6AC),
-                                  const Color(0xFF26A69A)
-                                ],
-                        ),
-                        borderRadius: BorderRadius.circular(34),
-                        boxShadow: [
-                          BoxShadow(
-                            color: (_isRunning
-                                    ? const Color(0xFFE53935)
-                                    : const Color(0xFF26A69A))
-                                .withOpacity(0.4),
-                            blurRadius: 24,
-                            offset: const Offset(0, 12),
+                  padding: const EdgeInsets.only(bottom: 32, left: 24, right: 24),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: GestureDetector(
+                      onTap: _isRunning ? _stopExercise : _startExercise,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: _isRunning
+                                ? [
+                                    const Color(0xFFEF5350),
+                                    const Color(0xFFE53935),
+                                  ]
+                                : [
+                                    const Color(0xFF059669),
+                                    const Color(0xFF10B981),
+                                    const Color(0xFF34D399),
+                                  ],
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            _isRunning
-                                ? Icons.stop_rounded
-                                : Icons.play_arrow_rounded,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            _isRunning ? stopText : startText,
-                            style: lang.getTextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: (_isRunning
+                                      ? const Color(0xFFE53935)
+                                      : const Color(0xFF059669))
+                                  .withOpacity(0.35),
+                              blurRadius: 20,
+                              offset: const Offset(0, 10),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              _isRunning
+                                  ? Icons.stop_rounded
+                                  : Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              _isRunning ? stopText : startText,
+                              style: lang.getTextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -567,38 +657,44 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
     String cycleText,
     String guidanceText,
     Color phaseColor,
+    String inhaleText,
+    String holdText,
+    String exhaleText,
   ) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(22, 0, 22, 8),
+      margin: const EdgeInsets.fromLTRB(22, 4, 22, 12),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(24),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? [const Color(0xFF0F766E), const Color(0xFF123047)]
-              : [const Color(0xFF0D9488), const Color(0xFF38BDF8)],
+              ? [const Color(0xFF0F766E).withOpacity(0.8), const Color(0xFF123047)]
+              : [
+                  const Color(0xFF059669),
+                  const Color(0xFF10B981),
+                ],
         ),
         boxShadow: [
           BoxShadow(
-            color: phaseColor.withOpacity(0.24),
-            blurRadius: 26,
-            offset: const Offset(0, 14),
+            color: const Color(0xFF059669).withOpacity(0.3),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            width: 58,
-            height: 58,
+            width: 54,
+            height: 54,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.18),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.22)),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white.withOpacity(0.2)),
             ),
-            child: const Icon(Icons.air_rounded, color: Colors.white, size: 31),
+            child: const Icon(Icons.spa_rounded, color: Colors.white, size: 28),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -609,20 +705,20 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
                   cycleText,
                   style: lang.getTextStyle(
                     fontSize: 15,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w800,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 4),
                 Text(
                   guidanceText,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: lang.getTextStyle(
-                    fontSize: 12,
+                    fontSize: 11.5,
                     height: 1.35,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white.withOpacity(0.78),
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white.withOpacity(0.75),
                   ),
                 ),
               ],
@@ -631,15 +727,18 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
           if (_isRunning) ...[
             const SizedBox(width: 12),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.17),
-                borderRadius: BorderRadius.circular(999),
+                color: Colors.white.withOpacity(0.18),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.15),
+                ),
               ),
               child: Text(
                 '0:${_secondsRemaining.toString().padLeft(2, '0')}',
                 style: lang.getTextStyle(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
                 ),
@@ -656,18 +755,29 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
     return Column(
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.15),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                color.withOpacity(isDark ? 0.25 : 0.15),
+                color.withOpacity(isDark ? 0.1 : 0.08),
+              ],
+            ),
             shape: BoxShape.circle,
+            border: Border.all(
+              color: color.withOpacity(isDark ? 0.3 : 0.2),
+              width: 1.5,
+            ),
           ),
           child: Center(
             child: Text(
               time,
               style: lang.getTextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
                 color: color,
               ),
             ),
@@ -678,7 +788,8 @@ class _BreathingExerciseScreenState extends State<BreathingExerciseScreen>
           label,
           style: lang.getTextStyle(
             fontSize: 12,
-            color: isDark ? Colors.white60 : Colors.grey[600],
+            fontWeight: FontWeight.w600,
+            color: isDark ? Colors.white60 : const Color(0xFF64748B),
           ),
         ),
       ],

@@ -666,15 +666,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Directionality(
       textDirection: lang.textDirection,
       child: Scaffold(
-        backgroundColor: isDark ? const Color(0xFF000000) : const Color(0xFFF2F2F7),
+        backgroundColor: isDark ? const Color(0xFF071A22) : const Color(0xFFF1F5F9),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios, color: isDark ? Colors.white : Colors.black87),
-            onPressed: () => Navigator.pop(context),
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                size: 20,
+              ),
+            ),
           ),
-          title: Text(lang.settings, style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
+          title: Text(lang.settings, style: lang.getTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isDark ? Colors.white : const Color(0xFF064E3B))),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -692,15 +713,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: isDark
-                          ? [const Color(0xFF1a2a4a), const Color(0xFF0d1a2d)]
-                          : [const Color(0xFF4facfe), const Color(0xFF00f2fe)],
+                          ? [const Color(0xFF0F766E), const Color(0xFF1E293B)]
+                          : [
+                              const Color(0xFF059669),
+                              const Color(0xFF10B981),
+                            ],
                     ),
                     borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
-                        color: (isDark ? const Color(0xFF4facfe) : const Color(0xFF4facfe)).withOpacity(0.25),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
+                        color: const Color(0xFF059669).withOpacity(0.3),
+                        blurRadius: 24,
+                        offset: const Offset(0, 12),
                       ),
                     ],
                   ),
@@ -708,18 +732,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       // Avatar
                       Container(
-                        width: 64, height: 64,
+                        width: 64,
+                        height: 64,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white.withOpacity(0.6), width: 2.5),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.5),
+                            width: 2.5,
+                          ),
                           boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 10),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 10,
+                            ),
                           ],
                         ),
                         child: ClipOval(
                           child: _profileImageUrl != null && _profileImageUrl!.isNotEmpty
-                              ? Image.network(_profileImageUrl!, fit: BoxFit.cover, width: 64, height: 64, errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 32, color: Colors.white))
-                              : Icon(isGuest ? Icons.person_outline : Icons.person, size: 32, color: Colors.white),
+                              ? Image.network(
+                                  _profileImageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: 64,
+                                  height: 64,
+                                  errorBuilder: (_, __, ___) => const Icon(Icons.person, size: 32, color: Colors.white),
+                                )
+                              : Icon(
+                                  isGuest ? Icons.person_outline : Icons.person,
+                                  size: 32,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -730,14 +771,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Text(
                               user?.displayName ?? user?.email?.split('@').first ?? lang.guest,
-                              style: lang.getTextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.white),
+                              style: lang.getTextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               user?.email ?? (isGuest ? lang.guestMode : ''),
-                              style: lang.getTextStyle(fontSize: 13, color: Colors.white.withOpacity(0.75)),
+                              style: lang.getTextStyle(
+                                fontSize: 13,
+                                color: Colors.white.withOpacity(0.7),
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -748,10 +796,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white.withOpacity(0.18),
+                          borderRadius: BorderRadius.circular(14),
                         ),
-                        child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                        child: const Icon(Icons.edit_rounded, color: Colors.white, size: 20),
                       ),
                     ],
                   ),
@@ -1167,24 +1215,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Row(
         children: [
           Container(
-            width: 3,
-            height: 16,
+            width: 4,
+            height: 18,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
+                colors: [Color(0xFF059669), Color(0xFF10B981)],
               ),
               borderRadius: BorderRadius.circular(2),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF059669).withOpacity(0.3),
+                  blurRadius: 4,
+                ),
+              ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Text(
             title,
             style: lang.getTextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: isDark ? Colors.white60 : Colors.grey[600]!,
+              fontWeight: FontWeight.w800,
+              color: isDark ? Colors.white60 : const Color(0xFF64748B),
             ),
           ),
         ],
@@ -1195,14 +1249,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // Helper: Card Decoration
   BoxDecoration _getCardDecoration(bool isDark) {
     return BoxDecoration(
-      color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-      borderRadius: BorderRadius.circular(20),
+      color: isDark ? const Color(0xFF102028) : Colors.white,
+      borderRadius: BorderRadius.circular(22),
       border: Border.all(
-        color: isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.1),
+        color: isDark
+            ? Colors.white.withOpacity(0.06)
+            : const Color(0xFFE2E8F0),
       ),
-      boxShadow: isDark
-          ? [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))]
-          : [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 12, offset: const Offset(0, 4))],
+      boxShadow: [
+        BoxShadow(
+          color: isDark
+              ? Colors.black.withOpacity(0.15)
+              : Colors.black.withOpacity(0.04),
+          blurRadius: 16,
+          offset: const Offset(0, 6),
+        ),
+      ],
     );
   }
 
@@ -1466,10 +1528,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isDestructive
-                      ? Colors.red.withOpacity(isDark ? 0.15 : 0.08)
-                      : (isDark ? Colors.white.withOpacity(0.06) : Colors.grey.withOpacity(0.06)),
-                  borderRadius: BorderRadius.circular(12),
+                  gradient: isDestructive
+                      ? LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.red.withOpacity(isDark ? 0.2 : 0.12),
+                            Colors.red.withOpacity(isDark ? 0.08 : 0.04),
+                          ],
+                        )
+                      : LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  Colors.white.withOpacity(0.08),
+                                  Colors.white.withOpacity(0.03),
+                                ]
+                              : [
+                                  const Color(0xFFF1F5F9),
+                                  const Color(0xFFF8FAFC),
+                                ],
+                        ),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: icon,
               ),
@@ -1482,8 +1563,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title,
                       style: lang.getTextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: isDestructive ? Colors.red : (isDark ? Colors.white : Colors.black87),
+                        fontWeight: FontWeight.w700,
+                        color: isDestructive
+                            ? Colors.red
+                            : (isDark ? Colors.white : const Color(0xFF1E293B)),
                       ),
                     ),
                     if (subtitle.isNotEmpty) ...[
@@ -1492,18 +1575,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         subtitle,
                         style: lang.getTextStyle(
                           fontSize: 12,
-                          color: isDark ? Colors.white54 : Colors.black45,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? Colors.white54 : const Color(0xFF94A3B8),
                         ),
                       ),
                     ],
                   ],
                 ),
               ),
-              trailing ?? Icon(
-                lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
-                color: isDark ? Colors.white24 : Colors.grey[400],
-                size: 22,
-              ),
+              trailing ??
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withOpacity(0.05)
+                          : const Color(0xFFF1F5F9),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
+                      color: isDark ? Colors.white30 : const Color(0xFF94A3B8),
+                      size: 18,
+                    ),
+                  ),
             ],
           ),
         ),

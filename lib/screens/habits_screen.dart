@@ -129,26 +129,30 @@ class _HabitsScreenState extends State<HabitsScreen>
             : 'Small steps build lasting recovery';
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                lang.isRTL ? Icons.arrow_forward_ios : Icons.arrow_back_ios_new,
-                color: isDark ? Colors.white : Colors.black87,
-                size: 20,
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
+                color: isDark ? Colors.white70 : Colors.grey[700],
+                size: 22,
               ),
             ),
           ),
@@ -160,9 +164,9 @@ class _HabitsScreenState extends State<HabitsScreen>
                 Text(
                   title,
                   style: lang.getTextStyle(
-                    fontSize: 29,
+                    fontSize: 26,
                     fontWeight: FontWeight.w900,
-                    color: isDark ? Colors.white : const Color(0xFF12312E),
+                    color: isDark ? Colors.white : const Color(0xFF064E3B),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -173,23 +177,34 @@ class _HabitsScreenState extends State<HabitsScreen>
                   style: lang.getTextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: isDark ? Colors.white60 : const Color(0xFF5B756F),
+                    color: isDark ? Colors.white54 : const Color(0xFF059669),
                   ),
                 ),
               ],
             ),
           ),
-          // Statistics Button
-          IconButton(
-            onPressed: () => _showStatisticsSheet(lang, isDark),
-            icon: Container(
-              padding: const EdgeInsets.all(8),
+          GestureDetector(
+            onTap: () => _showStatisticsSheet(lang, isDark),
+            child: Container(
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.1) : Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: isDark
+                    ? null
+                    : [
+                        BoxShadow(
+                          color: const Color(0xFF059669).withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
               ),
-              child:
-                  const Icon(Icons.bar_chart_rounded, color: Color(0xFF0D9488)),
+              child: const Icon(
+                Icons.bar_chart_rounded,
+                color: Color(0xFF059669),
+                size: 22,
+              ),
             ),
           ),
         ],
@@ -696,162 +711,186 @@ class _HabitsScreenState extends State<HabitsScreen>
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        color: isDark ? const Color(0xFF102028) : Colors.white,
+        borderRadius: BorderRadius.circular(22),
         border: Border.all(
           color: isCompleted
-              ? habitInfo.color.withOpacity(0.55)
-              : (isDark ? Colors.white10 : const Color(0xFFE4F4F1)),
-          width: 2,
+              ? habitInfo.color.withOpacity(0.4)
+              : (isDark ? Colors.white.withOpacity(0.06) : const Color(0xFFE2E8F0)),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
             color: isCompleted
-                ? habitInfo.color.withOpacity(0.18)
-                : const Color(0xFF0F766E).withOpacity(isDark ? 0.06 : 0.08),
+                ? habitInfo.color.withOpacity(0.12)
+                : const Color(0xFF059669).withOpacity(isDark ? 0.04 : 0.06),
             blurRadius: 18,
             offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap: () => habitsService.toggleHabitCompletion(userHabit.habitId),
-          onLongPress: () => _showDeleteDialog(
-              lang, isDark, userHabit.habitId, habitInfo, habitsService),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: 58,
-                  height: 58,
-                  decoration: BoxDecoration(
-                    gradient: isCompleted
-                        ? LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              habitInfo.color.withOpacity(0.28),
-                              habitInfo.color.withOpacity(0.10)
-                            ],
-                          )
-                        : null,
-                    color: isCompleted
-                        ? null
-                        : (isDark
-                            ? Colors.white.withOpacity(0.1)
-                            : Colors.grey.withOpacity(0.1)),
-                    borderRadius: BorderRadius.circular(19),
-                    border: Border.all(
-                        color: habitInfo.color
-                            .withOpacity(isCompleted ? 0.35 : 0.10)),
-                  ),
-                  child: Center(
-                    child: Text(
-                      habitInfo.emoji,
-                      style: TextStyle(fontSize: isCompleted ? 29 : 25),
-                    ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: Stack(
+          children: [
+            // Top accent line
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 3,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      habitInfo.color.withOpacity(isCompleted ? 0.8 : 0.3),
+                      habitInfo.color.withOpacity(isCompleted ? 0.4 : 0.1),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 16),
-                // Info
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),
+            // Content
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => habitsService.toggleHabitCompletion(userHabit.habitId),
+                onLongPress: () => _showDeleteDialog(
+                    lang, isDark, userHabit.habitId, habitInfo, habitsService),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
+                  child: Row(
                     children: [
-                      Text(
-                        habitInfo.getName(languageCode),
-                        style: lang
-                            .getTextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: isDark
-                                  ? Colors.white
-                                  : const Color(0xFF1F3733),
-                            )
-                            .copyWith(
-                              decoration: isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : null,
-                            ),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          gradient: isCompleted
+                              ? LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    habitInfo.color.withOpacity(0.2),
+                                    habitInfo.color.withOpacity(0.08),
+                                  ],
+                                )
+                              : null,
+                          color: isCompleted
+                              ? null
+                              : (isDark
+                                  ? Colors.white.withOpacity(0.06)
+                                  : const Color(0xFFF1F5F9)),
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: habitInfo.color.withOpacity(isCompleted ? 0.3 : 0.08),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            habitInfo.emoji,
+                            style: TextStyle(fontSize: isCompleted ? 28 : 24),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 7),
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 9, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: (userHabit.currentStreak > 0
-                                      ? Colors.orange
-                                      : Colors.grey)
-                                  .withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(999),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.local_fire_department_rounded,
-                                  size: 14,
-                                  color: userHabit.currentStreak > 0
-                                      ? Colors.orange
-                                      : Colors.grey,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  streakText,
-                                  style: lang.getTextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w700,
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              habitInfo.getName(languageCode),
+                              style: lang
+                                  .getTextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
                                     color: isDark
-                                        ? Colors.white60
-                                        : const Color(0xFF5B756F),
+                                        ? Colors.white
+                                        : const Color(0xFF064E3B),
+                                  )
+                                  .copyWith(
+                                    decoration: isCompleted
+                                        ? TextDecoration.lineThrough
+                                        : null,
+                                  ),
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: (userHabit.currentStreak > 0
+                                            ? Colors.orange
+                                            : Colors.grey)
+                                        .withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.local_fire_department_rounded,
+                                        size: 13,
+                                        color: userHabit.currentStreak > 0
+                                            ? Colors.orange
+                                            : Colors.grey,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        streakText,
+                                        style: lang.getTextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w700,
+                                          color: isDark
+                                              ? Colors.white54
+                                              : const Color(0xFF64748B),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            _buildHabitWeekDots(userHabit, habitInfo, isDark),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 10),
-                      _buildHabitWeekDots(userHabit, habitInfo, isDark),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          gradient: isCompleted
+                              ? LinearGradient(colors: [
+                                  habitInfo.color,
+                                  habitInfo.color.withOpacity(0.7),
+                                ])
+                              : null,
+                          color: isCompleted ? null : Colors.transparent,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isCompleted
+                                ? habitInfo.color
+                                : (isDark ? Colors.white24 : const Color(0xFFE2E8F0)),
+                            width: 2,
+                          ),
+                        ),
+                        child: isCompleted
+                            ? const Icon(Icons.check_rounded,
+                                color: Colors.white, size: 22)
+                            : null,
+                      ),
                     ],
                   ),
                 ),
-
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    gradient: isCompleted
-                        ? LinearGradient(colors: [
-                            habitInfo.color,
-                            habitInfo.color.withOpacity(0.72)
-                          ])
-                        : null,
-                    color: isCompleted ? null : Colors.transparent,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: isCompleted
-                          ? habitInfo.color
-                          : (isDark ? Colors.white24 : Colors.black12),
-                      width: 2,
-                    ),
-                  ),
-                  child: isCompleted
-                      ? const Icon(Icons.check_rounded,
-                          color: Colors.white, size: 22)
-                      : null,
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
