@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import '../services/language_service.dart';
@@ -503,8 +504,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                               const SizedBox(height: 24),
 
-                              // Google Sign-In Button
-                              Container(
+                              // Google Sign-In Button (Web only)
+                              if (kIsWeb) Container(
                                 width: double.infinity,
                                 height: 56,
                                 decoration: BoxDecoration(

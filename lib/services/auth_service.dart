@@ -147,23 +147,24 @@ class AuthService {
     }
   }
 
-  // Sign in with Google (Web uses signInWithPopup)
+  // Sign in with Google (Web only)
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      if (kIsWeb) {
-        final googleProvider = GoogleAuthProvider();
-        googleProvider.addScope('email');
-        googleProvider.addScope('profile');
-        final credential = await _auth.signInWithPopup(googleProvider);
-
-        // Ensure user document exists in Firestore
-        if (credential.user != null) {
-          await _ensureUserDocumentExists(credential.user!);
-        }
-
-        return credential;
+      if (!kIsWeb) {
+        throw Exception('Google Sign-In is only available on web');
       }
-      throw UnsupportedError('Google Sign-In is only supported on web');
+
+      final googleProvider = GoogleAuthProvider();
+      googleProvider.addScope('email');
+      googleProvider.addScope('profile');
+      final credential = await _auth.signInWithPopup(googleProvider);
+
+      // Ensure user document exists in Firestore
+      if (credential.user != null) {
+        await _ensureUserDocumentExists(credential.user!);
+      }
+
+      return credential;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
