@@ -79,12 +79,24 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         debugPrint('[v0] Guest signin timeout or error: $e');
         // Continue anyway - guest session set up in AuthService
       }
-      
+
       if (mounted) {
         // Give a tiny delay for localStorage to update
         await Future.delayed(const Duration(milliseconds: 100));
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       }
+    } catch (e) {
+      setState(() { _errorMessage = e.toString(); });
+    } finally {
+      if (mounted) setState(() { _isLoading = false; });
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() { _isLoading = true; _errorMessage = null; });
+    try {
+      await _authService.signInWithGoogle();
+      if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } catch (e) {
       setState(() { _errorMessage = e.toString(); });
     } finally {
@@ -491,14 +503,129 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               ),
                               const SizedBox(height: 24),
 
-                              // Guest Login Button
-                              SizedBox(
+                              // Google Sign-In Button
+                              Container(
                                 width: double.infinity,
-                                height: 52,
-                                child: OutlinedButton.icon(
-                                  onPressed: _isLoading ? null : _signInAsGuest,
-                                  icon: const Icon(Icons.person_outline_rounded, color: AppDesign.primary, size: 20),
-                                  label: Text(lang.guestLogin, style: lang.getTextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppDesign.primary)),
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: const Color(0xFFE0E0E0), width: 1.5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.06),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: _isLoading ? null : _signInWithGoogle,
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          // Google "G" Logo
+                                          Container(
+                                            width: 28,
+                                            height: 28,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                'G',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF4285F4),
+                                                  fontFamily: 'Google Sans',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 14),
+                                          Text(
+                                            lang.currentLanguage == AppLanguage.kurdish
+                                                ? 'بە جییمێڵ چوونەتەوە'
+                                                : lang.currentLanguage == AppLanguage.arabic
+                                                    ? 'تسجيل الدخول بحساب Google'
+                                                    : 'Sign in with Google',
+                                            style: lang.getTextStyle(
+                                              fontSize: 15.5,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF3C4043),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Guest Login Button
+                              Container(
+                                width: double.infinity,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: const Color(0xFFE0E0E0), width: 1.5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.06),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: _isLoading ? null : _signInAsGuest,
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 28,
+                                            height: 28,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              gradient: LinearGradient(
+                                                colors: [AppDesign.primary, AppDesign.primary.withOpacity(0.7)],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
+                                            ),
+                                            child: const Icon(
+                                              Icons.person_outline_rounded,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 14),
+                                          Text(
+                                            lang.guestLogin,
+                                            style: lang.getTextStyle(
+                                              fontSize: 15.5,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF3C4043),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

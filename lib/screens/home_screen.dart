@@ -662,7 +662,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   child: Text(
                                     levelName,
                                     style: lang.getTextStyle(
-                                      fontSize: 9,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.bold,
                                       color: isUnlocked
                                           ? displayColor
@@ -689,8 +689,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         children: [
                                           if (isUnlocked)
                                             Container(
-                                              width: 58,
-                                              height: 58,
+                                              width: 72,
+                                              height: 72,
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 boxShadow: [
@@ -704,7 +704,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           Container(
-                                            padding: const EdgeInsets.all(12),
+                                            padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
                                               gradient: LinearGradient(
                                                 begin: Alignment.topLeft,
@@ -762,8 +762,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 badge.artwork == null
                                                     ? 'assets/images/badge_level_${badge.level}.png'
                                                     : 'assets/images/${badge.artwork}',
-                                                width: 28,
-                                                height: 28,
+                                                width: 42,
+                                                height: 42,
                                                 fit: BoxFit.contain,
                                               ),
                                             ),
@@ -793,19 +793,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 child: const Icon(
                                                   Icons.lock,
                                                   color: Colors.white,
-                                                  size: 10,
+                                                  size: 12,
                                                 ),
                                               ),
                                             ),
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 12),
-                                    // Badge name
+                                    const SizedBox(height: 16),
                                     Text(
                                       name,
                                       style: lang.getTextStyle(
-                                        fontSize: 12.5,
+                                        fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: isUnlocked
                                             ? (isDark
@@ -833,7 +832,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       child: Text(
                                         '${badge.daysRequired} ${lang.currentLanguage == AppLanguage.kurdish ? "ڕۆژ" : lang.currentLanguage == AppLanguage.arabic ? "يوم" : "days"}',
                                         style: lang.getTextStyle(
-                                          fontSize: 10,
+                                          fontSize: 12,
                                           fontWeight: FontWeight.bold,
                                           color: isUnlocked
                                               ? displayColor
@@ -873,7 +872,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               Text(
                                                 '${(pct * 100).toInt()}%',
                                                 style: lang.getTextStyle(
-                                                  fontSize: 8,
+                                                  fontSize: 10,
                                                   color: Colors.grey.shade500,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -5245,8 +5244,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     final cardContent = [
       Container(
-        width: 64,
-        height: 64,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -5261,7 +5260,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     accentColor.withOpacity(0.05),
                   ],
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: accentColor.withOpacity(isDark ? 0.25 : 0.18),
             width: 1,
@@ -5269,13 +5268,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           boxShadow: [
             BoxShadow(
               color: accentColor.withOpacity(isDark ? 0.12 : 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: 12,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(10),
           child: Image.asset(iconAsset, fit: BoxFit.contain),
         ),
       ),
@@ -5451,8 +5450,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             : MainAxisAlignment.start,
                         children: [
                           Container(
-                            width: 56,
-                            height: 56,
+                            width: 72,
+                            height: 72,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
@@ -5467,7 +5466,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         accentColor.withOpacity(0.04),
                                       ],
                               ),
-                              borderRadius: BorderRadius.circular(18),
+                              borderRadius: BorderRadius.circular(22),
                               border: Border.all(
                                 color: accentColor
                                     .withOpacity(isDark ? 0.2 : 0.15),
@@ -5477,13 +5476,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 BoxShadow(
                                   color: accentColor
                                       .withOpacity(isDark ? 0.1 : 0.06),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
                                 ),
                               ],
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(7),
+                              padding: const EdgeInsets.all(9),
                               child:
                                   Image.asset(iconAsset, fit: BoxFit.contain),
                             ),

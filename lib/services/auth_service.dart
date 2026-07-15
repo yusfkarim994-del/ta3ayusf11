@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -141,6 +142,28 @@ class AuthService {
         },
       );
       return credential;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    }
+  }
+
+  // Sign in with Google (Web uses signInWithPopup)
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      if (kIsWeb) {
+        final googleProvider = GoogleAuthProvider();
+        googleProvider.addScope('email');
+        googleProvider.addScope('profile');
+        final credential = await _auth.signInWithPopup(googleProvider);
+
+        // Ensure user document exists in Firestore
+        if (credential.user != null) {
+          await _ensureUserDocumentExists(credential.user!);
+        }
+
+        return credential;
+      }
+      throw UnsupportedError('Google Sign-In is only supported on web');
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
