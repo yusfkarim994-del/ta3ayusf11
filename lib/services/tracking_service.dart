@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'supabase_service.dart';
 import 'dart:convert';
 
 /// Enum representing the daily status options
@@ -90,50 +91,64 @@ class TrackingService extends ChangeNotifier {
     await loadRecords();
   }
 
-  /// Load records from Firestore or SharedPreferences
+  /// Load records from Supabase (web) or SharedPreferences (APK)
   Future<void> loadRecords() async {
     if (_isLoaded) return;
-    
-    // First try to load from Firestore if user is logged in
-    if (_userId != null && _collection != null) {
-      try {
-        final snapshot = await _collection!.get();
-        _records.clear();
-        
-        for (final doc in snapshot.docs) {
-          final data = doc.data() as Map<String, dynamic>;
-          final record = DayRecord.fromJson(data);
-          _records[record.dateKey] = record;
-        }
-        
-        _isLoaded = true;
-        notifyListeners();
-        return;
-      } catch (e) {
-        debugPrint('Error loading tracking records from Firestore: $e');
-      }
-    }
-    
-    // Fallback to local storage
+
+    // Load from local storage first (works on both web and APK)
     try {
       final prefs = await SharedPreferences.getInstance();
       final jsonString = prefs.getString(_storageKey);
-      
+
       if (jsonString != null && jsonString.isNotEmpty) {
         final List<dynamic> jsonList = json.decode(jsonString);
         _records.clear();
-        
+
         for (final item in jsonList) {
           final record = DayRecord.fromJson(item as Map<String, dynamic>);
           _records[record.dateKey] = record;
         }
       }
-      
+
       _isLoaded = true;
       notifyListeners();
+      _syncFromFirestore();
     } catch (e) {
       debugPrint('Error loading tracking records: $e');
       _isLoaded = true;
+    }
+  }
+
+  /// Load from Supabase (primary source on web)
+  Future<void> _loadFromSupabase() async {
+    try {
+      final records = await SupabaseService.loadTrackingRecords();
+      for (final data in records) {
+        final record = DayRecord.fromJson(data);
+        _records[record.dateKey] = record;
+      }
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading from Supabase: $e');
+    }
+  }
+
+  Future<void> _syncFromFirestore() async {
+    if (_userId == null || _collection == null) return;
+
+    try {
+      final snapshot = await _collection!.get();
+
+      for (final doc in snapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final record = DayRecord.fromJson(data);
+        _records[record.dateKey] = record;
+      }
+
+      await _saveRecords();
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error syncing tracking records from Firestore: $e');
     }
   }
 
@@ -167,10 +182,18 @@ class TrackingService extends ChangeNotifier {
     _records[record.dateKey] = record;
     notifyListeners();
     
-    // 2. Local persistence
-    _saveRecords();
+    // 2. Persist locally (APK only)
+    await _saveRecords();
     
-    // 3. Background sync
+    // 3. Save to Supabase (always, AWAITED)
+    await SupabaseService.saveTrackingRecord(
+      dateKey: record.dateKey,
+      status: status.name,
+      date: record.date.toIso8601String(),
+      recordedAt: record.recordedAt.toIso8601String(),
+    ).catchError((e) => debugPrint('Supabase Tracking Sync Error: $e'));
+    
+    // 4. Background sync to Firestore
     _saveToFirestore(record).catchError((e) => debugPrint('Tracking Sync Error: $e'));
   }
 

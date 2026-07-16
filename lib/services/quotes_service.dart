@@ -100,22 +100,20 @@ class QuotesService extends ChangeNotifier {
       notifyListeners();
     }
     
-    // 2. Sync from Firebase
+    // 2. Sync from Firebase — only overwrite if it has data
     try {
       final snapshot = await _firestore
           .collection('quotes')
           .orderBy('createdAt', descending: false)
           .limit(30)
           .get(const GetOptions(source: Source.serverAndCache));
-      _quotes = snapshot.docs.map((doc) => Quote.fromFirestore(doc)).toList();
       
-      // Update cache
-      _cacheQuotes();
-      
-      // Load user's last seen quote index
-      await _loadUserQuoteIndex();
-      
-      notifyListeners();
+      if (snapshot.docs.isNotEmpty) {
+        _quotes = snapshot.docs.map((doc) => Quote.fromFirestore(doc)).toList();
+        _cacheQuotes();
+        await _loadUserQuoteIndex();
+        notifyListeners();
+      }
     } catch (e) {
       debugPrint('Error loading quotes from Firebase: $e');
     }

@@ -633,32 +633,34 @@ class RoadmapService extends ChangeNotifier {
   Future<void> loadData() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // If logged in, prioritize Firebase data
-    if (_isLoggedIn) {
-      try {
-        final doc = await _firestore.collection('users').doc(_userId).get();
-        if (doc.exists) {
-          final roadmapData = doc.data()?['roadmapData'];
-          if (roadmapData != null) {
-            _completedTaskIds = Set<String>.from(roadmapData['completedTaskIds'] ?? []);
-            await _saveLocally(); // Cache locally for offline use
-            notifyListeners();
-            return;
-          }
-        }
-      } catch (e) {
-        debugPrint('Error loading roadmap from Firestore: $e');
-        // Fall through to local storage as fallback
-      }
-    }
-
-    // Fallback: load from local storage (offline / not logged in)
+    // 1. ALWAYS load from local storage first
     final data = prefs.getString(_storageKey);
     if (data != null) {
       final json = jsonDecode(data);
       _completedTaskIds = Set<String>.from(json['completedTaskIds'] ?? []);
     }
     notifyListeners();
+
+    // 2. Sync from Firebase — only if it has MORE progress
+    if (_isLoggedIn) {
+      try {
+        final doc = await _firestore.collection('users').doc(_userId).get();
+        if (doc.exists) {
+          final roadmapData = doc.data()?['roadmapData'];
+          if (roadmapData != null) {
+            final firebaseTasks = Set<String>.from(roadmapData['completedTaskIds'] ?? []);
+            // Only use Firebase data if it has more completed tasks
+            if (firebaseTasks.length > _completedTaskIds.length) {
+              _completedTaskIds = firebaseTasks;
+              await _saveLocally();
+              notifyListeners();
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('Error loading roadmap from Firestore: $e');
+      }
+    }
   }
 
   /// Save progress

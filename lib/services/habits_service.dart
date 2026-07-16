@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'supabase_service.dart';
 import 'notification_service.dart';
 
 // Habit category with emoji
@@ -222,51 +224,65 @@ class HabitsService extends ChangeNotifier {
   TimeOfDay? get reminderTime => null;
 
   Future<void> loadHabits() async {
-    // First try to load from Firestore if user is logged in
-    if (_userId != null) {
-      try {
-        // Load custom habits from Firestore
-        if (_customHabitsCollection != null) {
-          final customSnapshot = await _customHabitsCollection!.get();
-          _customHabits = customSnapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return HabitItem.fromJson(data);
-          }).toList();
-        }
-
-        // Load user habits from Firestore
-        if (_userHabitsCollection != null) {
-          final userSnapshot = await _userHabitsCollection!.get();
-          _userHabits = userSnapshot.docs.map((doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            return UserHabit.fromJson(data);
-          }).toList();
-          _updateStreaks();
-          notifyListeners();
-          return;
-        }
-      } catch (e) {
-        debugPrint('Error loading from Firestore: $e');
-      }
-    }
-    
-    // Fallback to local storage
+    // 1. ALWAYS load from local storage FIRST
     final prefs = await SharedPreferences.getInstance();
     
-    // Load Custom Habits
     final String? customData = prefs.getString(_customHabitsKey);
     if (customData != null) {
       final List<dynamic> jsonList = json.decode(customData);
       _customHabits = jsonList.map((e) => HabitItem.fromJson(e)).toList();
     }
 
-    // Load User Habits
     final String? data = prefs.getString(_userHabitsKey);
     if (data != null) {
       final List<dynamic> jsonList = json.decode(data);
       _userHabits = jsonList.map((e) => UserHabit.fromJson(e)).toList();
       _updateStreaks();
-      notifyListeners();
+    }
+    notifyListeners();
+
+    // 2. Sync from Firestore in background ONLY if it has data
+    if (_userId != null) {
+      try {
+        if (_customHabitsCollection != null) {
+          final customSnapshot = await _customHabitsCollection!.get();
+          if (customSnapshot.docs.isNotEmpty) {
+            _customHabits = customSnapshot.docs.map((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              return HabitItem.fromJson(data);
+            }).toList();
+          }
+        }
+
+        if (_userHabitsCollection != null) {
+          final userSnapshot = await _userHabitsCollection!.get();
+          if (userSnapshot.docs.isNotEmpty) {
+            _userHabits = userSnapshot.docs.map((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              return UserHabit.fromJson(data);
+            }).toList();
+            await _saveUserHabits();
+            _updateStreaks();
+          }
+        }
+        notifyListeners();
+      } catch (e) {
+        debugPrint('Error loading from Firestore: $e');
+      }
+    }
+  }
+
+  /// Load from Supabase (primary source on web)
+  Future<void> _loadFromSupabase() async {
+    try {
+      final supabaseHabits = await SupabaseService.loadHabits();
+      if (supabaseHabits.isNotEmpty) {
+        _userHabits = supabaseHabits.map((h) => UserHabit.fromJson(h)).toList();
+        _updateStreaks();
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading habits from Supabase: $e');
     }
   }
 
@@ -334,10 +350,14 @@ class HabitsService extends ChangeNotifier {
     
     // 1. Update local state
     _userHabits.add(habit);
-    _saveUserHabits();
+    await _saveUserHabits();
     notifyListeners();
 
-    // 2. Sync in background
+    // 2. Save to Supabase (always, AWAITED)
+    await SupabaseService.saveHabits(_userHabits.map((h) => h.toJson()).toList())
+        .catchError((e) => debugPrint('Supabase Habit Sync Error: $e'));
+
+    // 3. Sync to Firestore
     _saveUserHabitToFirestore(habit).catchError((e) => debugPrint('Habit Sync Error: $e'));
   }
 
@@ -347,7 +367,7 @@ class HabitsService extends ChangeNotifier {
 
     // 1. Update local state
     _userHabits.removeAt(habitIdx);
-    _saveUserHabits();
+    await _saveUserHabits();
     notifyListeners();
 
     // 2. Sync in background
@@ -369,7 +389,7 @@ class HabitsService extends ChangeNotifier {
     
     // 1. Local Update
     _customHabits.add(newHabit);
-    _saveCustomHabits();
+    await _saveCustomHabits();
     notifyListeners();
 
     // 2. Background Sync
@@ -380,8 +400,8 @@ class HabitsService extends ChangeNotifier {
     // 1. Local Updates
     _userHabits.removeWhere((h) => h.habitId == habitId);
     _customHabits.removeWhere((h) => h.id == habitId);
-    _saveUserHabits();
-    _saveCustomHabits();
+    await _saveUserHabits();
+    await _saveCustomHabits();
     notifyListeners();
 
     // 2. Background Syncs
@@ -446,7 +466,7 @@ class HabitsService extends ChangeNotifier {
     _calculateStreak(habit);
     
     // 1. Local update
-    _saveUserHabits();
+    await _saveUserHabits();
     notifyListeners();
 
     // 2. Sync in background

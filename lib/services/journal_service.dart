@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'supabase_service.dart';
 import 'xp_service.dart';
 
 // Mood enum with emoji
@@ -148,41 +150,55 @@ class JournalService extends ChangeNotifier {
     // Cancel existing subscription if any
     await _journalSubscription?.cancel();
 
-    // 1. Initial load from local storage (Offline First)
-    final prefs = await SharedPreferences.getInstance();
-    final String? data = prefs.getString(_storageKey);
-    if (data != null) {
-      try {
-        final List<dynamic> jsonList = json.decode(data);
-        _entries = jsonList.map((e) => JournalEntry.fromJson(e)).toList();
-        notifyListeners();
-      } catch (e) {
-        debugPrint('Error loading cached journal: $e');
+    // Load from local storage
+      final prefs = await SharedPreferences.getInstance();
+      final String? data = prefs.getString(_storageKey);
+      if (data != null) {
+        try {
+          final List<dynamic> jsonList = json.decode(data);
+          _entries = jsonList.map((e) => JournalEntry.fromJson(e)).toList();
+          notifyListeners();
+        } catch (e) {
+          debugPrint('Error loading cached journal: $e');
+        }
       }
-    }
 
     // 2. Setup real-time sync from Firestore if user is logged in
+    // Only update from Firestore — never let it wipe local data
     final uid = _userId;
     if (uid != null && _collection != null) {
       _journalSubscription = _collection!
           .orderBy('createdAt', descending: true)
           .snapshots(includeMetadataChanges: true)
           .listen((snapshot) {
-            _entries = snapshot.docs.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              // Handle null timestamp fallback for local-only state
-              if (data['createdAt'] == null) {
-                return JournalEntry.fromJson({...data, 'id': doc.id, 'createdAt': DateTime.now().toIso8601String()});
-              }
-              return JournalEntry.fromJson({...data, 'id': doc.id});
-            }).toList();
-            
-            // Periodically update cache
-            _saveEntries();
-            notifyListeners();
+            // Only update from Firestore if it has MORE data than local
+            // This prevents Firestore from wiping local-only entries
+            if (snapshot.docs.isNotEmpty && snapshot.docs.length >= _entries.length) {
+              _entries = snapshot.docs.map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                if (data['createdAt'] == null) {
+                  return JournalEntry.fromJson({...data, 'id': doc.id, 'createdAt': DateTime.now().toIso8601String()});
+                }
+                return JournalEntry.fromJson({...data, 'id': doc.id});
+              }).toList();
+              _saveEntries();
+              notifyListeners();
+            }
           }, onError: (e) {
             debugPrint('Journal Stream Error: $e');
           });
+    }
+  }
+
+  Future<void> _loadFromSupabase() async {
+    try {
+      final supabaseEntries = await SupabaseService.loadJournalEntries();
+      if (supabaseEntries.isNotEmpty) {
+        _entries = supabaseEntries.map((e) => JournalEntry.fromJson(e)).toList();
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading journal from Supabase: $e');
     }
   }
 
@@ -226,10 +242,14 @@ class JournalService extends ChangeNotifier {
     
     // 1. Update local state immediately for instant UI response
     _entries.insert(0, entry); // Insert at top
-    _saveEntries(); 
+    await _saveEntries();
     notifyListeners();
 
-    // 2. Sync to Firestore in background (Firestore handles retry automatically)
+    // 2. Save to Supabase (always, AWAITED)
+    await SupabaseService.saveJournalEntries(_entries.map((e) => e.toJson()).toList())
+        .catchError((e) => debugPrint('Supabase Journal Sync Error: $e'));
+
+    // 3. Sync to Firestore in background
     _saveToFirestore(entry).catchError((e) => debugPrint('Background Journal Sync Error: $e'));
     
     // 3. Award XP in background
@@ -253,7 +273,7 @@ class JournalService extends ChangeNotifier {
       
       // 1. Update local state
       _entries[entryIndex] = updatedEntry;
-      _saveEntries();
+      await _saveEntries();
       notifyListeners();
 
       // 2. Sync in background
@@ -264,7 +284,7 @@ class JournalService extends ChangeNotifier {
   Future<void> deleteEntry(String id) async {
     // 1. Update local state
     _entries.removeWhere((e) => e.id == id);
-    _saveEntries();
+    await _saveEntries();
     notifyListeners();
 
     // 2. Sync in background

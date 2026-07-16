@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'supabase_service.dart';
 
 class CommitmentLetter {
   final String id;
@@ -64,24 +65,7 @@ class CommitmentService extends ChangeNotifier {
   }
 
   Future<void> loadLetters() async {
-    // First try to load from Firestore if user is logged in
-    if (_userId != null && _collection != null) {
-      try {
-        final snapshot = await _collection!.get();
-        _letters = snapshot.docs.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
-          return CommitmentLetter.fromJson(data);
-        }).toList();
-        // Sort by date descending (newest first)
-        _letters.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-        notifyListeners();
-        return;
-      } catch (e) {
-        debugPrint('Error loading commitment letters from Firestore: $e');
-      }
-    }
-
-    // Fallback to local storage
+    // Load from local storage
     try {
       final prefs = await SharedPreferences.getInstance();
       final lettersJson = prefs.getString(_lettersKey);
@@ -94,6 +78,42 @@ class CommitmentService extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading commitment letters: $e');
+    }
+
+    // Background sync from Firestore without wiping local state.
+    if (_userId != null && _collection != null) {
+      try {
+        final snapshot = await _collection!.get();
+
+        if (snapshot.docs.isNotEmpty) {
+          _letters = snapshot.docs.map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+            return CommitmentLetter.fromJson(data);
+          }).toList();
+
+          _letters.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+          await _saveLocally();
+          notifyListeners();
+        }
+      } catch (e) {
+        debugPrint('Error syncing commitment letters from Firestore: $e');
+      }
+    }
+
+
+  }
+
+  Future<void> _loadFromSupabase() async {
+    try {
+      final supabaseLetters = await SupabaseService.loadCommitmentLetters();
+      if (supabaseLetters.isNotEmpty) {
+        _letters = supabaseLetters.map((l) => CommitmentLetter.fromJson(l)).toList();
+        _letters.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading commitment from Supabase: $e');
     }
   }
 
@@ -156,8 +176,14 @@ class CommitmentService extends ChangeNotifier {
       );
       _letters.insert(0, letter);
       _currentIndex = 0;
-      _saveLocally();
+      await _saveLocally();
       notifyListeners();
+
+      // Save to Supabase (always, AWAITED)
+      await SupabaseService.saveCommitmentLetters(_letters.map((l) => l.toJson()).toList())
+          .catchError((e) => debugPrint('Supabase Commitment Sync Error: $e'));
+
+      // Sync to Firestore
       _saveToFirestore(letter).catchError(
         (e) => debugPrint('Background commitment sync error: $e'),
       );

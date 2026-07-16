@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'supabase_service.dart';
 
 /// Hero levels with their names and requirements
 class HeroLevel {
@@ -543,8 +545,9 @@ class ChallengeService extends ChangeNotifier {
     return allTasks.where((t) => t.stageRequired <= stageNum).toList();
   }
 
-  /// Load challenge data - local first, then sync from Firebase
+  /// Load challenge data - Supabase on web, local on APK
   Future<void> loadData() async {
+    // Load from local storage first
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString(_storageKey);
     
@@ -554,7 +557,7 @@ class ChallengeService extends ChangeNotifier {
     }
     notifyListeners();
     
-    // Sync from Firebase in background (if logged in)
+    // Sync from Firebase in background
     if (_isLoggedIn) {
       await _syncFromFirebase(prefs);
     }
@@ -647,14 +650,20 @@ class ChallengeService extends ChangeNotifier {
     }
   }
 
-  /// Save challenge data - locally AND to Firebase
+  /// Save challenge data - locally AND to Firebase AND to Supabase
   Future<void> _saveData() async {
+    // Save to local storage (always — web and APK)
     final prefs = await SharedPreferences.getInstance();
     await _saveToLocal(prefs);
-    
-    // Also sync to Firebase if logged in
+
+    // Supabase: also save
+    SupabaseService.saveChallengeData(_toJson()).catchError((e) {
+      debugPrint('Supabase challenge sync error: $e');
+    });
+
+    // Firebase: sync if logged in
     if (_isLoggedIn) {
-      syncToFirebase(); // Fire and forget - don't await to keep UI responsive
+      syncToFirebase();
     }
   }
 

@@ -22,6 +22,7 @@ import 'services/library_service.dart';
 import 'services/accountability_service.dart';
 import 'services/app_lock_service.dart';
 import 'services/app_disguise_service.dart';
+import 'services/supabase_service.dart';
 import 'services/partner_discovery_service.dart';
 import 'widgets/welcome_message_widget.dart';
 
@@ -83,6 +84,13 @@ void main() async {
       }
     } catch (e) {
       debugPrint('Firebase setup error (web may continue): $e');
+    }
+
+    // Initialize Supabase fallback database
+    try {
+      await SupabaseService.init();
+    } catch (e) {
+      debugPrint('Supabase init error (non-critical): $e');
     }
 
     final languageService = LanguageService();
