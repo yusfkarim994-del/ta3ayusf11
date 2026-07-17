@@ -151,6 +151,7 @@ class _CommitmentScreenState extends State<CommitmentScreen>
     return Directionality(
       textDirection: lang.textDirection,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -387,28 +388,30 @@ class _CommitmentScreenState extends State<CommitmentScreen>
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 680),
         child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             color: isDark
-                ? Colors.white.withOpacity(0.08)
-                : Colors.white.withOpacity(0.95),
-            borderRadius: BorderRadius.circular(32),
+                ? const Color(0xFF0F1A18).withOpacity(0.95)
+                : Colors.white.withOpacity(0.98),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(
                 color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
             boxShadow: [
               BoxShadow(
-                color:
-                    const Color(0xFF0F766E).withOpacity(isDark ? 0.12 : 0.14),
-                blurRadius: 32,
-                offset: const Offset(0, 18),
+                color: const Color(0xFF0F766E).withOpacity(isDark ? 0.12 : 0.10),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(24),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                // Header
                 Container(
-                  padding: const EdgeInsets.all(18),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: isDark
@@ -419,16 +422,16 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                   child: Row(
                     children: [
                       Container(
-                        width: 48,
-                        height: 48,
+                        width: 40,
+                        height: 40,
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(Icons.edit_note_rounded,
-                            color: Colors.white, size: 28),
+                            color: Colors.white, size: 24),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           lang.currentLanguage == AppLanguage.arabic
@@ -437,8 +440,8 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                                   ? 'بەڵێنێکی ڕوون بۆ خۆت بنووسە'
                                   : 'Write a clear promise to yourself',
                           style: lang.getTextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w900,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
                         ),
@@ -446,52 +449,64 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                     ],
                   ),
                 ),
-                Expanded(
-                  child: TextField(
-                    controller: _letterController,
-                    maxLines: null,
-                    expands: true,
-                    textAlignVertical: TextAlignVertical.top,
-                    style: lang.getTextStyle(
-                      fontSize: 16,
-                      height: 1.9,
-                      color: isDark ? Colors.white : const Color(0xFF263238),
-                    ),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: isDark
-                          ? const Color(0xFF14232A).withOpacity(0.72)
-                          : const Color(0xFFF8FAFC),
-                      hintText: placeholder,
-                      hintStyle: lang.getTextStyle(
-                        fontSize: 14,
-                        height: 1.7,
-                        color:
-                            isDark ? Colors.white38 : const Color(0xFF78909C),
+                // Text input — fixed height, scrollable
+                Container(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.45,
+                    minHeight: 160,
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    child: TextField(
+                      controller: _letterController,
+                      maxLines: null,
+                      minLines: 6,
+                      expands: false,
+                      textAlignVertical: TextAlignVertical.top,
+                      style: lang.getTextStyle(
+                        fontSize: 16,
+                        height: 1.8,
+                        color: isDark ? Colors.white : const Color(0xFF263238),
                       ),
-                      contentPadding: const EdgeInsets.all(24),
-                      border: InputBorder.none,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: isDark
+                            ? const Color(0xFF14232A).withOpacity(0.72)
+                            : const Color(0xFFF8FAFC),
+                        hintText: placeholder,
+                        hintStyle: lang.getTextStyle(
+                          fontSize: 14,
+                          height: 1.6,
+                          color: isDark ? Colors.white38 : const Color(0xFF78909C),
+                        ),
+                        contentPadding: const EdgeInsets.all(16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        if (value.trim().length > 20 && !_isAutoSaving) {
+                          Future.delayed(const Duration(milliseconds: 700), () {
+                            if (!mounted) return;
+                            if (_isWritingMode &&
+                                _letterController.text.trim() == value.trim() &&
+                                value.trim().isNotEmpty) {
+                              _saveLetter(lang);
+                            }
+                          });
+                        }
+                      },
                     ),
-                    onChanged: (value) {
-                      if (value.trim().length > 20 && !_isAutoSaving) {
-                        Future.delayed(const Duration(milliseconds: 700), () {
-                          if (!mounted) return;
-
-                          if (_isWritingMode &&
-                              _letterController.text.trim() == value.trim() &&
-                              value.trim().isNotEmpty) {
-                            _saveLetter(lang);
-                          }
-                        });
-                      }
-                    },
                   ),
                 ),
+                // Buttons — always visible above keyboard
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? Colors.black.withOpacity(0.16)
+                        ? Colors.black.withOpacity(0.12)
                         : const Color(0xFFF8FAFC),
                     border: Border(
                         top: BorderSide(
@@ -502,40 +517,75 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextButton(
-                          onPressed: () => setState(() {
+                        child: GestureDetector(
+                          onTap: () => setState(() {
                             _isWritingMode = false;
                             _letterController.clear();
                           }),
-                          child: Text(cancelText,
-                              style: lang.getTextStyle(
-                                  color: isDark
-                                      ? Colors.white60
-                                      : const Color(0xFF64748B))),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? Colors.white.withOpacity(0.06)
+                                  : const Color(0xFFF1F5F9),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(cancelText,
+                                  style: lang.getTextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: isDark
+                                          ? Colors.white60
+                                          : const Color(0xFF64748B))),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         flex: 2,
-                        child: ElevatedButton.icon(
-                          onPressed:
-                              _isAutoSaving ? null : () => _saveLetter(lang),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0D9488),
+                        child: GestureDetector(
+                          onTap: _isAutoSaving ? null : () => _saveLetter(lang),
+                          child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18)),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
+                              ),
+                              borderRadius: BorderRadius.circular(14),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF0D9488).withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    _isAutoSaving
+                                        ? Icons.sync_rounded
+                                        : Icons.save_rounded,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(saveText,
+                                      style: lang.getTextStyle(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800)),
+                                ],
+                              ),
+                            ),
                           ),
-                          icon: Icon(
-                            _isAutoSaving
-                                ? Icons.sync_rounded
-                                : Icons.save_rounded,
-                            color: Colors.white,
-                          ),
-                          label: Text(saveText,
-                              style: lang.getTextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900)),
                         ),
                       ),
                     ],
@@ -928,10 +978,12 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                     child: Column(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: SingleChildScrollView(
+                            child: TextField(
                             controller: _letterController,
                             maxLines: null,
-                            expands: true,
+                            minLines: 8,
+                            expands: false,
                             textAlignVertical: TextAlignVertical.top,
                             style: lang.getTextStyle(
                               fontSize: 17,
@@ -951,6 +1003,7 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                                   const EdgeInsets.fromLTRB(28, 50, 28, 20),
                               border: InputBorder.none,
                             ),
+                          ),
                           ),
                         ),
                         // Bottom bar with action buttons
