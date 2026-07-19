@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as ui;
 import '../services/challenge_service.dart';
 import '../services/language_service.dart';
 
@@ -319,31 +318,34 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
     Color? accent,
   }) {
     final glow = accent ?? const Color(0xFF14B8A6);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.white.withOpacity(0.13), Colors.white.withOpacity(0.04)],
-            ),
-            borderRadius: BorderRadius.circular(radius),
-            border: Border.all(color: Colors.white.withOpacity(0.16)),
-            boxShadow: [
-              BoxShadow(
-                color: glow.withOpacity(0.10),
-                blurRadius: 28,
-                offset: const Offset(0, 14),
-              ),
-            ],
-          ),
-          child: child,
+    return Container(
+      padding: padding,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.white.withOpacity(0.14),
+            Colors.white.withOpacity(0.06),
+            glow.withOpacity(0.04),
+          ],
         ),
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: Colors.white.withOpacity(0.18), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: glow.withOpacity(0.12),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
+      child: child,
     );
   }
 
@@ -360,8 +362,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
           Row(
             children: [
               Container(
-                width: 74,
-                height: 74,
+                width: 82,
+                height: 82,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
@@ -375,7 +377,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                   border: Border.all(color: Colors.white.withOpacity(0.32), width: 2),
                 ),
                 child: Center(
-                  child: Text(isActive ? (stage?.emoji ?? '🛡️') : '🛡️', style: const TextStyle(fontSize: 36)),
+                  child: Text(isActive ? (stage?.emoji ?? '🛡️') : '🛡️', style: const TextStyle(fontSize: 44)),
                 ),
               ),
               const SizedBox(width: 16),
@@ -385,7 +387,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                   children: [
                     Text(
                       isActive ? '${_getDayText(lang)} $day / 90' : _getTitle(lang),
-                      style: lang.getTextStyle(fontSize: 25, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15),
+                      style: lang.getTextStyle(fontSize: 27, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -435,10 +437,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
         ),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 20),
+            Icon(icon, color: color, size: 24),
             const SizedBox(height: 5),
-            Text(value, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
-            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white.withOpacity(0.58), fontSize: 10)),
+            Text(value, style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+            Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white.withOpacity(0.65), fontSize: 11)),
           ],
         ),
       ),
@@ -500,12 +502,12 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.star, color: const Color(0xFFFFD700), size: isSmall ? 12 : 14),
+                      Icon(Icons.star, color: const Color(0xFFFFD700), size: isSmall ? 16 : 18),
                       const SizedBox(width: 2),
                       Text(
                         '${_challengeService.totalXP}',
                         style: lang.getTextStyle(
-                          fontSize: isSmall ? 11 : 12,
+                          fontSize: isSmall ? 13 : 14,
                           fontWeight: FontWeight.bold,
                           color: const Color(0xFFFFD700),
                         ),
@@ -527,7 +529,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
       onTap: () => setState(() => _currentTab = index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
-        padding: EdgeInsets.symmetric(horizontal: isSmall ? 10 : 14, vertical: isSmall ? 8 : 10),
+        padding: EdgeInsets.symmetric(horizontal: isSmall ? 12 : 16, vertical: isSmall ? 10 : 12),
         decoration: BoxDecoration(
           gradient: isActive
               ? const LinearGradient(colors: [Color(0xFF14B8A6), Color(0xFF0D9488)])
@@ -550,7 +552,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: isActive ? Colors.white : Colors.white54, size: isSmall ? 14 : 16),
+            Icon(icon, color: isActive ? Colors.white : Colors.white54, size: isSmall ? 20 : 24),
             // Hide text on small screens
             if (!isSmall) ...[
               const SizedBox(width: 4),
@@ -1230,9 +1232,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(28),
-          child: BackdropFilter(
-            filter: ui.ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Column(
+          child: Column(
               children: [
                 Stack(
                   alignment: Alignment.center,
@@ -1257,7 +1257,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white.withOpacity(0.5), width: 2),
                       ),
-                      child: Center(child: Text(currentLevel.emoji, style: const TextStyle(fontSize: 44))),
+                      child: Center(child: Text(currentLevel.emoji, style: const TextStyle(fontSize: 36))),
                     ),
                   ],
                 ),
@@ -1301,7 +1301,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
                   ),
                 ],
               ],
-            ),
           ),
         ),
       ),
@@ -1324,9 +1323,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-          child: Column(
+        child: Column(
             children: [
               Row(
                 children: [
@@ -1379,7 +1376,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               ),
             ],
           ),
-        ),
       ),
     );
   }
