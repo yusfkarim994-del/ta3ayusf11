@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'supabase_service.dart';
+import '../data/daily_tasks_90.dart' as tasks90;
 
 /// Hero levels with their names and requirements
 class HeroLevel {
@@ -309,14 +310,14 @@ class ChallengeService extends ChangeNotifier {
 
   /// Check if all tasks for a specific day are completed
   bool isDayCompleted(int day) {
-    final tasks = _getTasksForDay(day);
-    return tasks.every((t) => isTaskCompleted(t.id));
+    final rawTasks = tasks90.getDailyTasks(day);
+    return rawTasks.every((t) => isTaskCompleted('day_${day}_${t['id']}'));
   }
 
   /// Check if at least one task was completed on a specific day
   bool hasAnyTaskDone(int day) {
-    final tasks = _getTasksForDay(day);
-    return tasks.any((t) => isTaskCompleted(t.id));
+    final rawTasks = tasks90.getDailyTasks(day);
+    return rawTasks.any((t) => isTaskCompleted('day_${day}_${t['id']}'));
   }
 
   /// Check for consecutive days of inactivity (no tasks at all)
@@ -356,22 +357,6 @@ class ChallengeService extends ChangeNotifier {
       return consecutiveInactiveDays >= 5;
     }
   }
-
-  /// Get tasks for a specific day (for checking completion)
-  List<DailyTask> _getTasksForDay(int day) {
-    final stageNum = ((day - 1) ~/ 5) + 1;
-    final stageTasks = _getTasksForStage(stageNum);
-    // Use single Random instance for consistency with getDailyTasks
-    final dayRandom = Random(day * 12345);
-    final numTasks = 2 + dayRandom.nextInt(2);
-    final shuffled = List<DailyTask>.from(stageTasks)..shuffle(dayRandom);
-    
-    return shuffled.take(numTasks).map((t) {
-      final taskId = 'day_${day}_${t.id}';
-      return t.copyWith(id: taskId, day: day, isCompleted: isTaskCompleted(taskId));
-    }).toList();
-  }
-
 
   /// Check if user is blocked (can't progress)
   bool get isBlocked => realDay > currentDay;
@@ -511,31 +496,51 @@ class ChallengeService extends ChangeNotifier {
     return ((day - 1) ~/ 5) + 1;
   }
 
-  /// Get random daily tasks for current day (2-3 tasks)
+  /// Get daily tasks for a specific day (3 tasks per day, unique for 90 days)
   List<DailyTask> getDailyTasks(int day) {
     if (_cachedDay == day && _cachedDailyTasks != null) {
-      // Update completion status from storage
       for (var task in _cachedDailyTasks!) {
         task.isCompleted = isTaskCompleted(task.id);
       }
       return _cachedDailyTasks!;
     }
 
-    final stageNum = ((day - 1) ~/ 5) + 1;
-    final stageTasks = _getTasksForStage(stageNum);
+    final rawTasks = tasks90.getDailyTasks(day);
     
-    // Use day as seed for consistent random per day
-    final dayRandom = Random(day * 12345);
-    final numTasks = 2 + dayRandom.nextInt(2); // 2 or 3 tasks (seeded by day)
-    final shuffled = List<DailyTask>.from(stageTasks)..shuffle(dayRandom);
-    
-    _cachedDailyTasks = shuffled.take(numTasks).map((t) {
-      final taskId = 'day_${day}_${t.id}';
-      return t.copyWith(id: taskId, day: day, isCompleted: isTaskCompleted(taskId));
+    _cachedDailyTasks = rawTasks.map((t) {
+      final taskId = 'day_${day}_${t['id']}';
+      TaskType type;
+      switch (t['type']) {
+        case 'physical': type = TaskType.physical; break;
+        case 'mental': type = TaskType.mental; break;
+        case 'spiritual': type = TaskType.spiritual; break;
+        case 'social': type = TaskType.social; break;
+        case 'discipline': type = TaskType.discipline; break;
+        default: type = TaskType.physical;
+      }
+      return DailyTask(
+        id: taskId,
+        day: day,
+        titleEn: t['titleEn'] ?? '',
+        titleAr: t['titleAr'] ?? '',
+        titleKu: t['titleKu'] ?? '',
+        descriptionEn: t['descriptionEn'] ?? '',
+        descriptionAr: t['descriptionAr'] ?? '',
+        descriptionKu: t['descriptionKu'] ?? '',
+        xpReward: t['xpReward'] ?? 30,
+        type: type,
+        stageRequired: ((day - 1) ~/ 5) + 1,
+        isCompleted: isTaskCompleted(taskId),
+      );
     }).toList();
     _cachedDay = day;
     
     return _cachedDailyTasks!;
+  }
+
+  /// Get daily bonus tip for a specific day
+  String getDailyBonus(int day) {
+    return tasks90.getDailyBonus(day);
   }
 
   /// Get tasks appropriate for a specific stage
