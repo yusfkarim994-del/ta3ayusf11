@@ -4,17 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Conditional import for dart:html on web
-import 'dart:io' if (dart.library.html) 'dart:html' as html;
+import 'storage_helper.dart';
 
 /// Read from web localStorage
 String? _readFromLocalStorage(String key) {
   if (kIsWeb) {
-    try {
-      return html.window.localStorage[key];
-    } catch (_) {
-      return null;
-    }
+    return readFromLocalStorage(key);
   }
   return null;
 }
@@ -22,9 +17,7 @@ String? _readFromLocalStorage(String key) {
 /// Write to web localStorage
 void _writeToLocalStorage(String key, String value) {
   if (kIsWeb) {
-    try {
-      html.window.localStorage[key] = value;
-    } catch (_) {}
+    writeToLocalStorage(key, value);
   }
 }
 
