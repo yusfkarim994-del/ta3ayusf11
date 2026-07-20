@@ -3647,7 +3647,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               MaterialPageRoute(
                                 builder: (context) => const WebViewScreen(
                                   title: 'دكتور ورفيق التعافي',
-                                  url: 'https://ta3afi.pages.dev',
+                                  url: 'https://miftah-chat-p365.arcada.app/',
                                 ),
                               ),
                             ),
