@@ -289,6 +289,12 @@ class ChallengeService extends ChangeNotifier {
   /// Check for hidden reward (7 day streak)
   bool get hasHiddenReward => currentStreak >= 7 && currentStreak % 7 == 0;
 
+  /// Clear cached daily tasks so they reload on next access
+  void clearTaskCache() {
+    _cachedDailyTasks = null;
+    _cachedDay = -1;
+  }
+
   /// The actual elapsed recovery days based on full 24-hour periods
   int get realDay {
     if (_startDate == null) return 0;

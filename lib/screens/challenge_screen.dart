@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/challenge_service.dart';
@@ -19,10 +20,13 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
   final ChallengeService _challengeService = ChallengeService();
   bool _isLoading = true;
   int _currentTab = 0; // 0: Challenge, 1: Hall of Fame
+  Timer? _dayTimer;
+  int _lastCheckedDay = -1;
 
   @override
   void initState() {
     super.initState();
+    _startDayWatcher();
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
@@ -44,9 +48,32 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
     _loadData();
   }
 
+  void _startDayWatcher() {
+    _lastCheckedDay = _challengeService.realDay;
+    // Check every 10 seconds if the day has changed
+    _dayTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+      _checkDayChange();
+    });
+  }
+
+  void _checkDayChange() {
+    if (!mounted || !_challengeService.isActive) return;
+    final newDay = _challengeService.realDay;
+    if (newDay != _lastCheckedDay) {
+      _lastCheckedDay = newDay;
+      _challengeService.clearTaskCache();
+      setState(() {});
+      final newStage = _challengeService.checkNewStageCelebration();
+      if (newStage != null) {
+        _showStageCelebration(newStage);
+      }
+    }
+  }
+
   Future<void> _loadData() async {
     await _challengeService.loadData();
-    
+    _lastCheckedDay = _challengeService.realDay;
+
     // Check for 5-day inactivity reset
     if (_challengeService.isActive && _challengeService.shouldResetDueToInactivity) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -230,6 +257,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
 
   @override
   void dispose() {
+    _dayTimer?.cancel();
     _pulseController.dispose();
     _floatController.dispose();
     super.dispose();
@@ -237,6 +265,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    // Check for day change on every build
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkDayChange());
     final lang = Provider.of<LanguageService>(context);
     final isDark = lang.isDarkMode;
 
