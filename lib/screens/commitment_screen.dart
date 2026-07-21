@@ -21,6 +21,8 @@ class _CommitmentScreenState extends State<CommitmentScreen>
   bool _isWritingMode = false;
   final TextEditingController _letterController = TextEditingController();
   bool _isAutoSaving = false;
+  String _autoSaveStatus = '';
+  DateTime? _lastAutoSaveTime;
 
   @override
   void initState() {
@@ -81,8 +83,61 @@ class _CommitmentScreenState extends State<CommitmentScreen>
     }
   }
 
+  // Auto-save method - saves without exiting writing mode
+  void _autoSaveLetter(LanguageService lang) async {
+    if (_letterController.text.trim().isEmpty) return;
+    if (_isAutoSaving) return;
+
+    _isAutoSaving = true;
+    setState(() {
+      _autoSaveStatus = lang.currentLanguage == AppLanguage.arabic
+          ? 'جاري الحفظ...'
+          : lang.currentLanguage == AppLanguage.kurdish
+              ? 'دەپاشەکرێت...'
+              : 'Saving...';
+    });
+
+    final success = await _commitmentService.addLetter(
+      _letterController.text.trim(),
+      _getUserName(lang),
+    );
+
+    if (success && mounted) {
+      _lastAutoSaveTime = DateTime.now();
+      setState(() {
+        _autoSaveStatus = lang.currentLanguage == AppLanguage.arabic
+            ? 'تم الحفظ'
+            : lang.currentLanguage == AppLanguage.kurdish
+                ? 'پاشەکەوت کرا'
+                : 'Saved';
+      });
+      // Clear status after 2 seconds
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          setState(() => _autoSaveStatus = '');
+        }
+      });
+    } else {
+      setState(() {
+        _autoSaveStatus = lang.currentLanguage == AppLanguage.arabic
+            ? 'فشل الحفظ'
+            : lang.currentLanguage == AppLanguage.kurdish
+                ? 'هەڵە لە پاشەکەوتکردن'
+                : 'Save failed';
+      });
+    }
+    _isAutoSaving = false;
+  }
+
   @override
   void dispose() {
+    // Auto-save when leaving the screen if there's unsaved text
+    if (_letterController.text.trim().isNotEmpty && _isWritingMode) {
+      _commitmentService.addLetter(
+        _letterController.text.trim(),
+        _getUserName(Provider.of<LanguageService>(context, listen: false)),
+      );
+    }
     _fadeController.dispose();
     _letterController.dispose();
     super.dispose();
@@ -433,19 +488,41 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                       ),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: Text(
-                          lang.currentLanguage == AppLanguage.arabic
-                              ? 'اكتب وعدا واضحا لنفسك'
-                              : lang.currentLanguage == AppLanguage.kurdish
-                                  ? 'بەڵێنێکی ڕوون بۆ خۆت بنووسە'
-                                  : 'Write a clear promise to yourself',
-                          style: lang.getTextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              lang.currentLanguage == AppLanguage.arabic
+                                  ? 'اكتب وعدا واضحا لنفسك'
+                                  : lang.currentLanguage == AppLanguage.kurdish
+                                      ? 'بەڵێنێکی ڕوون بۆ خۆت بنووسە'
+                                      : 'Write a clear promise to yourself',
+                              style: lang.getTextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
+                            ),
+                            if (_autoSaveStatus.isNotEmpty)
+                              Text(
+                                _autoSaveStatus,
+                                style: lang.getTextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
+                      if (_autoSaveStatus.isNotEmpty)
+                        Icon(
+                          _autoSaveStatus.contains('...') || _autoSaveStatus.contains('...')
+                              ? Icons.sync_rounded
+                              : Icons.check_circle_outline_rounded,
+                          color: Colors.white70,
+                          size: 18,
+                        ),
                     ],
                   ),
                 ),
@@ -487,13 +564,14 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                         ),
                       ),
                       onChanged: (value) {
+                        // Auto-save on text change (debounced)
                         if (value.trim().length > 20 && !_isAutoSaving) {
                           Future.delayed(const Duration(milliseconds: 700), () {
                             if (!mounted) return;
                             if (_isWritingMode &&
                                 _letterController.text.trim() == value.trim() &&
                                 value.trim().isNotEmpty) {
-                              _saveLetter(lang);
+                              _autoSaveLetter(lang);
                             }
                           });
                         }
@@ -518,10 +596,16 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => setState(() {
-                            _isWritingMode = false;
-                            _letterController.clear();
-                          }),
+                          onTap: () {
+                            // Auto-save before canceling if there's text
+                            if (_letterController.text.trim().isNotEmpty) {
+                              _autoSaveLetter(lang);
+                            }
+                            setState(() {
+                              _isWritingMode = false;
+                              _letterController.clear();
+                            });
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             decoration: BoxDecoration(
