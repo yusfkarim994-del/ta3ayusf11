@@ -305,12 +305,12 @@ class ChallengeService extends ChangeNotifier {
     return elapsed.inHours ~/ 24;
   }
 
-  /// The effective day (now allows progress even if tasks missed - just marks as incomplete)
+  /// The effective challenge day.
+  /// Day 1 starts immediately, then advances every full 24 hours.
   int get currentDay {
     if (_startDate == null) return 0;
 
-    // Keep UI on day 1 until first full 24-hour period completes.
-    return realDay <= 0 ? 1 : realDay;
+    return realDay + 1;
   }
 
 
