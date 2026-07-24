@@ -320,9 +320,14 @@ class _TrackingScreenState extends State<TrackingScreen>
         final success = trackingService.getSuccessCount();
         final slips = trackingService.getSlipCount();
         final relapses = trackingService.getRelapseCount();
-        final total =
-            success + slips + relapses + trackingService.getUnknownCount();
-        final rate = total == 0 ? 0.0 : success / total;
+        final unknown = trackingService.getUnknownCount();
+        final total = success + slips + relapses + unknown;
+        // Stability rate: success days / total recorded days
+        // Only count days that were actually recorded (exclude unknown)
+        final recordedTotal = success + slips + relapses;
+        final rate = recordedTotal == 0
+            ? 0.0
+            : (success / recordedTotal).clamp(0.0, 1.0);
         final title = lang.currentLanguage == AppLanguage.arabic
             ? 'كل يوم تسجله هو خطوة وعي'
             : lang.currentLanguage == AppLanguage.kurdish
@@ -429,14 +434,14 @@ class _TrackingScreenState extends State<TrackingScreen>
               Row(
                 children: [
                   SizedBox(
-                    width: 78,
-                    height: 78,
+                    width: 84,
+                    height: 84,
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
                         CircularProgressIndicator(
                           value: rate,
-                          strokeWidth: 8,
+                          strokeWidth: 9,
                           backgroundColor: Colors.white.withOpacity(0.20),
                           valueColor:
                               const AlwaysStoppedAnimation<Color>(Colors.white),
@@ -445,7 +450,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                           child: Text(
                             '${(rate * 100).toInt()}%',
                             style: lang.getTextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
                             ),
