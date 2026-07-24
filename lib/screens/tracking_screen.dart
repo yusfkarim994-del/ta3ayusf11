@@ -106,32 +106,118 @@ class _TrackingScreenState extends State<TrackingScreen>
                     ],
             ),
           ),
-          child: SafeArea(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  _buildHeader(lang, isDark, title),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 0, bottom: 120),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          _buildProgressHero(lang, isDark),
-                          const SizedBox(height: 18),
-                          _buildSummaryCards(lang, isDark),
-                          const SizedBox(height: 24),
-                          _buildCalendar(lang, isDark),
-                          const SizedBox(height: 120),
-                        ],
-                      ),
+          child: Stack(
+            children: [
+              // ── Premium ambient glow orbs for depth ──
+              Positioned(
+                top: -100,
+                right: -80,
+                child: Container(
+                  width: 320,
+                  height: 320,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        (isDark
+                                ? const Color(0xFF14B8A6)
+                                : const Color(0xFF0D9488))
+                            .withOpacity(isDark ? 0.12 : 0.09),
+                        Colors.transparent,
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                top: 220,
+                left: -120,
+                child: Container(
+                  width: 280,
+                  height: 280,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        (isDark
+                                ? const Color(0xFF818CF8)
+                                : const Color(0xFFA78BFA))
+                            .withOpacity(isDark ? 0.09 : 0.07),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: -120,
+                left: -80,
+                child: Container(
+                  width: 340,
+                  height: 340,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        (isDark
+                                ? const Color(0xFF6366F1)
+                                : const Color(0xFF14B8A6))
+                            .withOpacity(isDark ? 0.10 : 0.07),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 120,
+                right: -100,
+                child: Container(
+                  width: 260,
+                  height: 260,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        (isDark
+                                ? const Color(0xFFC084FC)
+                                : const Color(0xFFF59E0B))
+                            .withOpacity(isDark ? 0.07 : 0.05),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              SafeArea(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    children: [
+                      _buildHeader(lang, isDark, title),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 0, bottom: 120),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              _buildProgressHero(lang, isDark),
+                              const SizedBox(height: 18),
+                              _buildSummaryCards(lang, isDark),
+                              const SizedBox(height: 24),
+                              _buildCalendar(lang, isDark),
+                              const SizedBox(height: 120),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         floatingActionButton: _buildRecordButton(lang, isDark),
@@ -155,21 +241,43 @@ class _TrackingScreenState extends State<TrackingScreen>
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? [
+                          Colors.white.withOpacity(0.14),
+                          Colors.white.withOpacity(0.06),
+                        ]
+                      : [
+                          Colors.white,
+                          const Color(0xFFE8F4F2),
+                        ],
+                ),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white.withOpacity(0.18)
+                      : Colors.white.withOpacity(0.9),
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: (isDark ? Colors.black : const Color(0xFF0D9488))
+                        .withOpacity(isDark ? 0.28 : 0.10),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                  BoxShadow(
+                    color: Colors.white.withOpacity(isDark ? 0.04 : 0.7),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Icon(
                 lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
-                color: isDark ? Colors.white70 : Colors.grey[700],
+                color: isDark ? Colors.white : const Color(0xFF064E3B),
                 size: 22,
               ),
             ),
@@ -234,69 +342,144 @@ class _TrackingScreenState extends State<TrackingScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isDark
-                  ? [const Color(0xFF0F766E), const Color(0xFF1F2937)]
-                  : [const Color(0xFF0D9488), const Color(0xFFF59E0B)],
+                  ? [
+                      const Color(0xFF14B8A6),
+                      const Color(0xFF0F766E),
+                      const Color(0xFF1F2937)
+                    ]
+                  : [
+                      const Color(0xFF14B8A6),
+                      const Color(0xFF0D9488),
+                      const Color(0xFFF59E0B)
+                    ],
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0D9488).withOpacity(0.24),
-                blurRadius: 28,
-                offset: const Offset(0, 16),
+                color: const Color(0xFF0D9488).withOpacity(0.38),
+                blurRadius: 36,
+                offset: const Offset(0, 18),
+              ),
+              BoxShadow(
+                color: const Color(0xFFF59E0B).withOpacity(isDark ? 0.14 : 0.22),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
-          child: Row(
+          child: Stack(
             children: [
-              SizedBox(
-                width: 78,
-                height: 78,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    CircularProgressIndicator(
-                      value: rate,
-                      strokeWidth: 8,
-                      backgroundColor: Colors.white.withOpacity(0.20),
-                      valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.white),
+              // Inner glow orbs for premium depth
+              Positioned(
+                top: -30,
+                right: -30,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.18),
+                        Colors.transparent,
+                      ],
                     ),
-                    Center(
-                      child: Text(
-                        '${(rate * 100).toInt()}%',
-                        style: lang.getTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-              const SizedBox(width: 18),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: lang.getTextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                      ),
+              Positioned(
+                bottom: -40,
+                left: -20,
+                child: Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        const Color(0xFFF59E0B).withOpacity(0.22),
+                        Colors.transparent,
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      subtitle,
-                      style: lang.getTextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white.withOpacity(0.78),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+              ),
+              // Subtle shine overlay across the top
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.14),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 78,
+                    height: 78,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CircularProgressIndicator(
+                          value: rate,
+                          strokeWidth: 8,
+                          backgroundColor: Colors.white.withOpacity(0.20),
+                          valueColor:
+                              const AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                        Center(
+                          child: Text(
+                            '${(rate * 100).toInt()}%',
+                            style: lang.getTextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: lang.getTextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          subtitle,
+                          style: lang.getTextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white.withOpacity(0.78),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -387,65 +570,141 @@ class _TrackingScreenState extends State<TrackingScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF102028) : Colors.white,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [
+                  const Color(0xFF142029),
+                  const Color(0xFF0F1A22),
+                ]
+              : [
+                  Colors.white,
+                  const Color(0xFFF7FAF9),
+                ],
+        ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isDark
-              ? color.withOpacity(0.15)
-              : color.withOpacity(0.18),
+              ? color.withOpacity(0.20)
+              : color.withOpacity(0.22),
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(isDark ? 0.08 : 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: color.withOpacity(isDark ? 0.16 : 0.12),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.22 : 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Row(
+      child: Stack(
         children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  color.withOpacity(isDark ? 0.25 : 0.15),
-                  color.withOpacity(isDark ? 0.1 : 0.06),
+          // Subtle top accent line — glowing
+          Positioned(
+            top: 0,
+            left: 14,
+            right: 14,
+            child: Container(
+              height: 2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    color.withOpacity(0),
+                    color.withOpacity(0.8),
+                    color.withOpacity(0),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(2),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.5),
+                    blurRadius: 6,
+                    spreadRadius: 1,
+                  ),
                 ],
               ),
-              borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(icon, color: color, size: 22),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  count.toString(),
-                  style: lang.getTextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                    color: color,
-                  ),
+          // Accent glow orb in background
+          Positioned(
+            top: -10,
+            right: -10,
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    color.withOpacity(isDark ? 0.18 : 0.12),
+                    Colors.transparent,
+                  ],
                 ),
-                Text(
-                  label,
-                  style: lang.getTextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    color: isDark ? Colors.white54 : const Color(0xFF64748B),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+              ),
             ),
+          ),
+          Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      color.withOpacity(isDark ? 0.32 : 0.22),
+                      color.withOpacity(isDark ? 0.14 : 0.08),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: color.withOpacity(isDark ? 0.3 : 0.24),
+                    width: 1.2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withOpacity(isDark ? 0.2 : 0.14),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(icon, color: color, size: 22),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      count.toString(),
+                      style: lang.getTextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w900,
+                        color: color,
+                      ),
+                    ),
+                    Text(
+                      label,
+                      style: lang.getTextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -517,21 +776,36 @@ class _TrackingScreenState extends State<TrackingScreen>
         return Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: isDark
-                ? const Color(0xFF102028)
-                : Colors.white.withOpacity(0.95),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [
+                      const Color(0xFF142029),
+                      const Color(0xFF0F1A22),
+                    ]
+                  : [
+                      Colors.white,
+                      const Color(0xFFF0F7F6),
+                    ],
+            ),
             borderRadius: BorderRadius.circular(26),
             border: Border.all(
               color: isDark
-                  ? Colors.white.withOpacity(0.06)
+                  ? Colors.white.withOpacity(0.08)
                   : const Color(0xFFD1FAE5),
             ),
             boxShadow: [
               BoxShadow(
                 color:
-                    const Color(0xFF059669).withOpacity(isDark ? 0.06 : 0.08),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
+                    const Color(0xFF059669).withOpacity(isDark ? 0.10 : 0.12),
+                blurRadius: 26,
+                offset: const Offset(0, 12),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.3 : 0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -541,17 +815,16 @@ class _TrackingScreenState extends State<TrackingScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    onPressed: () {
+                  _buildMonthNavButton(
+                    lang,
+                    isDark,
+                    lang.isRTL ? Icons.chevron_right : Icons.chevron_left,
+                    () {
                       setState(() {
                         _selectedMonth = DateTime(
                             _selectedMonth.year, _selectedMonth.month - 1);
                       });
                     },
-                    icon: Icon(
-                      lang.isRTL ? Icons.chevron_right : Icons.chevron_left,
-                      color: isDark ? Colors.white : const Color(0xFF12312E),
-                    ),
                   ),
                   Text(
                     '${monthNames[_selectedMonth.month - 1]} ${_selectedMonth.year}',
@@ -561,17 +834,16 @@ class _TrackingScreenState extends State<TrackingScreen>
                       color: isDark ? Colors.white : Colors.black87,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
+                  _buildMonthNavButton(
+                    lang,
+                    isDark,
+                    lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
+                    () {
                       setState(() {
                         _selectedMonth = DateTime(
                             _selectedMonth.year, _selectedMonth.month + 1);
                       });
                     },
-                    icon: Icon(
-                      lang.isRTL ? Icons.chevron_left : Icons.chevron_right,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
                   ),
                 ],
               ),
@@ -626,28 +898,50 @@ class _TrackingScreenState extends State<TrackingScreen>
                             _showDayStatusDialog(date, status, lang, isDark),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isFuture
-                            ? Colors.transparent
-                            : _getStatusColor(status).withOpacity(
-                                status == DayStatus.unknown ? 0.08 : 0.22),
+                        gradient: isFuture
+                            ? null
+                            : LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  _getStatusColor(status).withOpacity(
+                                      status == DayStatus.unknown ? 0.10 : 0.26),
+                                  _getStatusColor(status).withOpacity(
+                                      status == DayStatus.unknown ? 0.05 : 0.14),
+                                ],
+                              ),
                         borderRadius: BorderRadius.circular(13),
                         border: Border.all(
                           color: isToday
                               ? const Color(0xFF0D9488)
                               : (isFuture
                                   ? Colors.transparent
-                                  : _getStatusColor(status).withOpacity(0.18)),
+                                  : _getStatusColor(status).withOpacity(0.28)),
                           width: isToday ? 2 : 1,
                         ),
                         boxShadow: !isFuture && status != DayStatus.unknown
                             ? [
                                 BoxShadow(
                                     color: _getStatusColor(status)
-                                        .withOpacity(0.18),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 4))
+                                        .withOpacity(0.28),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4)),
+                                BoxShadow(
+                                    color: _getStatusColor(status)
+                                        .withOpacity(0.12),
+                                    blurRadius: 4,
+                                    spreadRadius: 1,
+                                    offset: Offset.zero),
                               ]
-                            : null,
+                            : (isToday
+                                ? [
+                                    BoxShadow(
+                                        color: const Color(0xFF0D9488)
+                                            .withOpacity(0.3),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 3)),
+                                  ]
+                                : null),
                       ),
                       child: Center(
                         child: Text(
@@ -709,28 +1003,112 @@ class _TrackingScreenState extends State<TrackingScreen>
     );
   }
 
+  // Glassmorphism month navigation button
+  Widget _buildMonthNavButton(
+      LanguageService lang, bool isDark, IconData icon, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [
+                    Colors.white.withOpacity(0.12),
+                    Colors.white.withOpacity(0.05),
+                  ]
+                : [
+                    Colors.white,
+                    const Color(0xFFE8F4F2),
+                  ],
+          ),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: isDark
+                ? Colors.white.withOpacity(0.15)
+                : const Color(0xFF0D9488).withOpacity(0.2),
+            width: 1.2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF0D9488).withOpacity(isDark ? 0.1 : 0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          color: isDark ? Colors.white : const Color(0xFF12312E),
+          size: 20,
+        ),
+      ),
+    );
+  }
+
   Widget _buildLegendItem(
       Color color, String label, LanguageService lang, bool isDark) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 12,
-          height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(3),
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [
+                  Colors.white.withOpacity(0.08),
+                  Colors.white.withOpacity(0.03),
+                ]
+              : [
+                  color.withOpacity(0.12),
+                  color.withOpacity(0.05),
+                ],
         ),
-        const SizedBox(width: 4),
-        Text(
-          label,
-          style: lang.getTextStyle(
-            fontSize: 11,
-            color: isDark ? Colors.white70 : Colors.black54,
-          ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: color.withOpacity(isDark ? 0.25 : 0.2),
+          width: 1,
         ),
-      ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  color,
+                  Color.lerp(color, Colors.black, 0.25)!,
+                ],
+              ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.5),
+                  blurRadius: 4,
+                  spreadRadius: 0.5,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: lang.getTextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -745,24 +1123,53 @@ class _TrackingScreenState extends State<TrackingScreen>
     return Consumer<TrackingService>(
       builder: (context, trackingService, child) {
         final isRecorded = trackingService.isTodayRecorded();
+        final accent = isRecorded ? successColor : const Color(0xFF0D9488);
 
-        return FloatingActionButton.extended(
-          onPressed: () => _showStatusModal(lang, isDark),
-          backgroundColor: isRecorded ? successColor : const Color(0xFF0D9488),
-          icon: Icon(
-            isRecorded ? Icons.check : Icons.add,
-            color: Colors.white,
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                accent,
+                Color.lerp(accent, const Color(0xFFF59E0B), 0.35)!,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: accent.withOpacity(0.45),
+                blurRadius: 22,
+                offset: const Offset(0, 10),
+                spreadRadius: 1,
+              ),
+              BoxShadow(
+                color: const Color(0xFFF59E0B).withOpacity(0.28),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          label: Text(
-            lang.currentLanguage == AppLanguage.arabic
-                ? (isRecorded ? 'تم التسجيل' : 'سجّل اليوم')
-                : lang.currentLanguage == AppLanguage.kurdish
-                    ? (isRecorded ? 'تۆمارکرا' : 'ئەمڕۆ تۆماربکە')
-                    : (isRecorded ? 'Recorded' : 'Record Today'),
-            style: lang.getTextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+          child: FloatingActionButton.extended(
+            onPressed: () => _showStatusModal(lang, isDark),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            highlightElevation: 0,
+            icon: Icon(
+              isRecorded ? Icons.check : Icons.add,
               color: Colors.white,
+            ),
+            label: Text(
+              lang.currentLanguage == AppLanguage.arabic
+                  ? (isRecorded ? 'تم التسجيل' : 'سجّل اليوم')
+                  : lang.currentLanguage == AppLanguage.kurdish
+                      ? (isRecorded ? 'تۆمارکرا' : 'ئەمڕۆ تۆماربکە')
+                      : (isRecorded ? 'Recorded' : 'Record Today'),
+              style: lang.getTextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
             ),
           ),
         );
@@ -793,32 +1200,72 @@ class _TrackingScreenState extends State<TrackingScreen>
           child: Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1A1A2E) : Colors.white,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? [
+                        const Color(0xFF1A2230),
+                        const Color(0xFF141826),
+                      ]
+                    : [
+                        Colors.white,
+                        const Color(0xFFF7FAF9),
+                      ],
+              ),
               borderRadius: BorderRadius.circular(28),
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withOpacity(0.08)
+                    : const Color(0xFFD1FAE5),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 36,
+                  offset: const Offset(0, 18),
+                ),
+                BoxShadow(
+                  color: const Color(0xFF0D9488).withOpacity(0.12),
+                  blurRadius: 18,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Date display
+                // Date display — premium pill
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0D9488).withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFF0D9488).withOpacity(0.22),
+                        const Color(0xFF0D9488).withOpacity(0.10),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: const Color(0xFF0D9488).withOpacity(0.3),
+                      width: 1.2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF0D9488).withOpacity(0.18),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Text(
                     '${date.day}/${date.month}/${date.year}',
                     style: lang.getTextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: const Color(0xFF0D9488),
                     ),
                   ),
@@ -924,21 +1371,49 @@ class _TrackingScreenState extends State<TrackingScreen>
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
         decoration: BoxDecoration(
-          color: isSelected ? color : color.withOpacity(0.15),
+          gradient: isSelected
+              ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    color,
+                    Color.lerp(color, const Color(0xFFF59E0B), 0.3)!,
+                  ],
+                )
+              : LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    color.withOpacity(0.18),
+                    color.withOpacity(0.08),
+                  ],
+                ),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: color.withOpacity(isSelected ? 1.0 : 0.4),
+            color: color.withOpacity(isSelected ? 1.0 : 0.45),
             width: 2,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
+                    color: color.withOpacity(0.5),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                    spreadRadius: 1,
+                  ),
+                  BoxShadow(
+                    color: color.withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
                 ]
-              : null,
+              : [
+                  BoxShadow(
+                    color: color.withOpacity(isDark ? 0.12 : 0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

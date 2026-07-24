@@ -81,40 +81,101 @@ class _HabitsScreenState extends State<HabitsScreen>
               end: Alignment.bottomCenter,
               colors: isDark
                   ? [
-                      const Color(0xFF061A18),
-                      const Color(0xFF102A27),
-                      const Color(0xFF071312)
+                      const Color(0xFF04110F),
+                      const Color(0xFF0B2421),
+                      const Color(0xFF061412),
+                      const Color(0xFF020A09)
                     ]
                   : [
-                      const Color(0xFFF1FFFC),
-                      const Color(0xFFF7FAF2),
-                      const Color(0xFFFFF7E8)
+                      const Color(0xFFEEFBF6),
+                      const Color(0xFFF5FAF0),
+                      const Color(0xFFFBF7EC),
+                      const Color(0xFFFFF3DD)
                     ],
             ),
           ),
-          child: SafeArea(
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  _buildHeader(lang, isDark, title),
-                  _buildProgressCard(lang, isDark, languageCode),
-                  _buildTabBar(isDark, addHabitsText, myHabitsText),
-                  Expanded(
-                    child: _showAddHabits
-                        ? _buildHabitsGrid(lang, isDark, languageCode)
-                        : _buildUserHabits(lang, isDark, languageCode),
-                  ),
-                ],
+          child: Stack(
+            children: [
+              // Ambient radial glow orbs for depth
+              Positioned(
+                top: -60,
+                left: -80,
+                child: _buildAmbientOrb(
+                  260,
+                  isDark
+                      ? const Color(0xFF0D9488).withOpacity(0.22)
+                      : const Color(0xFF5EEAD4).withOpacity(0.35),
+                ),
               ),
-            ),
+              Positioned(
+                top: 120,
+                right: -100,
+                child: _buildAmbientOrb(
+                  300,
+                  isDark
+                      ? const Color(0xFF0EA5E9).withOpacity(0.16)
+                      : const Color(0xFF7DD3FC).withOpacity(0.32),
+                ),
+              ),
+              Positioned(
+                bottom: -80,
+                left: 40,
+                child: _buildAmbientOrb(
+                  240,
+                  isDark
+                      ? const Color(0xFFF59E0B).withOpacity(0.12)
+                      : const Color(0xFFFCD34D).withOpacity(0.28),
+                ),
+              ),
+              SafeArea(
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    children: [
+                      _buildHeader(lang, isDark, title),
+                      _buildProgressCard(lang, isDark, languageCode),
+                      _buildTabBar(isDark, addHabitsText, myHabitsText),
+                      Expanded(
+                        child: _showAddHabits
+                            ? _buildHabitsGrid(lang, isDark, languageCode)
+                            : _buildUserHabits(lang, isDark, languageCode),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         floatingActionButton: _showAddHabits
-            ? FloatingActionButton(
-                onPressed: () => _showAddCustomHabitDialog(lang, isDark),
-                backgroundColor: const Color(0xFF0D9488),
-                child: const Icon(Icons.add, color: Colors.white),
+            ? Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(18),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF14B8A6), Color(0xFF0D9488), Color(0xFF0F766E)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF0D9488).withOpacity(0.45),
+                      blurRadius: 24,
+                      offset: const Offset(0, 10),
+                    ),
+                    BoxShadow(
+                      color: const Color(0xFF0F766E).withOpacity(0.25),
+                      blurRadius: 40,
+                      offset: const Offset(0, 18),
+                    ),
+                  ],
+                ),
+                child: FloatingActionButton(
+                  elevation: 0,
+                  highlightElevation: 0,
+                  onPressed: () => _showAddCustomHabitDialog(lang, isDark),
+                  backgroundColor: Colors.transparent,
+                  child: const Icon(Icons.add, color: Colors.white, size: 30),
+                ),
               )
             : null,
       ),
@@ -134,26 +195,14 @@ class _HabitsScreenState extends State<HabitsScreen>
         children: [
           GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-              ),
-              child: Icon(
+            child: _buildGlassButton(
+              Icon(
                 lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
-                color: isDark ? Colors.white70 : Colors.grey[700],
+                color: isDark ? Colors.white70 : const Color(0xFF064E3B),
                 size: 22,
               ),
+              isDark,
+              const Color(0xFF0D9488),
             ),
           ),
           const SizedBox(width: 16),
@@ -185,26 +234,14 @@ class _HabitsScreenState extends State<HabitsScreen>
           ),
           GestureDetector(
             onTap: () => _showStatisticsSheet(lang, isDark),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: const Color(0xFF059669).withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-              ),
-              child: const Icon(
+            child: _buildGlassButton(
+              const Icon(
                 Icons.bar_chart_rounded,
                 color: Color(0xFF059669),
                 size: 22,
               ),
+              isDark,
+              const Color(0xFF059669),
             ),
           ),
         ],
@@ -263,9 +300,14 @@ class _HabitsScreenState extends State<HabitsScreen>
             boxShadow: [
               BoxShadow(
                 color:
-                    const Color(0xFF0F766E).withOpacity(isDark ? 0.28 : 0.22),
-                blurRadius: 30,
-                offset: const Offset(0, 18),
+                    const Color(0xFF0F766E).withOpacity(isDark ? 0.40 : 0.30),
+                blurRadius: 38,
+                offset: const Offset(0, 22),
+              ),
+              BoxShadow(
+                color: const Color(0xFF14B8A6).withOpacity(isDark ? 0.22 : 0.16),
+                blurRadius: 60,
+                offset: const Offset(0, 40),
               ),
             ],
           ),
@@ -281,28 +323,64 @@ class _HabitsScreenState extends State<HabitsScreen>
                         end: Alignment.bottomRight,
                         colors: isDark
                             ? [
-                                const Color(0xFF104E48),
+                                const Color(0xFF0B3F3A),
                                 const Color(0xFF0F766E),
+                                const Color(0xFF115E5A),
                                 const Color(0xFF1F2937)
                               ]
                             : [
                                 const Color(0xFF0D9488),
                                 const Color(0xFF14B8A6),
+                                const Color(0xFF0EA5A0),
                                 const Color(0xFFF59E0B)
                               ],
                       ),
                     ),
                   ),
                 ),
+                // Inner glow orbs
                 Positioned(
-                  top: -36,
-                  right: -22,
-                  child: _buildGlowCircle(110, Colors.white.withOpacity(0.16)),
+                  top: -40,
+                  right: -28,
+                  child: _buildAmbientOrb(
+                    120,
+                    Colors.white.withOpacity(0.20),
+                  ),
                 ),
                 Positioned(
-                  bottom: -52,
-                  left: -26,
-                  child: _buildGlowCircle(140, Colors.white.withOpacity(0.10)),
+                  bottom: -60,
+                  left: -30,
+                  child: _buildAmbientOrb(
+                    150,
+                    Colors.white.withOpacity(0.12),
+                  ),
+                ),
+                Positioned(
+                  top: 40,
+                  left: 120,
+                  child: _buildAmbientOrb(
+                    90,
+                    const Color(0xFF5EEAD4).withOpacity(0.18),
+                  ),
+                ),
+                // Top shine overlay
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 80,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withOpacity(0.22),
+                          Colors.white.withOpacity(0),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
@@ -416,6 +494,59 @@ class _HabitsScreenState extends State<HabitsScreen>
     );
   }
 
+  Widget _buildAmbientOrb(double size, Color color) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [color, color.withOpacity(0)],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGlassButton(Widget child, bool isDark, Color accent) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [
+                  Colors.white.withOpacity(0.14),
+                  Colors.white.withOpacity(0.06),
+                ]
+              : [Colors.white, Colors.white.withOpacity(0.85)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withOpacity(0.18)
+              : accent.withOpacity(0.18),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withOpacity(0.35)
+                : Colors.black.withOpacity(0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
+          BoxShadow(
+            color: accent.withOpacity(isDark ? 0.22 : 0.14),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+
   Widget _buildProgressMetric(
       LanguageService lang, IconData icon, String value, String label) {
     return Expanded(
@@ -468,9 +599,14 @@ class _HabitsScreenState extends State<HabitsScreen>
             color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0F766E).withOpacity(isDark ? 0.08 : 0.10),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: const Color(0xFF0F766E).withOpacity(isDark ? 0.12 : 0.14),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.25 : 0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -485,16 +621,33 @@ class _HabitsScreenState extends State<HabitsScreen>
                 decoration: BoxDecoration(
                   gradient: !_showAddHabits
                       ? const LinearGradient(
-                          colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
-                      : null,
-                  color: !_showAddHabits ? null : Colors.transparent,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF14B8A6), Color(0xFF0D9488), Color(0xFF0F766E)])
+                      : LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  Colors.white.withOpacity(0.04),
+                                  Colors.white.withOpacity(0.01)
+                                ]
+                              : [
+                                  Colors.white.withOpacity(0.6),
+                                  Colors.white.withOpacity(0.2)
+                                ],
+                        ),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: !_showAddHabits
                       ? [
                           BoxShadow(
-                              color: const Color(0xFF0D9488).withOpacity(0.28),
-                              blurRadius: 12,
-                              offset: const Offset(0, 5))
+                              color: const Color(0xFF0D9488).withOpacity(0.42),
+                              blurRadius: 18,
+                              offset: const Offset(0, 7)),
+                          BoxShadow(
+                              color: const Color(0xFF14B8A6).withOpacity(0.28),
+                              blurRadius: 28,
+                              offset: const Offset(0, 12)),
                         ]
                       : null,
                 ),
@@ -521,16 +674,33 @@ class _HabitsScreenState extends State<HabitsScreen>
                 decoration: BoxDecoration(
                   gradient: _showAddHabits
                       ? const LinearGradient(
-                          colors: [Color(0xFF0D9488), Color(0xFF0F766E)])
-                      : null,
-                  color: _showAddHabits ? null : Colors.transparent,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Color(0xFF14B8A6), Color(0xFF0D9488), Color(0xFF0F766E)])
+                      : LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  Colors.white.withOpacity(0.04),
+                                  Colors.white.withOpacity(0.01)
+                                ]
+                              : [
+                                  Colors.white.withOpacity(0.6),
+                                  Colors.white.withOpacity(0.2)
+                                ],
+                        ),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: _showAddHabits
                       ? [
                           BoxShadow(
-                              color: const Color(0xFF0D9488).withOpacity(0.28),
-                              blurRadius: 12,
-                              offset: const Offset(0, 5))
+                              color: const Color(0xFF0D9488).withOpacity(0.42),
+                              blurRadius: 18,
+                              offset: const Offset(0, 7)),
+                          BoxShadow(
+                              color: const Color(0xFF14B8A6).withOpacity(0.28),
+                              blurRadius: 28,
+                              offset: const Offset(0, 12)),
                         ]
                       : null,
                 ),
@@ -711,21 +881,38 @@ class _HabitsScreenState extends State<HabitsScreen>
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF102028) : Colors.white,
         borderRadius: BorderRadius.circular(22),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [
+                  const Color(0xFF14252C),
+                  const Color(0xFF0C1B20),
+                ]
+              : [
+                  Colors.white,
+                  const Color(0xFFFAFCFE),
+                ],
+        ),
         border: Border.all(
           color: isCompleted
-              ? habitInfo.color.withOpacity(0.4)
-              : (isDark ? Colors.white.withOpacity(0.06) : const Color(0xFFE2E8F0)),
+              ? habitInfo.color.withOpacity(0.5)
+              : (isDark ? Colors.white.withOpacity(0.08) : const Color(0xFFE2E8F0)),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
             color: isCompleted
-                ? habitInfo.color.withOpacity(0.12)
-                : const Color(0xFF059669).withOpacity(isDark ? 0.04 : 0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+                ? habitInfo.color.withOpacity(0.22)
+                : const Color(0xFF059669).withOpacity(isDark ? 0.08 : 0.10),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.30 : 0.04),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -738,17 +925,26 @@ class _HabitsScreenState extends State<HabitsScreen>
               top: 0,
               left: 0,
               right: 0,
-              height: 3,
+              height: 4,
               child: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: [
-                      habitInfo.color.withOpacity(isCompleted ? 0.8 : 0.3),
-                      habitInfo.color.withOpacity(isCompleted ? 0.4 : 0.1),
+                      habitInfo.color.withOpacity(isCompleted ? 0.95 : 0.4),
+                      habitInfo.color.withOpacity(isCompleted ? 0.5 : 0.12),
                     ],
                   ),
+                  boxShadow: isCompleted
+                      ? [
+                          BoxShadow(
+                            color: habitInfo.color.withOpacity(0.5),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : null,
                 ),
               ),
             ),
@@ -763,37 +959,66 @@ class _HabitsScreenState extends State<HabitsScreen>
                   padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
                   child: Row(
                     children: [
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          gradient: isCompleted
-                              ? LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    habitInfo.color.withOpacity(0.2),
-                                    habitInfo.color.withOpacity(0.08),
-                                  ],
-                                )
-                              : null,
-                          color: isCompleted
-                              ? null
-                              : (isDark
-                                  ? Colors.white.withOpacity(0.06)
-                                  : const Color(0xFFF1F5F9)),
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(
-                            color: habitInfo.color.withOpacity(isCompleted ? 0.3 : 0.08),
+                      // Icon with accent glow orb behind it
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Positioned.fill(
+                            child: _buildAmbientOrb(
+                              70,
+                              habitInfo.color.withOpacity(isCompleted ? 0.30 : 0.14),
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            habitInfo.emoji,
-                            style: TextStyle(fontSize: isCompleted ? 28 : 24),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              gradient: isCompleted
+                                  ? LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        habitInfo.color.withOpacity(0.28),
+                                        habitInfo.color.withOpacity(0.10),
+                                      ],
+                                    )
+                                  : LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: isDark
+                                          ? [
+                                              Colors.white.withOpacity(0.10),
+                                              Colors.white.withOpacity(0.03)
+                                            ]
+                                          : [
+                                              const Color(0xFFF8FAFC),
+                                              const Color(0xFFF1F5F9)
+                                            ],
+                                    ),
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(
+                                color: habitInfo.color.withOpacity(isCompleted ? 0.4 : 0.12),
+                                width: 1.5,
+                              ),
+                              boxShadow: isCompleted
+                                  ? [
+                                      BoxShadow(
+                                        color: habitInfo.color.withOpacity(0.25),
+                                        blurRadius: 14,
+                                        offset: const Offset(0, 6),
+                                      ),
+                                    ]
+                                  : null,
+                            ),
+                            child: Center(
+                              child: Text(
+                                habitInfo.emoji,
+                                style: TextStyle(fontSize: isCompleted ? 28 : 24),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -821,13 +1046,37 @@ class _HabitsScreenState extends State<HabitsScreen>
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
+                                      horizontal: 10, vertical: 5),
                                   decoration: BoxDecoration(
-                                    color: (userHabit.currentStreak > 0
-                                            ? Colors.orange
-                                            : Colors.grey)
-                                        .withOpacity(0.1),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: (userHabit.currentStreak > 0
+                                              ? Colors.orange
+                                              : Colors.grey)
+                                          .withOpacity(0.14)
+                                          .withOpacity(1)
+                                          .toString()
+                                          .isNotEmpty
+                                          ? [
+                                              (userHabit.currentStreak > 0
+                                                      ? Colors.orange
+                                                      : Colors.grey)
+                                                  .withOpacity(0.18),
+                                              (userHabit.currentStreak > 0
+                                                      ? Colors.orange
+                                                      : Colors.grey)
+                                                  .withOpacity(0.08),
+                                            ]
+                                          : [Colors.transparent],
+                                    ),
                                     borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: (userHabit.currentStreak > 0
+                                              ? Colors.orange
+                                              : Colors.grey)
+                                          .withOpacity(0.15),
+                                    ),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -866,10 +1115,13 @@ class _HabitsScreenState extends State<HabitsScreen>
                         height: 36,
                         decoration: BoxDecoration(
                           gradient: isCompleted
-                              ? LinearGradient(colors: [
-                                  habitInfo.color,
-                                  habitInfo.color.withOpacity(0.7),
-                                ])
+                              ? LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    habitInfo.color,
+                                    habitInfo.color.withOpacity(0.7),
+                                  ])
                               : null,
                           color: isCompleted ? null : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
@@ -879,6 +1131,15 @@ class _HabitsScreenState extends State<HabitsScreen>
                                 : (isDark ? Colors.white24 : const Color(0xFFE2E8F0)),
                             width: 2,
                           ),
+                          boxShadow: isCompleted
+                              ? [
+                                  BoxShadow(
+                                    color: habitInfo.color.withOpacity(0.4),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ]
+                              : null,
                         ),
                         child: isCompleted
                             ? const Icon(Icons.check_rounded,

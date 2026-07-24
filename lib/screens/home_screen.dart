@@ -3199,23 +3199,109 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         drawerEnableOpenDragGesture: false,
         body: Stack(
           children: [
-            // Background
+            // Background — premium multi-layer gradient with soft mesh
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: isDark
+                      ? [0.0, 0.35, 0.7, 1.0]
+                      : [0.0, 0.3, 0.65, 1.0],
                   colors: isDark
                       ? [
-                          const Color(0xFF0F172A),
-                          const Color(0xFF16283E),
-                          const Color(0xFF0F172A),
+                          const Color(0xFF0B1426),
+                          const Color(0xFF0F1E3D),
+                          const Color(0xFF13283F),
+                          const Color(0xFF0A1628),
                         ]
                       : [
-                          const Color(0xFFF8FAFA),
-                          const Color(0xFFF1F7F6),
-                          const Color(0xFFF8FAFA),
+                          const Color(0xFFFAFCFD),
+                          const Color(0xFFF0F7F6),
+                          const Color(0xFFE8F4F2),
+                          const Color(0xFFF5FAF9),
                         ],
+                ),
+              ),
+            ),
+            // Soft radial glow accents for depth — premium ambient orbs
+            Positioned(
+              top: -100,
+              right: -80,
+              child: Container(
+                width: 320,
+                height: 320,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      (isDark
+                          ? const Color(0xFF14B8A6)
+                          : const Color(0xFF0D9488))
+                          .withOpacity(isDark ? 0.1 : 0.07),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 200,
+              left: -120,
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      (isDark
+                          ? const Color(0xFF818CF8)
+                          : const Color(0xFFA78BFA))
+                          .withOpacity(isDark ? 0.07 : 0.05),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -120,
+              left: -80,
+              child: Container(
+                width: 340,
+                height: 340,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      (isDark
+                          ? const Color(0xFF6366F1)
+                          : const Color(0xFF14B8A6))
+                          .withOpacity(isDark ? 0.08 : 0.06),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 100,
+              right: -100,
+              child: Container(
+                width: 260,
+                height: 260,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      (isDark
+                          ? const Color(0xFFC084FC)
+                          : const Color(0xFFF59E0B))
+                          .withOpacity(isDark ? 0.05 : 0.04),
+                      Colors.transparent,
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -3252,30 +3338,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               isVerySmall ? 4.0 : (isSmallScreen ? 6.0 : 8.0);
 
                           final btnBg = isDark
-                              ? const Color(0xFF1E293B)
-                              : const Color(0xFFFFFFFF);
+                              ? Colors.white.withOpacity(0.08)
+                              : Colors.white.withOpacity(0.75);
+                          final btnBorder = isDark
+                              ? Colors.white.withOpacity(0.12)
+                              : Colors.white.withOpacity(0.9);
                           final btnShadow = isDark
                               ? [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.15),
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 4),
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 16,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFF14B8A6)
+                                        .withOpacity(0.08),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 2),
                                   ),
                                 ]
                               : [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.06),
-                                    blurRadius: 14,
+                                    color: Colors.black.withOpacity(0.05),
+                                    blurRadius: 16,
                                     offset: const Offset(0, 4),
                                   ),
                                   BoxShadow(
                                     color: const Color(0xFF0D9488)
-                                        .withOpacity(0.06),
-                                    blurRadius: 20,
+                                        .withOpacity(0.08),
+                                    blurRadius: 24,
                                     offset: const Offset(0, 2),
                                   ),
                                 ];
-                          final btnRadius = BorderRadius.circular(16);
+                          final btnRadius = BorderRadius.circular(18);
 
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -3294,8 +3389,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       ),
                                       padding: EdgeInsets.all(iconPadding),
                                       decoration: BoxDecoration(
-                                        color: btnBg,
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: isDark
+                                              ? [
+                                                  Colors.white
+                                                      .withOpacity(0.12),
+                                                  Colors.white
+                                                      .withOpacity(0.06),
+                                                ]
+                                              : [
+                                                  Colors.white
+                                                      .withOpacity(0.9),
+                                                  Colors.white
+                                                      .withOpacity(0.6),
+                                                ],
+                                        ),
                                         borderRadius: btnRadius,
+                                        border: Border.all(
+                                          color: btnBorder,
+                                          width: 1,
+                                        ),
                                         boxShadow: btnShadow,
                                       ),
                                       child: Icon(
@@ -3447,14 +3562,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     4,
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    color: const Color(
-                                                      0xFFF43F5E,
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      begin:
+                                                          Alignment.topLeft,
+                                                      end: Alignment
+                                                          .bottomRight,
+                                                      colors: [
+                                                        Color(0xFFFF6B6B),
+                                                        Color(0xFFF43F5E),
+                                                      ],
                                                     ),
                                                     shape: BoxShape.circle,
                                                     border: Border.all(
                                                       color: Colors.white,
                                                       width: 1.5,
                                                     ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color(
+                                                          0xFFF43F5E,
+                                                        ).withOpacity(0.4),
+                                                        blurRadius: 8,
+                                                        offset:
+                                                            const Offset(
+                                                          0,
+                                                          2,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                   constraints:
                                                       const BoxConstraints(
@@ -3533,8 +3669,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                   padding: EdgeInsets.all(iconPadding),
                                   decoration: BoxDecoration(
-                                    color: btnBg,
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: isDark
+                                          ? [
+                                              Colors.white
+                                                  .withOpacity(0.12),
+                                              Colors.white
+                                                  .withOpacity(0.06),
+                                            ]
+                                          : [
+                                              Colors.white
+                                                  .withOpacity(0.9),
+                                              Colors.white
+                                                  .withOpacity(0.6),
+                                            ],
+                                    ),
                                     borderRadius: btnRadius,
+                                    border: Border.all(
+                                      color: btnBorder,
+                                      width: 1,
+                                    ),
                                     boxShadow: btnShadow,
                                   ),
                                   child: Icon(
@@ -4583,34 +4739,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       backgroundColor: Colors.transparent,
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.0, 0.3, 1.0],
+            colors: isDark
+                ? [
+                    const Color(0xFF0B1426),
+                    const Color(0xFF0F172A),
+                    const Color(0xFF080F1E),
+                  ]
+                : [
+                    const Color(0xFFFAFCFD),
+                    const Color(0xFFF8FAFC),
+                    const Color(0xFFF1F5F9),
+                  ],
+          ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              // Header with profile - no gradient background
+              // Header with profile — premium gradient
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 24,
                 ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: isDark
+                        ? [
+                            const Color(0xFF14B8A6).withOpacity(0.08),
+                            Colors.transparent,
+                          ]
+                        : [
+                            const Color(0xFF0D9488).withOpacity(0.06),
+                            Colors.transparent,
+                          ],
+                  ),
+                ),
                 child: Column(
                   children: [
-                    // Profile image with green border
+                    // Profile image with glowing border ring
                     Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: const Color(0xFF00BFA5),
-                          width: 3,
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF14B8A6),
+                            Color(0xFF0D9488),
+                            Color(0xFF00BFA5),
+                          ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF00BFA5).withOpacity(0.3),
-                            blurRadius: 15,
-                            spreadRadius: 2,
+                            color: const Color(0xFF00BFA5).withOpacity(0.35),
+                            blurRadius: 20,
+                            spreadRadius: 3,
                           ),
                         ],
                       ),
@@ -4690,8 +4881,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           boxShadow: [
                             BoxShadow(
                               color: const Color(0xFF00C9FF).withOpacity(0.4),
+                              blurRadius: 16,
+                              offset: const Offset(0, 6),
+                            ),
+                            BoxShadow(
+                              color: const Color(0xFF92FE9D).withOpacity(0.2),
                               blurRadius: 12,
-                              offset: const Offset(0, 4),
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
@@ -4994,16 +5190,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     final itemContent = [
       Container(
-        width: 42,
-        height: 42,
+        width: 44,
+        height: 44,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: isActive
-              ? primaryColor.withOpacity(isDark ? 0.18 : 0.12)
-              : (isDark
-                  ? Colors.white.withOpacity(0.05)
-                  : const Color(0xFFF1F5F9)),
-          borderRadius: BorderRadius.circular(14),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isActive
+                ? [
+                    primaryColor.withOpacity(isDark ? 0.22 : 0.15),
+                    primaryColor.withOpacity(isDark ? 0.1 : 0.06),
+                  ]
+                : isDark
+                    ? [
+                        Colors.white.withOpacity(0.07),
+                        Colors.white.withOpacity(0.03),
+                      ]
+                    : [
+                        const Color(0xFFF1F5F9),
+                        Colors.white.withOpacity(0.8),
+                      ],
+          ),
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: isActive
+                ? primaryColor.withOpacity(isDark ? 0.3 : 0.2)
+                : isDark
+                    ? Colors.white.withOpacity(0.06)
+                    : Colors.white.withOpacity(0.5),
+            width: 1,
+          ),
         ),
         child: iconWidget,
       ),
@@ -5030,10 +5247,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           width: 4,
           height: 24,
           decoration: BoxDecoration(
-            color: primaryColor,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                primaryColor,
+                primaryColor.withOpacity(0.5),
+              ],
+            ),
             borderRadius: BorderRadius.circular(4),
             boxShadow: [
-              BoxShadow(color: primaryColor.withOpacity(0.35), blurRadius: 6),
+              BoxShadow(color: primaryColor.withOpacity(0.4), blurRadius: 8),
             ],
           ),
         ),
@@ -5046,8 +5270,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         boxShadow: [
           if (isActive)
             BoxShadow(
-              color: primaryColor.withOpacity(isDark ? 0.10 : 0.06),
-              blurRadius: 14,
+              color: primaryColor.withOpacity(isDark ? 0.12 : 0.08),
+              blurRadius: 16,
               offset: const Offset(0, 6),
             ),
         ],
@@ -5060,8 +5284,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ? const Color(0xFF12362F).withOpacity(0.74)
                   : const Color(0xFFEFFCF8))
               : (isDark
-                  ? const Color(0xFF111827).withOpacity(0.34)
-                  : Colors.white.withOpacity(0.78)),
+                  ? Colors.white.withOpacity(0.04)
+                  : Colors.white.withOpacity(0.7)),
           child: InkWell(
             onTap: isDisabled ? null : onTap,
             splashColor: primaryColor.withOpacity(0.15),
@@ -5072,10 +5296,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
                   color: isActive
-                      ? primaryColor.withOpacity(0.30)
+                      ? primaryColor.withOpacity(0.35)
                       : (isDark
                           ? Colors.white.withOpacity(0.06)
-                          : const Color(0xFFE2E8F0)),
+                          : Colors.white.withOpacity(0.4)),
                   width: 1,
                 ),
               ),
@@ -5096,67 +5320,106 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Color color,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(top: 24, bottom: 10, left: 2, right: 2),
+      padding: const EdgeInsets.only(top: 28, bottom: 12, left: 2, right: 2),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: isDark
                 ? [
-                    color.withOpacity(0.15),
-                    color.withOpacity(0.05),
+                    color.withOpacity(0.2),
+                    color.withOpacity(0.08),
+                    Colors.transparent,
                   ]
                 : [
-                    color.withOpacity(0.08),
-                    color.withOpacity(0.02),
+                    color.withOpacity(0.12),
+                    color.withOpacity(0.04),
+                    Colors.transparent,
                   ],
           ),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: color.withOpacity(isDark ? 0.2 : 0.15),
+            color: color.withOpacity(isDark ? 0.25 : 0.2),
             width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(isDark ? 0.08 : 0.05),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
+            // Left accent bar with glow
             Container(
-              width: 5,
-              height: 22,
+              width: 6,
+              height: 28,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [color, color.withOpacity(0.6)],
+                  colors: [
+                    color,
+                    color.withOpacity(0.4),
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(3),
-                boxShadow: const [],
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(0.5),
+                    blurRadius: 10,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Expanded(
               child: Text(
                 title,
                 style: lang.getTextStyle(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                   color: isDark
                       ? Colors.white.withOpacity(0.95)
                       : const Color(0xFF1E293B),
+                  height: 1.2,
                 ),
               ),
             ),
+            // Arrow pill with gradient
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: color.withOpacity(isDark ? 0.2 : 0.1),
-                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    color.withOpacity(isDark ? 0.25 : 0.15),
+                    color.withOpacity(isDark ? 0.1 : 0.06),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: color.withOpacity(isDark ? 0.2 : 0.15),
+                  width: 0.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withOpacity(isDark ? 0.08 : 0.05),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Icon(
                 Icons.arrow_forward_rounded,
                 size: 16,
-                color: color.withOpacity(isDark ? 0.8 : 0.7),
+                color: color.withOpacity(isDark ? 0.85 : 0.75),
               ),
             ),
           ],
@@ -5252,24 +5515,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             end: Alignment.bottomRight,
             colors: isDark
                 ? [
-                    accentColor.withOpacity(0.22),
-                    accentColor.withOpacity(0.08),
+                    accentColor.withOpacity(0.25),
+                    accentColor.withOpacity(0.1),
                   ]
                 : [
-                    accentColor.withOpacity(0.14),
-                    accentColor.withOpacity(0.05),
+                    accentColor.withOpacity(0.16),
+                    accentColor.withOpacity(0.06),
                   ],
           ),
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(26),
           border: Border.all(
-            color: accentColor.withOpacity(isDark ? 0.25 : 0.18),
+            color: accentColor.withOpacity(isDark ? 0.28 : 0.2),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: accentColor.withOpacity(isDark ? 0.12 : 0.08),
-              blurRadius: 12,
-              offset: const Offset(0, 5),
+              color: accentColor.withOpacity(isDark ? 0.14 : 0.1),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -5330,7 +5593,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(26),
         child: Material(
           color: isDark ? const Color(0xFF15231F) : Colors.white,
           child: InkWell(
@@ -5338,30 +5601,72 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             splashColor: accentColor.withOpacity(0.12),
             highlightColor: accentColor.withOpacity(0.05),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(26),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? [
+                          Colors.white.withOpacity(0.04),
+                          Colors.transparent,
+                        ]
+                      : [
+                          Colors.white,
+                          const Color(0xFFFAFCFD),
+                        ],
+                ),
                 border: Border.all(
                   color: isDark
-                      ? Colors.white.withOpacity(0.07)
+                      ? Colors.white.withOpacity(0.1)
                       : const Color(0xFFE2E8F0),
                   width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: accentColor.withOpacity(isDark ? 0.08 : 0.06),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
+                    color: accentColor.withOpacity(isDark ? 0.12 : 0.09),
+                    blurRadius: 28,
+                    offset: const Offset(0, 12),
                   ),
                   BoxShadow(
-                    color: Colors.black.withOpacity(isDark ? 0.08 : 0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(isDark ? 0.12 : 0.04),
+                    blurRadius: 14,
+                    offset: const Offset(0, 5),
+                  ),
+                  BoxShadow(
+                    color: accentColor.withOpacity(isDark ? 0.04 : 0.03),
+                    blurRadius: 6,
+                    offset: const Offset(0, -1),
                   ),
                 ],
               ),
-              child: Row(
-                children: isRTL ? cardContent.reversed.toList() : cardContent,
+              child: Stack(
+                children: [
+                  // Accent glow orb in background
+                  Positioned(
+                    top: -20,
+                    right: isRTL ? null : -20,
+                    left: isRTL ? -20 : null,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            accentColor.withOpacity(isDark ? 0.08 : 0.05),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children:
+                        isRTL ? cardContent.reversed.toList() : cardContent,
+                  ),
+                ],
               ),
             ),
           ),
@@ -5386,43 +5691,74 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(24),
         splashColor: accentColor.withOpacity(0.12),
         highlightColor: accentColor.withOpacity(0.05),
         child: Container(
-          height: 140,
+          height: 148,
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF15231F) : Colors.white,
-            borderRadius: BorderRadius.circular(22),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [
+                      const Color(0xFF15231F),
+                      const Color(0xFF101C19),
+                    ]
+                  : [
+                      Colors.white,
+                      const Color(0xFFFAFCFD),
+                    ],
+            ),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: isDark
-                  ? Colors.white.withOpacity(0.07)
+                  ? Colors.white.withOpacity(0.08)
                   : const Color(0xFFE2E8F0),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: accentColor.withOpacity(isDark ? 0.08 : 0.06),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
+                color: accentColor.withOpacity(isDark ? 0.1 : 0.07),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(isDark ? 0.1 : 0.03),
-                blurRadius: 10,
+                color: Colors.black.withOpacity(isDark ? 0.12 : 0.03),
+                blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(24),
             child: Stack(
               children: [
-                // Top gradient accent line
+                // Background accent glow — radial for depth
+                Positioned(
+                  top: -30,
+                  right: isRTL ? null : -30,
+                  left: isRTL ? -30 : null,
+                  child: Container(
+                    width: 160,
+                    height: 160,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          accentColor.withOpacity(isDark ? 0.1 : 0.06),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Top gradient accent line — wider and glowing
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
-                  height: 3,
+                  height: 5,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -5430,9 +5766,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         end: Alignment.centerRight,
                         colors: [
                           accentColor,
-                          accentColor.withOpacity(0.4),
+                          accentColor.withOpacity(0.7),
+                          accentColor.withOpacity(0.15),
                         ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: accentColor.withOpacity(0.4),
+                          blurRadius: 12,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -5450,41 +5794,72 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             : MainAxisAlignment.start,
                         children: [
                           Container(
-                            width: 72,
-                            height: 72,
+                            width: 74,
+                            height: 74,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: isDark
                                     ? [
-                                        accentColor.withOpacity(0.2),
-                                        accentColor.withOpacity(0.08),
+                                        accentColor.withOpacity(0.25),
+                                        accentColor.withOpacity(0.1),
                                       ]
                                     : [
-                                        accentColor.withOpacity(0.12),
-                                        accentColor.withOpacity(0.04),
+                                        accentColor.withOpacity(0.16),
+                                        accentColor.withOpacity(0.06),
                                       ],
                               ),
-                              borderRadius: BorderRadius.circular(22),
+                              borderRadius: BorderRadius.circular(26),
                               border: Border.all(
                                 color: accentColor
-                                    .withOpacity(isDark ? 0.2 : 0.15),
-                                width: 1,
+                                    .withOpacity(isDark ? 0.25 : 0.2),
+                                width: 1.2,
                               ),
                               boxShadow: [
                                 BoxShadow(
                                   color: accentColor
-                                      .withOpacity(isDark ? 0.1 : 0.06),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
+                                      .withOpacity(isDark ? 0.15 : 0.1),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white
+                                      .withOpacity(isDark ? 0.04 : 0.03),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, -1),
                                 ),
                               ],
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(9),
-                              child:
-                                  Image.asset(iconAsset, fit: BoxFit.contain),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Inner glow
+                                Positioned.fill(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(24),
+                                      gradient: RadialGradient(
+                                        center: Alignment.topLeft,
+                                        radius: 1,
+                                        colors: [
+                                          Colors.white
+                                              .withOpacity(isDark ? 0.06 : 0.04),
+                                          Colors.transparent,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(9),
+                                  child: Image.asset(
+                                    iconAsset,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -5622,16 +5997,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     // Islamic gold/green color palette
     const islamicGold = Color(0xFFD4AF37);
+    const islamicGoldLight = Color(0xFFF0D878);
     const islamicGreen = Color(0xFF0D6B4E);
     const islamicTeal = Color(0xFF006B5B);
 
     return RepaintBoundary(
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 600),
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeIn,
         transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(opacity: animation, child: child);
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.15),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          );
         },
         child: Container(
           key: ValueKey<String>(
@@ -5639,84 +6024,98 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
           width: double.infinity,
           constraints: const BoxConstraints(
-            minHeight: 90,
-            maxHeight: 120,
-          ), // Smaller height
+            minHeight: 100,
+            maxHeight: 130,
+          ),
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.0, 0.5, 1.0],
               colors: isDark
                   ? [
                       const Color(0xFF0a1f1a),
                       const Color(0xFF0d2a23),
-                      const Color(0xFF0a1f1a),
+                      const Color(0xFF081814),
                     ]
                   : [
                       const Color(0xFFFFFDF5),
                       const Color(0xFFFFF8E7),
-                      const Color(0xFFFFFDF5),
+                      const Color(0xFFFFFBEF),
                     ],
             ),
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: islamicGold.withOpacity(isDark ? 0.5 : 0.6),
+              color: islamicGold.withOpacity(isDark ? 0.45 : 0.55),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: islamicGold.withOpacity(isDark ? 0.25 : 0.18),
-                blurRadius: 24,
-                offset: const Offset(0, 10),
-                spreadRadius: -2,
+                color: islamicGold.withOpacity(isDark ? 0.2 : 0.15),
+                blurRadius: 28,
+                offset: const Offset(0, 12),
+                spreadRadius: -3,
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(isDark ? 0.15 : 0.04),
-                blurRadius: 12,
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
+                blurRadius: 14,
                 offset: const Offset(0, 6),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(21),
+            borderRadius: BorderRadius.circular(23),
             child: Stack(
               children: [
-                // Corner decorations
+                // Subtle inner glow border
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(23),
+                      border: Border.all(
+                        color: islamicGoldLight
+                            .withOpacity(isDark ? 0.08 : 0.15),
+                        width: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+                // Corner decorations — larger and more elegant
                 Positioned(
-                  top: 6,
-                  left: 6,
+                  top: 8,
+                  left: 8,
                   child: Icon(
-                    Icons.star_rounded,
-                    size: 14,
-                    color: islamicGold.withOpacity(0.35),
+                    Icons.auto_awesome_rounded,
+                    size: 16,
+                    color: islamicGold.withOpacity(0.4),
                   ),
                 ),
                 Positioned(
-                  top: 6,
-                  right: 6,
+                  top: 8,
+                  right: 8,
                   child: Icon(
-                    Icons.star_rounded,
-                    size: 14,
-                    color: islamicGold.withOpacity(0.35),
+                    Icons.auto_awesome_rounded,
+                    size: 16,
+                    color: islamicGold.withOpacity(0.4),
                   ),
                 ),
                 Positioned(
-                  bottom: 6,
-                  left: 6,
+                  bottom: 8,
+                  left: 8,
                   child: Icon(
-                    Icons.star_rounded,
-                    size: 14,
-                    color: islamicGold.withOpacity(0.35),
+                    Icons.auto_awesome_rounded,
+                    size: 16,
+                    color: islamicGold.withOpacity(0.4),
                   ),
                 ),
                 Positioned(
-                  bottom: 6,
-                  right: 6,
+                  bottom: 8,
+                  right: 8,
                   child: Icon(
-                    Icons.star_rounded,
-                    size: 14,
-                    color: islamicGold.withOpacity(0.35),
+                    Icons.auto_awesome_rounded,
+                    size: 16,
+                    color: islamicGold.withOpacity(0.4),
                   ),
                 ),
                 // Content
@@ -5748,11 +6147,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      // Small quote icon at bottom
-                      Icon(
-                        Icons.format_quote_rounded,
-                        color: islamicGold.withOpacity(0.6),
-                        size: 18,
+                      // Small quote icon at bottom with glow
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              islamicGold.withOpacity(0.15),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.format_quote_rounded,
+                          color: islamicGold.withOpacity(0.7),
+                          size: 20,
+                        ),
                       ),
                     ],
                   ),

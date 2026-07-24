@@ -214,34 +214,70 @@ class _CommitmentScreenState extends State<CommitmentScreen>
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
+              stops: const [0.0, 0.25, 0.55, 0.8, 1.0],
               colors: isDark
                   ? [
+                      const Color(0xFF020A09),
                       const Color(0xFF051614),
+                      const Color(0xFF0E2823),
                       const Color(0xFF102A27),
-                      const Color(0xFF111827)
+                      const Color(0xFF0B1F1B),
                     ]
                   : [
+                      const Color(0xFFEFFFF8),
                       const Color(0xFFF4FFFB),
                       const Color(0xFFFFF7E8),
-                      const Color(0xFFEAF3FF)
+                      const Color(0xFFEAF3FF),
+                      const Color(0xFFDFF1F4),
                     ],
             ),
           ),
           child: Stack(
             children: [
+              // Ambient glow orbs — dramatic layered atmosphere
               Positioned(
-                top: -70,
-                left: -60,
+                top: -90,
+                left: -70,
                 child: _buildSoftOrb(
                     isDark ? amberColor : const Color(0xFF0D9488),
-                    isDark ? 0.14 : 0.16,
-                    230),
+                    isDark ? 0.18 : 0.22,
+                    280),
               ),
               Positioned(
-                bottom: -90,
-                right: -70,
+                bottom: -110,
+                right: -80,
                 child: _buildSoftOrb(
-                    const Color(0xFF38BDF8), isDark ? 0.10 : 0.14, 260),
+                    const Color(0xFF38BDF8), isDark ? 0.14 : 0.20, 300),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.30,
+                right: -100,
+                child: _buildSoftOrb(
+                    isDark
+                        ? const Color(0xFF34D399)
+                        : const Color(0xFF5EEAD4),
+                    isDark ? 0.10 : 0.16,
+                    220),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.55,
+                left: -90,
+                child: _buildSoftOrb(
+                    isDark
+                        ? const Color(0xFFFBBF24)
+                        : const Color(0xFFFDE68A),
+                    isDark ? 0.08 : 0.14,
+                    200),
+              ),
+              Positioned(
+                bottom: 60,
+                left: MediaQuery.of(context).size.width * 0.35,
+                child: _buildSoftOrb(
+                    isDark
+                        ? const Color(0xFFA78BFA)
+                        : const Color(0xFFC4B5FD),
+                    isDark ? 0.07 : 0.12,
+                    180),
               ),
               SafeArea(
                 child: Column(
@@ -285,29 +321,47 @@ class _CommitmentScreenState extends State<CommitmentScreen>
                                           setState(() => _isWritingMode = true),
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 14),
+                                            horizontal: 36, vertical: 16),
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
                                             colors: isDark
                                                 ? [
                                                     amberColor,
-                                                    amberColor.withOpacity(0.7)
+                                                    amberColor.withOpacity(0.8),
+                                                    amberColor.withOpacity(0.65),
                                                   ]
                                                 : [
+                                                    const Color(0xFF0F766E),
                                                     purpleColor,
-                                                    purpleColor.withOpacity(0.8)
+                                                    purpleColor.withOpacity(0.85),
                                                   ],
                                           ),
                                           borderRadius:
-                                              BorderRadius.circular(30),
+                                              BorderRadius.circular(32),
+                                          border: Border.all(
+                                            color: Colors.white.withOpacity(
+                                                isDark ? 0.18 : 0.25),
+                                            width: 1,
+                                          ),
                                           boxShadow: [
                                             BoxShadow(
                                               color: (isDark
                                                       ? amberColor
                                                       : purpleColor)
-                                                  .withOpacity(0.4),
-                                              blurRadius: 15,
-                                              offset: const Offset(0, 5),
+                                                  .withOpacity(0.55),
+                                              blurRadius: 28,
+                                              spreadRadius: 2,
+                                              offset: const Offset(0, 10),
+                                            ),
+                                            BoxShadow(
+                                              color: (isDark
+                                                      ? amberColor
+                                                      : purpleColor)
+                                                  .withOpacity(0.25),
+                                              blurRadius: 12,
+                                              offset: const Offset(0, 2),
                                             ),
                                           ],
                                         ),
@@ -353,7 +407,14 @@ class _CommitmentScreenState extends State<CommitmentScreen>
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color.withOpacity(opacity),
+        gradient: RadialGradient(
+          colors: [
+            color.withOpacity(opacity),
+            color.withOpacity(opacity * 0.55),
+            color.withOpacity(0),
+          ],
+          stops: const [0.0, 0.5, 1.0],
+        ),
       ),
     );
   }
@@ -369,17 +430,40 @@ class _CommitmentScreenState extends State<CommitmentScreen>
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.white,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? [
+                          Colors.white.withOpacity(0.14),
+                          Colors.white.withOpacity(0.06),
+                        ]
+                      : [
+                          Colors.white.withOpacity(0.92),
+                          Colors.white.withOpacity(0.65),
+                        ],
+                ),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: isDark
-                    ? null
-                    : [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                border: Border.all(
+                  color: isDark
+                      ? Colors.white.withOpacity(0.18)
+                      : Colors.white.withOpacity(0.9),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDark
+                        ? Colors.black.withOpacity(0.4)
+                        : const Color(0xFF0F766E).withOpacity(0.10),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: Colors.white.withOpacity(isDark ? 0.06 : 0.5),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Icon(
                 lang.isRTL ? Icons.arrow_forward_rounded : Icons.arrow_back_rounded,
@@ -445,235 +529,397 @@ class _CommitmentScreenState extends State<CommitmentScreen>
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
-            color: isDark
-                ? const Color(0xFF0F1A18).withOpacity(0.95)
-                : Colors.white.withOpacity(0.98),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [
+                      const Color(0xFF0F1A18).withOpacity(0.98),
+                      const Color(0xFF13201D).withOpacity(0.95),
+                      const Color(0xFF0B1413).withOpacity(0.97),
+                    ]
+                  : [
+                      Colors.white.withOpacity(1.0),
+                      const Color(0xFFFFFBF2).withOpacity(0.99),
+                      const Color(0xFFF5FFFB).withOpacity(1.0),
+                    ],
+            ),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-                color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+                color: isDark
+                    ? Colors.white.withOpacity(0.12)
+                    : const Color(0xFFB2DFDB),
+                width: 1),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF0F766E).withOpacity(isDark ? 0.12 : 0.10),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
+                color: const Color(0xFF0F766E)
+                    .withOpacity(isDark ? 0.28 : 0.20),
+                blurRadius: 38,
+                spreadRadius: 2,
+                offset: const Offset(0, 16),
+              ),
+              BoxShadow(
+                color: const Color(0xFFF59E0B)
+                    .withOpacity(isDark ? 0.10 : 0.12),
+                blurRadius: 24,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Stack(
               children: [
-                // Header
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? [const Color(0xFF0F766E), const Color(0xFF1F2937)]
-                          : [const Color(0xFF0D9488), const Color(0xFF14B8A6)],
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(Icons.edit_note_rounded,
-                            color: Colors.white, size: 24),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              lang.currentLanguage == AppLanguage.arabic
-                                  ? 'اكتب وعدا واضحا لنفسك'
-                                  : lang.currentLanguage == AppLanguage.kurdish
-                                      ? 'بەڵێنێکی ڕوون بۆ خۆت بنووسە'
-                                      : 'Write a clear promise to yourself',
-                              style: lang.getTextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                              ),
-                            ),
-                            if (_autoSaveStatus.isNotEmpty)
-                              Text(
-                                _autoSaveStatus,
-                                style: lang.getTextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (_autoSaveStatus.isNotEmpty)
-                        Icon(
-                          _autoSaveStatus.contains('...') || _autoSaveStatus.contains('...')
-                              ? Icons.sync_rounded
-                              : Icons.check_circle_outline_rounded,
-                          color: Colors.white70,
-                          size: 18,
-                        ),
-                    ],
-                  ),
+                // Accent glow orb inside the card
+                Positioned(
+                  top: -40,
+                  right: -40,
+                  child: _buildSoftOrb(
+                      const Color(0xFF14B8A6),
+                      isDark ? 0.16 : 0.22,
+                      160),
                 ),
-                // Text input — fixed height, scrollable
-                Container(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.45,
-                    minHeight: 160,
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: SingleChildScrollView(
-                    reverse: true,
-                    child: TextField(
-                      controller: _letterController,
-                      maxLines: null,
-                      minLines: 6,
-                      expands: false,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: lang.getTextStyle(
-                        fontSize: 16,
-                        height: 1.8,
-                        color: isDark ? Colors.white : const Color(0xFF263238),
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: isDark
-                            ? const Color(0xFF14232A).withOpacity(0.72)
-                            : const Color(0xFFF8FAFC),
-                        hintText: placeholder,
-                        hintStyle: lang.getTextStyle(
-                          fontSize: 14,
-                          height: 1.6,
-                          color: isDark ? Colors.white38 : const Color(0xFF78909C),
-                        ),
-                        contentPadding: const EdgeInsets.all(16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      onChanged: (value) {
-                        // Auto-save on text change (debounced)
-                        if (value.trim().length > 20 && !_isAutoSaving) {
-                          Future.delayed(const Duration(milliseconds: 700), () {
-                            if (!mounted) return;
-                            if (_isWritingMode &&
-                                _letterController.text.trim() == value.trim() &&
-                                value.trim().isNotEmpty) {
-                              _autoSaveLetter(lang);
-                            }
-                          });
-                        }
-                      },
-                    ),
-                  ),
+                Positioned(
+                  bottom: -50,
+                  left: -50,
+                  child: _buildSoftOrb(
+                      const Color(0xFFF59E0B),
+                      isDark ? 0.10 : 0.16,
+                      150),
                 ),
-                // Buttons — always visible above keyboard
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.black.withOpacity(0.12)
-                        : const Color(0xFFF8FAFC),
-                    border: Border(
-                        top: BorderSide(
-                            color: isDark
-                                ? Colors.white10
-                                : const Color(0xFFE2E8F0))),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            // Auto-save before canceling if there's text
-                            if (_letterController.text.trim().isNotEmpty) {
-                              _autoSaveLetter(lang);
-                            }
-                            setState(() {
-                              _isWritingMode = false;
-                              _letterController.clear();
-                            });
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? Colors.white.withOpacity(0.06)
-                                  : const Color(0xFFF1F5F9),
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(cancelText,
-                                  style: lang.getTextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: isDark
-                                          ? Colors.white60
-                                          : const Color(0xFF64748B))),
-                            ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Header
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 14),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  const Color(0xFF0F766E),
+                                  const Color(0xFF115E59),
+                                  const Color(0xFF1F2937)
+                                ]
+                              : [
+                                  const Color(0xFF0D9488),
+                                  const Color(0xFF0F766E),
+                                  const Color(0xFF14B8A6)
+                                ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF0F766E)
+                                .withOpacity(isDark ? 0.4 : 0.35),
+                            blurRadius: 18,
+                            offset: const Offset(0, 6),
                           ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        flex: 2,
-                        child: GestureDetector(
-                          onTap: _isAutoSaving ? null : () => _saveLetter(lang),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF0D9488), Color(0xFF14B8A6)],
+                              color: Colors.white.withOpacity(0.18),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.22),
+                                width: 1,
                               ),
-                              borderRadius: BorderRadius.circular(14),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0xFF0D9488).withOpacity(0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
+                            ),
+                            child: const Icon(Icons.edit_note_rounded,
+                                color: Colors.white, size: 24),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  lang.currentLanguage == AppLanguage.arabic
+                                      ? 'اكتب وعدا واضحا لنفسك'
+                                      : lang.currentLanguage ==
+                                              AppLanguage.kurdish
+                                          ? 'بەڵێنێکی ڕوون بۆ خۆت بنووسە'
+                                          : 'Write a clear promise to yourself',
+                                  style: lang.getTextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                  ),
                                 ),
+                                if (_autoSaveStatus.isNotEmpty)
+                                  Text(
+                                    _autoSaveStatus,
+                                    style: lang.getTextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
                               ],
                             ),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    _isAutoSaving
-                                        ? Icons.sync_rounded
-                                        : Icons.save_rounded,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(saveText,
-                                      style: lang.getTextStyle(
-                                          fontSize: 15,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800)),
+                          ),
+                          if (_autoSaveStatus.isNotEmpty)
+                            Icon(
+                              _autoSaveStatus.contains('...') ||
+                                      _autoSaveStatus.contains('...')
+                                  ? Icons.sync_rounded
+                                  : Icons.check_circle_outline_rounded,
+                              color: Colors.white70,
+                              size: 18,
+                            ),
+                        ],
+                      ),
+                    ),
+                    // Text input — fixed height, scrollable — premium parchment
+                    Container(
+                      constraints: BoxConstraints(
+                        maxHeight: MediaQuery.of(context).size.height * 0.45,
+                        minHeight: 160,
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  const Color(0xFF14232A).withOpacity(0.75),
+                                  const Color(0xFF1A2C30).withOpacity(0.65),
+                                ]
+                              : [
+                                  const Color(0xFFFFFDF7),
+                                  const Color(0xFFFAF6EC).withOpacity(0.9),
                                 ],
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        reverse: true,
+                        child: TextField(
+                          controller: _letterController,
+                          maxLines: null,
+                          minLines: 6,
+                          expands: false,
+                          textAlignVertical: TextAlignVertical.top,
+                          style: lang.getTextStyle(
+                            fontSize: 16,
+                            height: 1.8,
+                            color: isDark ? Colors.white : const Color(0xFF263238),
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: isDark
+                                ? const Color(0xFF14232A).withOpacity(0.72)
+                                : const Color(0xFFF8FAFC),
+                            hintText: placeholder,
+                            hintStyle: lang.getTextStyle(
+                              fontSize: 14,
+                              height: 1.6,
+                              color: isDark
+                                  ? Colors.white38
+                                  : const Color(0xFF78909C),
+                            ),
+                            contentPadding: const EdgeInsets.all(16),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: isDark
+                                    ? Colors.white.withOpacity(0.10)
+                                    : const Color(0xFFB2DFDB),
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: isDark
+                                    ? Colors.white.withOpacity(0.10)
+                                    : const Color(0xFFB2DFDB),
+                                width: 1,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: const Color(0xFF0D9488)
+                                    .withOpacity(isDark ? 0.6 : 0.7),
+                                width: 2,
                               ),
                             ),
                           ),
+                          onChanged: (value) {
+                            // Auto-save on text change (debounced)
+                            if (value.trim().length > 20 && !_isAutoSaving) {
+                              Future.delayed(
+                                  const Duration(milliseconds: 700), () {
+                                if (!mounted) return;
+                                if (_isWritingMode &&
+                                    _letterController.text.trim() ==
+                                        value.trim() &&
+                                    value.trim().isNotEmpty) {
+                                  _autoSaveLetter(lang);
+                                }
+                              });
+                            }
+                          },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    // Buttons — always visible above keyboard
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isDark
+                              ? [
+                                  Colors.black.withOpacity(0.18),
+                                  Colors.black.withOpacity(0.10),
+                                ]
+                              : [
+                                  const Color(0xFFF8FAFC),
+                                  const Color(0xFFF1F8F5),
+                                ],
+                        ),
+                        border: Border(
+                            top: BorderSide(
+                                color: isDark
+                                    ? Colors.white10
+                                    : const Color(0xFFE2E8F0))),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                // Auto-save before canceling if there's text
+                                if (_letterController.text.trim().isNotEmpty) {
+                                  _autoSaveLetter(lang);
+                                }
+                                setState(() {
+                                  _isWritingMode = false;
+                                  _letterController.clear();
+                                });
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: isDark
+                                        ? [
+                                            Colors.white.withOpacity(0.08),
+                                            Colors.white.withOpacity(0.04),
+                                          ]
+                                        : [
+                                            const Color(0xFFF1F5F9),
+                                            const Color(0xFFE2E8F0),
+                                          ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? Colors.white.withOpacity(0.12)
+                                        : const Color(0xFFCBD5E1),
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(
+                                          isDark ? 0.2 : 0.04),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(cancelText,
+                                      style: lang.getTextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? Colors.white60
+                                              : const Color(0xFF64748B))),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 2,
+                            child: GestureDetector(
+                              onTap: _isAutoSaving ? null : () => _saveLetter(lang),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF0D9488),
+                                      Color(0xFF0F766E),
+                                      Color(0xFF14B8A6)
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.18),
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF0D9488)
+                                          .withOpacity(0.45),
+                                      blurRadius: 18,
+                                      spreadRadius: 1,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                    BoxShadow(
+                                      color: const Color(0xFF14B8A6)
+                                          .withOpacity(0.25),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        _isAutoSaving
+                                            ? Icons.sync_rounded
+                                            : Icons.save_rounded,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(saveText,
+                                          style: lang.getTextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w800)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -700,76 +946,138 @@ class _CommitmentScreenState extends State<CommitmentScreen>
         constraints: const BoxConstraints(maxWidth: 680),
         child: Container(
           decoration: BoxDecoration(
-            color: isDark
-                ? Colors.white.withOpacity(0.08)
-                : Colors.white.withOpacity(0.96),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isDark
+                  ? [
+                      Colors.white.withOpacity(0.10),
+                      Colors.white.withOpacity(0.06),
+                      Colors.white.withOpacity(0.08),
+                    ]
+                  : [
+                      Colors.white.withOpacity(1.0),
+                      const Color(0xFFFFFBF2).withOpacity(0.98),
+                      Colors.white.withOpacity(0.96),
+                    ],
+            ),
             borderRadius: BorderRadius.circular(32),
             border: Border.all(
-                color: isDark ? Colors.white10 : const Color(0xFFE0F2EF)),
+                color: isDark
+                    ? Colors.white.withOpacity(0.14)
+                    : const Color(0xFFB2DFDB),
+                width: 1),
             boxShadow: [
               BoxShadow(
-                color:
-                    const Color(0xFF0F766E).withOpacity(isDark ? 0.12 : 0.14),
-                blurRadius: 32,
-                offset: const Offset(0, 18),
+                color: const Color(0xFF0F766E)
+                    .withOpacity(isDark ? 0.30 : 0.22),
+                blurRadius: 44,
+                spreadRadius: 2,
+                offset: const Offset(0, 22),
+              ),
+              BoxShadow(
+                color: const Color(0xFFF59E0B)
+                    .withOpacity(isDark ? 0.12 : 0.14),
+                blurRadius: 28,
+                offset: const Offset(0, 6),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.4 : 0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(32),
-            child: Column(
+            child: Stack(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0xFF0D9488), Color(0xFFF59E0B)]),
-                  ),
-                  child: Row(
-                    children: [
-                      _buildWaxSeal(isDark, letter.userName),
-                      const SizedBox(width: 18),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _commitmentService.formatDate(
-                                  letter.createdAt, languageCode),
-                              style: lang.getTextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white.withOpacity(0.78)),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              '${signatureText} ${letter.userName}',
-                              style: lang.getTextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                // Accent glow orbs inside the letter card
+                Positioned(
+                  top: -50,
+                  left: -50,
+                  child: _buildSoftOrb(
+                      const Color(0xFF14B8A6),
+                      isDark ? 0.14 : 0.18,
+                      180),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(26),
-                    physics: const BouncingScrollPhysics(),
-                    child: Text(
-                      letter.content,
-                      style: lang.getTextStyle(
-                        fontSize: 17,
-                        height: 1.95,
-                        color: isDark
-                            ? Colors.white.withOpacity(0.92)
-                            : const Color(0xFF263238),
+                Positioned(
+                  bottom: -60,
+                  right: -40,
+                  child: _buildSoftOrb(
+                      const Color(0xFFF59E0B),
+                      isDark ? 0.10 : 0.14,
+                      160),
+                ),
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              const Color(0xFF0D9488),
+                              const Color(0xFF0F766E),
+                              const Color(0xFFF59E0B)
+                            ]),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF0F766E)
+                                .withOpacity(isDark ? 0.5 : 0.4),
+                            blurRadius: 22,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          _buildWaxSeal(isDark, letter.userName),
+                          const SizedBox(width: 18),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _commitmentService.formatDate(
+                                      letter.createdAt, languageCode),
+                                  style: lang.getTextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white.withOpacity(0.78)),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  '${signatureText} ${letter.userName}',
+                                  style: lang.getTextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(26),
+                        physics: const BouncingScrollPhysics(),
+                        child: Text(
+                          letter.content,
+                          style: lang.getTextStyle(
+                            fontSize: 17,
+                            height: 1.95,
+                            color: isDark
+                                ? Colors.white.withOpacity(0.92)
+                                : const Color(0xFF263238),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

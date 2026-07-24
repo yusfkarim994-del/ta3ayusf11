@@ -55,23 +55,29 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
       child: RepaintBoundary(
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(32),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(isDark ? 0.35 : 0.12),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
+                color: Colors.black.withOpacity(isDark ? 0.45 : 0.15),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
               ),
               if (!isDark)
                 BoxShadow(
-                  color: const Color(0xFF0D9488).withOpacity(0.08),
-                  blurRadius: 30,
-                  offset: const Offset(0, 4),
+                  color: const Color(0xFF0D9488).withOpacity(0.12),
+                  blurRadius: 40,
+                  offset: const Offset(0, 6),
                 ),
+              BoxShadow(
+                color: const Color(0xFF14B8A6).withOpacity(isDark ? 0.1 : 0.06),
+                blurRadius: 50,
+                spreadRadius: -5,
+                offset: const Offset(0, 0),
+              ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(32),
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -97,18 +103,31 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
                     }
                   },
                 ),
-                // Gradient overlay for better readability
+                // Multi-layer gradient overlay for dramatic depth
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       colors: [
-                        Colors.black.withOpacity(0.1),
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.15),
+                        Colors.black.withOpacity(0.25),
+                        Colors.black.withOpacity(0.05),
+                        Colors.black.withOpacity(0.35),
                       ],
                       stops: const [0.0, 0.4, 1.0],
+                    ),
+                  ),
+                ),
+                // Color tint overlay for richness
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: Alignment.topCenter,
+                      radius: 1.2,
+                      colors: [
+                        const Color(0xFF14B8A6).withOpacity(0.08),
+                        Colors.transparent,
+                      ],
                     ),
                   ),
                 ),
@@ -122,21 +141,48 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.white.withOpacity(0.2),
+                                  Colors.white.withOpacity(0.08),
+                                ],
+                                stops: [0.0, 1.0],
                               ),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.25),
+                                width: 1,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.15),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
                             child: GestureDetector(
                               onTap: widget.onSettingsTap,
                               child: Container(
-                                padding: const EdgeInsets.all(9),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.white.withOpacity(0.15),
+                                      Colors.white.withOpacity(0.05),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(11),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.12),
+                                    width: 0.5,
+                                  ),
                                 ),
                                 child: const Icon(
                                   Icons.settings_rounded,
@@ -156,37 +202,63 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(24),
+                              padding: const EdgeInsets.all(28),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.15),
+                                gradient: RadialGradient(
+                                  colors: [
+                                    Colors.white.withOpacity(0.2),
+                                    Colors.white.withOpacity(0.08),
+                                  ],
+                                ),
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withOpacity(0.3),
                                   width: 2,
                                 ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.15),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 8),
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 28,
+                                    offset: const Offset(0, 10),
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFF14B8A6)
+                                        .withOpacity(0.2),
+                                    blurRadius: 30,
+                                    spreadRadius: 2,
                                   ),
                                 ],
                               ),
                               child: const Icon(
                                 Icons.play_arrow_rounded,
-                                size: 52,
+                                size: 56,
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 28),
                             Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(18),
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF4facfe),
+                                    Color(0xFF00f2fe),
+                                  ],
+                                ),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(0xFF4facfe).withOpacity(0.4),
-                                    blurRadius: 16,
-                                    offset: const Offset(0, 6),
+                                    color: const Color(0xFF4facfe)
+                                        .withOpacity(0.5),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 8),
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFF00f2fe)
+                                        .withOpacity(0.3),
+                                    blurRadius: 14,
+                                    offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
@@ -194,11 +266,12 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
                                 onPressed: () =>
                                     timerService.resetTimer().then((_) => setState(() {})),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF4facfe),
+                                  backgroundColor: Colors.transparent,
+                                  foregroundColor: Colors.white,
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 32, vertical: 16),
+                                      horizontal: 36, vertical: 18),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
+                                    borderRadius: BorderRadius.circular(18),
                                   ),
                                   elevation: 0,
                                 ),
@@ -285,30 +358,42 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 5,
-          height: 5,
+          width: 6,
+          height: 6,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.7),
+            gradient: RadialGradient(
+              colors: [
+                Colors.white,
+                Colors.white.withOpacity(0.7),
+              ],
+            ),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withOpacity(0.2),
-                blurRadius: 4,
+                color: Colors.white.withOpacity(0.4),
+                blurRadius: 6,
+                spreadRadius: 1,
               ),
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Container(
-          width: 5,
-          height: 5,
+          width: 6,
+          height: 6,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.7),
+            gradient: RadialGradient(
+              colors: [
+                Colors.white,
+                Colors.white.withOpacity(0.7),
+              ],
+            ),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.white.withOpacity(0.2),
-                blurRadius: 4,
+                color: Colors.white.withOpacity(0.4),
+                blurRadius: 6,
+                spreadRadius: 1,
               ),
             ],
           ),
@@ -330,74 +415,116 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 76,
-          height: 100,
+          width: 78,
+          height: 104,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.12),
-            borderRadius: BorderRadius.circular(22),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.white.withOpacity(0.18),
+                Colors.white.withOpacity(0.06),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withOpacity(0.35),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: accentColor.withOpacity(0.15),
-                blurRadius: 12,
+                color: accentColor.withOpacity(0.2),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 3),
+                color: Colors.white.withOpacity(0.05),
+                blurRadius: 4,
+                offset: const Offset(0, -1),
               ),
             ],
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(22),
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                // Liquid fill
+                // Liquid fill — multi-stop gradient for richness
                 if (fillPercent > 0)
                   Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: 14.0 + (fillPercent * (100.0 - 14.0)),
+                      height: 14.0 + (fillPercent * (104.0 - 14.0)),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            accentColor.withOpacity(0.9),
-                            accentColor.withOpacity(0.65),
-                            accentColor.withOpacity(0.5),
+                            accentColor.withOpacity(0.95),
+                            accentColor.withOpacity(0.7),
+                            accentColor.withOpacity(0.55),
                           ],
+                          stops: const [0.0, 0.5, 1.0],
                         ),
                         borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(22),
+                          bottomRight: Radius.circular(22),
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: accentColor.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, -2),
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
-                // Glass shine effect
+                // Glass shine effect — stronger top glow
                 Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
-                  height: 40,
+                  height: 44,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.white.withOpacity(0.18),
+                          Colors.white.withOpacity(0.22),
                           Colors.transparent,
                         ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Side highlight
+                Positioned(
+                  top: 8,
+                  bottom: 8,
+                  left: 0,
+                  width: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white.withOpacity(0.15),
+                          Colors.transparent,
+                        ],
+                      ),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(22),
                       ),
                     ),
                   ),
@@ -432,10 +559,21 @@ class _RecoveryTimerWidgetState extends State<RecoveryTimerWidget> {
                       const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 3),
+                            horizontal: 11, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.black.withOpacity(0.3),
+                              Colors.black.withOpacity(0.15),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(11),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.1),
+                            width: 0.5,
+                          ),
                         ),
                         child: Text(
                           label,
