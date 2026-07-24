@@ -355,23 +355,28 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.white.withOpacity(0.14),
-            Colors.white.withOpacity(0.06),
-            glow.withOpacity(0.04),
+            Colors.white.withOpacity(0.16),
+            Colors.white.withOpacity(0.07),
+            glow.withOpacity(0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: Colors.white.withOpacity(0.18), width: 1.2),
+        border: Border.all(color: Colors.white.withOpacity(0.2), width: 1.2),
         boxShadow: [
           BoxShadow(
-            color: glow.withOpacity(0.12),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
+            color: glow.withOpacity(0.15),
+            blurRadius: 28,
+            offset: const Offset(0, 10),
           ),
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.18),
+            blurRadius: 18,
+            offset: const Offset(0, 5),
+          ),
+          BoxShadow(
+            color: glow.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, -1),
           ),
         ],
       ),
@@ -387,29 +392,50 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
       radius: 32,
       accent: accent,
       padding: const EdgeInsets.all(22),
-      child: Column(
+      child: Stack(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 82,
-                height: 82,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [accent.withOpacity(0.95), const Color(0xFFFFD700).withOpacity(0.85)],
-                  ),
-                  boxShadow: [
-                    BoxShadow(color: accent.withOpacity(0.42), blurRadius: 28, offset: const Offset(0, 12)),
+          // Inner glow orb
+          Positioned(
+            top: -30,
+            right: -20,
+            child: Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    accent.withOpacity(0.15),
+                    Colors.transparent,
                   ],
-                  border: Border.all(color: Colors.white.withOpacity(0.32), width: 2),
-                ),
-                child: Center(
-                  child: Text(isActive ? (stage?.emoji ?? '🛡️') : '🛡️', style: const TextStyle(fontSize: 44)),
                 ),
               ),
+            ),
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 82,
+                    height: 82,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [accent.withOpacity(0.95), const Color(0xFFFFD700).withOpacity(0.85)],
+                      ),
+                      boxShadow: [
+                        BoxShadow(color: accent.withOpacity(0.5), blurRadius: 32, offset: const Offset(0, 14)),
+                        BoxShadow(color: accent.withOpacity(0.2), blurRadius: 40, spreadRadius: 2),
+                      ],
+                      border: Border.all(color: Colors.white.withOpacity(0.35), width: 2),
+                    ),
+                    child: Center(
+                      child: Text(isActive ? (stage?.emoji ?? '🛡️') : '🛡️', style: const TextStyle(fontSize: 44)),
+                    ),
+                  ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -451,6 +477,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
               _buildHeroMetric(Icons.flag_rounded, '${_challengeService.getCurrentStageNumber()}/18', _getStagesText(lang), const Color(0xFF14B8A6)),
             ],
           ),
+            ],
+          ),
         ],
       ),
     );
@@ -461,9 +489,23 @@ class _ChallengeScreenState extends State<ChallengeScreen> with TickerProviderSt
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.18),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.black.withOpacity(0.22),
+              Colors.black.withOpacity(0.12),
+            ],
+          ),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: color.withOpacity(0.26)),
+          border: Border.all(color: color.withOpacity(0.3)),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           children: [

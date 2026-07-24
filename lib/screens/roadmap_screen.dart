@@ -311,9 +311,30 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.04),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.05)),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: isDark
+                      ? [Colors.white.withOpacity(0.12), Colors.white.withOpacity(0.04)]
+                      : [Colors.white.withOpacity(0.95), Colors.white.withOpacity(0.7)],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? Colors.white.withOpacity(0.15) : Colors.white.withOpacity(0.9),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: isDark ? Colors.black.withOpacity(0.2) : Colors.black.withOpacity(0.06),
+                    blurRadius: 14,
+                    offset: const Offset(0, 5),
+                  ),
+                  BoxShadow(
+                    color: const Color(0xFF0D9488).withOpacity(isDark ? 0.08 : 0.08),
+                    blurRadius: 18,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white70 : Colors.black87, size: 18),
             ),
@@ -449,28 +470,65 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
         ),
         boxShadow: [
           BoxShadow(
-            color: currentStage.color.withOpacity(isDark ? 0.18 : 0.22),
-            blurRadius: 34,
-            offset: const Offset(0, 16),
+            color: currentStage.color.withOpacity(isDark ? 0.22 : 0.28),
+            blurRadius: 40,
+            offset: const Offset(0, 18),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
-        border: Border.all(color: Colors.white.withOpacity(0.18)),
+        border: Border.all(color: Colors.white.withOpacity(0.2)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Row(
-            children: [
-              Container(
-                width: 74,
-                height: 74,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.16),
-                  border: Border.all(color: Colors.white.withOpacity(0.30), width: 2),
+          // Inner glow orb
+          Positioned(
+            top: -30,
+            right: -20,
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.12),
+                    Colors.transparent,
+                  ],
                 ),
-                child: Center(child: Text(currentStage.emoji, style: const TextStyle(fontSize: 36))),
               ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 74,
+                    height: 74,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          Colors.white.withOpacity(0.22),
+                          Colors.white.withOpacity(0.10),
+                        ],
+                      ),
+                      border: Border.all(color: Colors.white.withOpacity(0.35), width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(0.15),
+                          blurRadius: 16,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Text(currentStage.emoji, style: const TextStyle(fontSize: 36))),
+                  ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -514,6 +572,8 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
+            ],
+          ),
         ],
       ),
     );
@@ -524,9 +584,23 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.13),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.white.withOpacity(0.16),
+              Colors.white.withOpacity(0.08),
+            ],
+          ),
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: Colors.white.withOpacity(0.16)),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           children: [
@@ -880,36 +954,42 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
           margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(26),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: isUnlocked
                   ? [
-                      stage.color.withOpacity(isDark ? 0.14 : 0.16),
-                      isDark ? Colors.white.withOpacity(0.055) : Colors.white.withOpacity(0.92),
+                      stage.color.withOpacity(isDark ? 0.16 : 0.18),
+                      isDark ? Colors.white.withOpacity(0.06) : Colors.white.withOpacity(0.94),
                     ]
                   : [
-                      isDark ? Colors.white.withOpacity(0.025) : Colors.black.withOpacity(0.018),
-                      isDark ? Colors.white.withOpacity(0.012) : Colors.black.withOpacity(0.010),
+                      isDark ? Colors.white.withOpacity(0.03) : Colors.black.withOpacity(0.02),
+                      isDark ? Colors.white.withOpacity(0.015) : Colors.black.withOpacity(0.01),
                     ],
             ),
             border: Border.all(
               color: isCurrent
-                  ? stage.color.withOpacity(isDark ? 0.5 : 0.7)
+                  ? stage.color.withOpacity(isDark ? 0.55 : 0.75)
                   : isCompleted
-                      ? const Color(0xFF4CAF50).withOpacity(isDark ? 0.3 : 0.5)
+                      ? const Color(0xFF4CAF50).withOpacity(isDark ? 0.35 : 0.55)
                       : isUnlocked
-                          ? (isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.06))
-                          : (isDark ? Colors.white.withOpacity(0.04) : Colors.black.withOpacity(0.03)),
-              width: isCurrent ? 1.5 : 1,
+                          ? (isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.07))
+                          : (isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.03)),
+              width: isCurrent ? 2 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: (isCurrent ? stage.color : const Color(0xFF0D9488)).withOpacity(isCurrent ? 0.18 : 0.06),
-                blurRadius: isCurrent ? 28 : 14,
-                offset: const Offset(0, 9),
+                color: (isCurrent ? stage.color : const Color(0xFF0D9488)).withOpacity(isCurrent ? 0.22 : 0.08),
+                blurRadius: isCurrent ? 32 : 16,
+                offset: const Offset(0, 10),
               ),
+              if (isCurrent)
+                BoxShadow(
+                  color: stage.color.withOpacity(0.1),
+                  blurRadius: 50,
+                  spreadRadius: -5,
+                ),
             ],
           ),
           child: Column(
@@ -1063,22 +1143,30 @@ class _RoadmapScreenState extends State<RoadmapScreen> with TickerProviderStateM
   Widget _buildStageCircle(RecoveryStage stage, bool isUnlocked, bool isCompleted, bool isCurrent, LanguageService lang) {
     final isDark = lang.isDarkMode;
     return Container(
-      width: 48, height: 48,
+      width: 50, height: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: isCompleted
             ? const LinearGradient(colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)])
             : isUnlocked
                 ? LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
-                    colors: [stage.color, stage.color.withOpacity(0.6)])
+                    colors: [stage.color, stage.color.withOpacity(0.5)])
                 : null,
-        color: isUnlocked ? null : (isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.05)),
-        border: !isUnlocked ? Border.all(color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.08)) : null,
+        color: isUnlocked ? null : (isDark ? Colors.white.withOpacity(0.05) : Colors.black.withOpacity(0.04)),
+        border: !isUnlocked ? Border.all(color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.08)) : null,
         boxShadow: isCurrent
-            ? [BoxShadow(color: stage.color.withOpacity(0.3), blurRadius: 12, spreadRadius: 1)]
+            ? [
+                BoxShadow(color: stage.color.withOpacity(0.4), blurRadius: 16, spreadRadius: 2),
+                BoxShadow(color: stage.color.withOpacity(0.15), blurRadius: 30, spreadRadius: -2),
+              ]
             : isCompleted
-                ? [BoxShadow(color: const Color(0xFF4CAF50).withOpacity(0.3), blurRadius: 8)]
-                : null,
+                ? [
+                    BoxShadow(color: const Color(0xFF4CAF50).withOpacity(0.35), blurRadius: 10),
+                    BoxShadow(color: const Color(0xFF4CAF50).withOpacity(0.12), blurRadius: 20, spreadRadius: -2),
+                  ]
+                : isUnlocked
+                    ? [BoxShadow(color: stage.color.withOpacity(0.12), blurRadius: 8, offset: const Offset(0, 3))]
+                    : null,
       ),
       child: Center(
         child: isCompleted
