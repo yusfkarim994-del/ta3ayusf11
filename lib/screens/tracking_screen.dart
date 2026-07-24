@@ -517,7 +517,7 @@ class _TrackingScreenState extends State<TrackingScreen>
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
-          childAspectRatio: 2.35,
+          childAspectRatio: 1.9,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
           children: [
@@ -648,12 +648,12 @@ class _TrackingScreenState extends State<TrackingScreen>
               ),
             ),
           ),
-          // Content — proper spacing between icon and text
+          // Content — proper spacing between icon and text for mobile
           Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -663,7 +663,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                       color.withOpacity(isDark ? 0.14 : 0.08),
                     ],
                   ),
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(15),
                   border: Border.all(
                     color: color.withOpacity(isDark ? 0.3 : 0.24),
                     width: 1.2,
@@ -676,9 +676,9 @@ class _TrackingScreenState extends State<TrackingScreen>
                     ),
                   ],
                 ),
-                child: Icon(icon, color: color, size: 22),
+                child: Icon(icon, color: color, size: 26),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 18),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -687,18 +687,18 @@ class _TrackingScreenState extends State<TrackingScreen>
                     Text(
                       count.toString(),
                       style: lang.getTextStyle(
-                        fontSize: 24,
+                        fontSize: 26,
                         fontWeight: FontWeight.w900,
                         color: color,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       label,
                       style: lang.getTextStyle(
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white54 : const Color(0xFF64748B),
+                        color: isDark ? Colors.white60 : const Color(0xFF64748B),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
