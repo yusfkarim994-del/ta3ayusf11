@@ -517,7 +517,7 @@ class _TrackingScreenState extends State<TrackingScreen>
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
-          childAspectRatio: 1.9,
+          childAspectRatio: 1.55,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
           children: [
@@ -568,7 +568,7 @@ class _TrackingScreenState extends State<TrackingScreen>
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
