@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "co.median.android.welxron"
-    compileSdk = 35
+    compileSdk = 36
     buildToolsVersion = "35.0.0"
     ndkVersion = "27.3.13750724"
     externalNativeBuild {
@@ -54,7 +54,7 @@ android {
     defaultConfig {
         applicationId = "co.median.android.welxron"
         minSdkVersion = flutter.minSdkVersion
-        targetSdk = 35
+        targetSdk = 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

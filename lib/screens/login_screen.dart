@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       );
       if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } catch (e) {
-      setState(() { _errorMessage = e.toString(); });
+      if (mounted) setState(() { _errorMessage = e.toString(); });
     } finally {
       if (mounted) setState(() { _isLoading = false; });
     }
@@ -84,10 +84,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       if (mounted) {
         // Give a tiny delay for localStorage to update
         await Future.delayed(const Duration(milliseconds: 100));
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+        if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
       }
     } catch (e) {
-      setState(() { _errorMessage = e.toString(); });
+      if (mounted) setState(() { _errorMessage = e.toString(); });
     } finally {
       if (mounted) setState(() { _isLoading = false; });
     }
@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       await _authService.signInWithGoogle();
       if (mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } catch (e) {
-      setState(() { _errorMessage = e.toString(); });
+      if (mounted) setState(() { _errorMessage = e.toString(); });
     } finally {
       if (mounted) setState(() { _isLoading = false; });
     }

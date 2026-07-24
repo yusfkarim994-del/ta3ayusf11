@@ -942,7 +942,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void _showAnnouncementsDialog(LanguageService lang) {
     final isDark = lang.isDarkMode;
     _announcementsService.markAllAsRead(); // Mark as read when opened
-    setState(() {}); // Clear badge
+    if (mounted) setState(() {}); // Clear badge
 
     Navigator.push(
       context,

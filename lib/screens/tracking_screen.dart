@@ -568,7 +568,7 @@ class _TrackingScreenState extends State<TrackingScreen>
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -648,6 +648,7 @@ class _TrackingScreenState extends State<TrackingScreen>
               ),
             ),
           ),
+          // Content — proper spacing between icon and text
           Row(
             children: [
               Container(
@@ -677,7 +678,7 @@ class _TrackingScreenState extends State<TrackingScreen>
                 ),
                 child: Icon(icon, color: color, size: 22),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -686,11 +687,12 @@ class _TrackingScreenState extends State<TrackingScreen>
                     Text(
                       count.toString(),
                       style: lang.getTextStyle(
-                        fontSize: 22,
+                        fontSize: 24,
                         fontWeight: FontWeight.w900,
                         color: color,
                       ),
                     ),
+                    const SizedBox(height: 2),
                     Text(
                       label,
                       style: lang.getTextStyle(
@@ -1125,51 +1127,26 @@ class _TrackingScreenState extends State<TrackingScreen>
         final isRecorded = trackingService.isTodayRecorded();
         final accent = isRecorded ? successColor : const Color(0xFF0D9488);
 
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                accent,
-                Color.lerp(accent, const Color(0xFFF59E0B), 0.35)!,
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: accent.withOpacity(0.45),
-                blurRadius: 22,
-                offset: const Offset(0, 10),
-                spreadRadius: 1,
-              ),
-              BoxShadow(
-                color: const Color(0xFFF59E0B).withOpacity(0.28),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
+        return FloatingActionButton.extended(
+          onPressed: () => _showStatusModal(lang, isDark),
+          backgroundColor: accent,
+          foregroundColor: Colors.white,
+          elevation: 6,
+          highlightElevation: 10,
+          icon: Icon(
+            isRecorded ? Icons.check : Icons.add,
+            color: Colors.white,
           ),
-          child: FloatingActionButton.extended(
-            onPressed: () => _showStatusModal(lang, isDark),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            highlightElevation: 0,
-            icon: Icon(
-              isRecorded ? Icons.check : Icons.add,
+          label: Text(
+            lang.currentLanguage == AppLanguage.arabic
+                ? (isRecorded ? 'تم التسجيل' : 'سجّل اليوم')
+                : lang.currentLanguage == AppLanguage.kurdish
+                    ? (isRecorded ? 'تۆمارکرا' : 'ئەمڕۆ تۆماربکە')
+                    : (isRecorded ? 'Recorded' : 'Record Today'),
+            style: lang.getTextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
               color: Colors.white,
-            ),
-            label: Text(
-              lang.currentLanguage == AppLanguage.arabic
-                  ? (isRecorded ? 'تم التسجيل' : 'سجّل اليوم')
-                  : lang.currentLanguage == AppLanguage.kurdish
-                      ? (isRecorded ? 'تۆمارکرا' : 'ئەمڕۆ تۆماربکە')
-                      : (isRecorded ? 'Recorded' : 'Record Today'),
-              style: lang.getTextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
             ),
           ),
         );
